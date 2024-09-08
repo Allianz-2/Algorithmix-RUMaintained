@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUMaintained - Campus Maintenance Made Easy</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Header styles */
+        header {
+            background-color: white;
+            padding: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-grow: 1;
+            align-items: center;
+        }
+        nav a, .dropdown > span {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: #333;
+            font-size: 20px;
+            
+            padding: 10px 15px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        nav a::after, .dropdown > span::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #81589a;
+            transition: all 0.3s ease;
+        }
+        nav a:hover, .dropdown:hover > span {
+            color: #81589a;
+        }
+        nav a:hover::after, .dropdown:hover > span::after {
+            width: 100%;
+            left: 0;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 300px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+           
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: normal;
+            font-size: 15px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .dropdown-content a:hover {
+            background-color: lightgray;
+            color: #81589a;
+        }
+        .dropdown-content a::after {
+            display: none;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .auth-buttons a {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .auth-buttons .login-button {
+            background-color: rgb(233, 233, 233);
+            color: #81589a;
+        }
+        .auth-buttons .signup-button {
+            background-color: #81589a;
+            color: white;
+        }
+
+        /* Hero section styles */
+        .hero {
+            width: 100%;
+            height: 20%;/* Adjusted for better responsiveness */
+            object-fit: cover;
+            display: flex;
+        }
+        
+
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: #81589a;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #f2f2f2;
+        }
+
+        .side-content { 
+            background-color: #81589a;
+            padding: 1rem;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .side-content h1 {
+            margin-bottom: 1rem;
+            font-size: 30px;
+        }
+
+        /* Main content styles */
+        .main-content {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .main-content p {
+            font-size: 1.2rem;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .section {
+            margin-bottom: 3rem;
+        }
+        .section h2 {
+            color: #81589a;
+            padding: 1rem 0;
+        }
+        .section-content {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            flex-wrap: wrap; /* Added for better responsiveness */
+        }
+        .section-text {
+            flex: 1;
+            padding: 0 20px;
+            min-width: 300px; /* Added for better responsiveness */
+        }
+        .section-image {
+            flex: 1;
+            text-align: center;
+            padding-top: 10px;
+            min-width: 300px; /* Added for better responsiveness */
+        }
+        .section-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .team-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .team-member {
+            text-align: center;
+        }
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        footer {
+            background-color: #81589a;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+        footer p {
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="/Images/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RUMaintained Logo">
+        </div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About Us</a>
+            <div class="dropdown">
+                <span>Services ▾</span>
+                <div class="dropdown-content">
+                    <a href="#">Create Ticket</a>
+                    <a href="#">Student Dashboard</a>
+                    <a href="#">House Warden Dashboard</a>
+                    <a href="#">Hall Secretary Dashboard</a>
+                    <a href="#">Maintenance Staff Dashboard</a>
+                </div>
+            </div>
+            <a href="#">Contact Us</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="#" class="login-button">Register</a>
+            <a href="#" class="signup-button">Sign in</a>
+        </div>
+    </header>
+
+    <img src="/Images/Image.jpeg" alt="Campus view" class="hero" />
+
+    <section class="side-content">
+        <h1>About Us</h1>
+        <a href="#" class="cta-button">Meet our team</a>
+    </section>
+
+    <section class="main-content">
+        <p>RUMaintained is a technology platform that supports maintenance reporting, tracking, and resolution across all residence halls and campus buildings. Hundreds of students and staff members across Rhodes University use RUMaintained to ensure a safe and comfortable living and learning environment.</p>
+    </section>
+
+    <div class="container">
+        <section class="section">
+            <h2>Who We Are</h2>
+            <div class="section-content">
+                <div class="section-text">
+                    <p>At Algorithmix, we are pioneers in data-driven decision-making solutions. Specializing in advanced algorithms and machine learning tools, we empower businesses to optimize processes, predict trends, and make informed decisions in real time. Headquartered in Makhanda, South Africa, we are committed to transforming the way businesses interact with data, enabling them to navigate the complexities of the modern world with precision and confidence.</p>
+                </div>
+                <div class="section-image">
+                    <img src="/Images/1.png" alt="algorithmix logo">
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Our Founding Story</h2>
+            <div class="section-content">
+                <div class="section-text">
+                    <p>Algorithmix was born in 2024 from the innovative minds of five Rhodes University students in their final year of an Information Systems class. What began as a simple class project quickly evolved into a vision to revolutionize the business world.</p>
+                    <p>Drawn together by their shared passion for data science and technology, the team worked tirelessly to develop algorithms and machine learning models that could analyze real-time data and predict market trends. Their initial project, inspired by the challenges faced by local businesses, demonstrated immense potential.</p>
+                    <p>With the guidance and support of their professors, the team decided to turn their academic project into a full-fledged startup. Thus, Algorithmix was founded, with a mission to harness the power of data to drive intelligent decision-making. Today, we stand as a leader in our field, offering innovative solutions that empower businesses across the globe.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Our Team</h2>
+            <div class="team-section">
+                <div class="team-member">
+                    <img src="/Images/man.svg" alt="Project Manager">
+                    <p>Project Manager</p>
+                    <p>Daniel Spies</p>
+                </div>
+                <div class="team-member">
+                    <img src="/Images/female.svg" alt="System Developer">
+                    <p>System Analyst</p>
+                    <p>Kate Jackson-Moss</p>
+                </div>
+                <div class="team-member">
+                    <img src="/Images/female.svg" alt="System Analyst">
+                    <p>System Analyst</p>
+                    <p>Naledi Mabusela</p>
+                </div>
+                <div class="team-member">
+                    <img src="/Images/man.svg" alt="System Analyst">
+                    <p>System Analyst</p>
+                    <p>Thulebona Tsele </p>
+                </div>
+                <div class="team-member">
+                    <img src="/Images/man.svg" alt="System Analyst">
+                    <p>System Analyst</p>
+                    <p>Banoyolo Sicwebu</p>
+                </div>
+            </div>
+            
+        </section>
+    </div>
+
+    <footer>
+        <p>RUMaintained - A Residence Maintenance System</p>
+        <p>Developed by Algorithmix</p>
+        <p>&copy; 2024 Algorithmix. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
