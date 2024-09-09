@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUMaintained</title>
+    <style>
+
+        main {
+            display: flex;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+             background-color: #81589a;
+        }
+
+
+        .ticketForm {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 750px;
+            width: 100%;
+            align-content: center;
+            justify-content: center;
+        }
+
+        .ticketText h2 {
+            color: #333333;
+            margin-bottom: 10px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .ticketText h3 {
+            color: #333333;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .ticketText label {
+            display: inline-block;
+            align-items: right;
+            margin-bottom: 15px;
+            justify-content: space-between;
+            flex-direction: column;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+        
+        .required-label::after {
+            content: "*";
+            color: red;
+            margin-left: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        input[type="button"] {
+            padding: 10px 20px; 
+            font-size: 1rem; 
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #81589a;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"] {
+                padding: 10px 20px; 
+                font-size: 1rem; 
+                font-weight: bold;
+                border: none;
+                border-radius: 5px;
+                background-color: #81589a;
+                color: #fff;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+    .ticketText select, .ticketText input[type="text"] {
+        padding: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 40%;
+    }
+      
+    </style>
+</head>
+  <body>
+        <main>
+    <div class = "ticketForm">
+    <div class = "ticketText">
+    <h2>Create Your Maintenance Ticket</h2>
+    <h3>Ticket Details:</h3>
+    <form>
+        <label for="description" class="required-label">Description of Fault:</label>
+        <input type="text" id="description" name="description" placeholder="eg. Broken tap faucet"><br><br>
+        <label for="category" class="required-label">Category of Fault:</label>
+        <select id="category" name="category">
+          <option value="plumbing">Plumbing</option>
+          <option value="electrical">Electrical</option>
+          <option value="structural">Structural</option>
+          <option value="carpentry">Carpentry</option>
+        </select><br><br>
+        <label for="severity" class="required-label">Severity of Fault:</label>
+        <select id="severity" name="severity">
+          <option value="high">High</option>
+          <option value="mediium">Medium</option>
+          <option value="low">Low</option>
+        </select><br><br>
+        <label for="location" class="required-label">Specific Location of Fault:</label>
+        <select id="location" name="location">
+          <option value="bathroom">Bathroom</option>
+          <option value="room">My Room</option>
+          <option value="commonRoom">Common Room</option>
+          <option value="hallway">Hallway</option>
+        </select><br><br>
+        <label for="nature" class="required-label">Nature of Fault:</label>
+        <input type="radio" id="new" name="new" value="new">
+        <label for="new">New Fault</label>&nbsp;
+        <input type="radio" id="recurring" name="recurring" value="recurring">
+        <label for="recurring">Recurring Fault</label>
+    </form>
+    <hr>
+   <h3>Additional Information:</h3>
+   <form>
+    <label for="affectedItems">Affected Items:</label>
+    <input type="text" id="affectedItems" name="affectedItems" placeholder="eg. Damaged floor and sink"><br><br>
+    <label for="comments">Comments:</label>
+    <input type="text" id="comments" name="comments" placeholder="Please enter additional comments on the fault"><br><br>
+    <label for="photo">Upload Photo:</label>
+    <input type="file" id="photo" name="photo"><br><br>
+    <div class = "buttons">
+    <input type="button" value="Save for Later">&nbsp;
+    <input type="submit" id="submit" name="sumbit" value="Create Ticket">
+    </div>
+</div>
+</div>  
+</main>
+</body>
+</html>
