@@ -1,4 +1,3 @@
-
 <?php
 // Connect to the database
 $servername = "algorithmix-mysql.mysql.database.azure.com";
@@ -6,18 +5,25 @@ $username = "AlgorithmixDaniel";
 $password = "Borderlands2";
 $dbname = "algorithmix";
 
-//Initializes MySQLi
+// Initializes MySQLi
 $conn = mysqli_init();
 
-mysqli_ssl_set($conn,NULL,NULL, "..\CACertificate\DigiCertGlobalRootG2.crt.pem", NULL, NULL);
+// Absolute path to the CA certificate
+$ca_cert_path = "C:/Users/Daniel/Documents/GitHub/Algorithmix-RUMaintained/CACertificate/DigiCertGlobalRootCA.crt.pem";
+
+// Test if the CA certificate file can be read
+if (!file_exists($ca_cert_path)) {
+    die("CA file not found: " . $ca_cert_path);
+}
+
+mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
 
 // Establish the connection
 mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
-//If connection failed, show the error
-if (mysqli_connect_errno())
-{
-    die('Failed to connect to MySQL: '.mysqli_connect_error());
+// If connection failed, show the error
+if (mysqli_connect_errno()) {
+    die('Failed to connect to MySQL: ' . mysqli_connect_error());
 }
 
 // Retrieve all users from the database
@@ -37,6 +43,5 @@ if ($result->num_rows > 0) {
     echo "No users found.";
 }
 
-// Close the database connection
-$conn->close();
+mysqli_close($conn);
 ?>
