@@ -43,9 +43,24 @@
                 die('Failed to connect to MySQL: ' . mysqli_connect_error());
             }
 
+            // Retrieve the resID from the residence table
+            $residence = $_POST['residence'];
+            $resQuery = "SELECT resID FROM residence WHERE ResName = ?";
+            $stmt = $conn->prepare($resQuery);
+            $stmt->bind_param("s", $residence);
+            $stmt->execute();
+            $stmt->bind_result($resID);
+            $stmt->fetch();
+            $stmt->close();
+
+            if (!$resID) {
+                die('Residence not found.');
+            }
+
             // Retrieve all users from the database
-$sql = "INSERT INTO user VALUES ('{$_POST['studentNumber']}', '{$_POST['First_name']}', '{$_POST['Lastname']}', '{$_POST['password']}', '{$_POST['email']}', 'S')";
-$result = $conn->query($sql);
+            $sql = "INSERT INTO user VALUES ('{$_POST['userID']}', '{$_POST['firstname']}', '{$_POST['lastname']}', '{$_POST['password']}', '{$_POST['email']}', 'S')
+            INSERT INTO student VALUES ('{$_POST['userID']}', '{$_POST['userID']}', $resID)";
+            $result = $conn->query($sql);
 
 // Check if the query was successful
 if ($result === false) {
