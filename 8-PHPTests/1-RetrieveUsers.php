@@ -1,7 +1,4 @@
-<?php
-$cssFile = file_get_contents('/path/to/5-UserSignInandRegistration/5-RegistrationStep1/style.css');
-echo '<style>' . $cssFile . '</style>';
-?>
+
 <?php
 // Connect to the database
 $servername = "algorithmix-mysql.mysql.database.azure.com";
@@ -15,7 +12,7 @@ $conn = mysqli_init();
 mysqli_ssl_set($conn,NULL,NULL, "..\CACertificate\DigiCertGlobalRootG2.crt.pem", NULL, NULL);
 
 // Establish the connection
-mysqli_real_connect($conn, $host, $username, $password, $db_name, 3306, NULL, MYSQLI_CLIENT_SSL);
+mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
 //If connection failed, show the error
 if (mysqli_connect_errno())
