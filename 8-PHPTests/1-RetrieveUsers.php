@@ -1,5 +1,4 @@
 <?php
-// Connect to the database
 $servername = "algorithmix-mysql.mysql.database.azure.com";
 $username = "AlgorithmixDaniel";
 $password = "Borderlands2";
@@ -9,7 +8,7 @@ $dbname = "algorithmix";
 $conn = mysqli_init();
 
 // Absolute path to the CA certificate
-$ca_cert_path = "C:/Users/Daniel/Documents/GitHub/Algorithmix-RUMaintained/CACertificate/DigiCertGlobalRootCA.crt.pem";
+$ca_cert_path = "../CACertificate/DigiCertGlobalRootCA.crt.pem";
 
 // Test if the CA certificate file can be read
 if (!file_exists($ca_cert_path)) {
@@ -27,21 +26,79 @@ if (mysqli_connect_errno()) {
 }
 
 // Retrieve all users from the database
-$sql = "SELECT * FROM users";
+$sql = "SELECT * FROM user";
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    // Output data of each row
-    while ($row = $result->fetch_assoc()) {
-        echo "User ID: " . $row["id"] . "<br>";
-        echo "Username: " . $row["username"] . "<br>";
-        echo "Email: " . $row["email"] . "<br>";
-        // Add more fields as needed
-        echo "<br>";
-    }
-} else {
-    echo "No users found.";
+// Check if the query was successful
+if ($result === false) {
+    die('Error executing query: ' . $conn->error);
 }
 
+// Start HTML output
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .user {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .user:last-child {
+            border-bottom: none;
+        }
+        .user-id {
+            font-weight: bold;
+        }
+        .user-info {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User List</h1>
+        <?php
+        if ($result->num_rows > 0) {
+            // Output data of each row
+            while ($row = $result->fetch_assoc()) {
+                echo '<div class="user">';
+                echo '<div class="user-id">User ID: ' . $row["UserID"] . '</div>';
+                echo '<div class="user-info">Username: ' . $row["First_name"] . ' ' . $row["Lastname"] . '</div>';
+                echo '<div class="user-info">Email: ' . $row["email_address"] . '</div>';
+                echo '<div class="user-info">Role: ' . $row["role"] . '</div>';
+
+
+                // Add more fields as needed
+                echo '</div>';
+            }
+        } else {
+            echo '<p>No users found.</p>';
+        }
+        ?>
+    </div>
+</body>
+</html>
+<?php
 mysqli_close($conn);
 ?>
