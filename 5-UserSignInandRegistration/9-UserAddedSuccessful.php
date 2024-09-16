@@ -21,6 +21,44 @@
 <body>
     <div class="notification">
         <!-- Your PHP code to display the notification message goes here -->
+        <?php
+            // Include the configuration file
+            include '../8-PHPTests/config.php';
+
+            // Initializes MySQLi
+            $conn = mysqli_init();
+
+            // Test if the CA certificate file can be read
+            if (!file_exists($ca_cert_path)) {
+                die("CA file not found: " . $ca_cert_path);
+            }
+
+            mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+            // Establish the connection
+            mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+            // If connection failed, show the error
+            if (mysqli_connect_errno()) {
+                die('Failed to connect to MySQL: ' . mysqli_connect_error());
+            }
+
+            // Retrieve all users from the database
+$sql = "INSERT INTO user VALUES ('{$_POST['studentNumber']}', '{$_POST['First_name']}', '{$_POST['Lastname']}', '{$_POST['password']}', '{$_POST['email']}', 'S')";
+$result = $conn->query($sql);
+
+// Check if the query was successful
+if ($result === false) {
+    die('Error executing query: ' . $conn->error);
+}
+else {
+    echo "User added successfully!";
+}
+
+
+
+
+        ?>
     </div>
 </body>
 </html>

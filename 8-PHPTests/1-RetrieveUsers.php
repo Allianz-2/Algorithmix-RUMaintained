@@ -1,14 +1,9 @@
 <?php
-$servername = "algorithmix-mysql.mysql.database.azure.com";
-$username = "AlgorithmixDaniel";
-$password = "Borderlands2";
-$dbname = "algorithmix";
+// Include the configuration file
+include 'config.php';
 
 // Initializes MySQLi
 $conn = mysqli_init();
-
-// Absolute path to the CA certificate
-$ca_cert_path = "../CACertificate/DigiCertGlobalRootCA.crt.pem";
 
 // Test if the CA certificate file can be read
 if (!file_exists($ca_cert_path)) {
@@ -84,11 +79,8 @@ if ($result === false) {
             while ($row = $result->fetch_assoc()) {
                 echo '<div class="user">';
                 echo '<div class="user-id">User ID: ' . $row["UserID"] . '</div>';
-                echo '<div class="user-info">Username: ' . $row["First_name"] . ' ' . $row["Lastname"] . '</div>';
+                echo '<div class="user-info">Username: ' . $row["First_name"] ." " . $row["Lastname"] . '</div>';
                 echo '<div class="user-info">Email: ' . $row["email_address"] . '</div>';
-                echo '<div class="user-info">Role: ' . $row["role"] . '</div>';
-
-
                 // Add more fields as needed
                 echo '</div>';
             }
