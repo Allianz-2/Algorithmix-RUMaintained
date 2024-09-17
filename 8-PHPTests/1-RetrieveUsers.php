@@ -78,8 +78,8 @@ if ($result === false) {
             // Output data of each row
             while ($row = $result->fetch_assoc()) {
                 echo '<div class="user">';
-                echo '<div class="user-id">User ID: ' . $row["UserID"] . '</div>';
-                echo '<div class="user-info">Username: ' . $row["First_name"] ." " . $row["Lastname"] . '</div>';
+                echo '<div class="user-id">User ID: ' . $row["userID"] . '</div>';
+                echo '<div class="user-info">Username: ' . $row["firstname"] ." " . $row["lastname"] . '</div>';
                 echo '<div class="user-info">Email: ' . $row["email_address"] . '</div>';
                 // Add more fields as needed
                 echo '</div>';

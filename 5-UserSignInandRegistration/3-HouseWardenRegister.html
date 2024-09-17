@@ -120,23 +120,26 @@
             <form id="registration-form">
                
                 <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" required>
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                </div>
+                <div class="form-group"></div>
+                    <label for="lastname">Lastname</label>
+                    <input type="text" id="lastname" name="lastname" required>
                 </div>
                 <div class="form-group">
-                    <label for="staffNumber">Staff Number</label>
-                    <input type="text" id="staffNumber" name="staffNumber" required>
+                    <label for="userID">Staff Number</label>
+                    <input type="text" id="userID" name="userID" pattern="^SHW[A-Z]{1}[0-9]{4}$" placeholder="SHWX0000"required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" title="Please use your university email" required>
+                    <label for="email_address">Email Address</label>
+                    <input type="email" id="email_address" name="email_address" placeholder="Please use your university email" required>
                 </div>
             
             
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
+                    <input type="password" id="password" name="password" pattern=".{8}" title="Password must be exactly 8 characters long" required>                </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
@@ -144,92 +147,91 @@
 
                 <div class="form-group">
                     <label for="address">Select Residence:</label>
-                    <select name="Residence" id="Residence">
-                        <option value="Select Residence"></option>
-                       <optgroup label="Allen Webb Hall">
-                       <option value="Canterbury House">Canterbury House</option>
-                       <option value="Canterbury Annex">Canterbury Annex House</option>
-                       <option value="Salisbury House">Salisbury House</option>
-                       <option value="Truro House">Truro House</option>
-                       <option value="Winchester House">Winchester House</option>
-                       </optgroup>
-                       <optgroup label="Courtenay-Latimer Hall">
-                       <option value="Beit House">Beit House</option>
-                       <option value="Jameson House">Jameson House</option>
-                       <option value="Oriel House">Oriel House</option>
-                       </optgroup>
-                       <optgroup label="Desmond Tutu Hall">
-                       <option value="Ellen Kuzwayo House">Ellen Kuzwayo House</option>
-                       <option value="Amina Cachalia House">Amina Cachalia House</option>
-                       <option value="Calata House">Calata House</option>
-                       <option value="Margaret Smith House">Margaret Smith House</option>
-                       <option value="Hilltop 3 House">Hilltop 3 House</option>
-                       <option value="Oakdene House">Oakdene House</option>
-                       </optgroup>
-                       <optgroup label="Drostdy Hall">
-                       <option value="Allan Gray House">Allan Gray House</option>
-                       <option value="Celeste House">Celeste House</option>
-                       <option value="Graham House">Graham House</option>
-                       <option value="Prince Alfred House">Prince Alfred House</option>
-                       </optgroup>
-                       <optgroup label="Founders Hall">
-                       <option value="Botha House">Botha House</option>
-                       <option value="College House">College House</option>
-                       <option value="Cory House">Cory House</option>
-                       <option value="Matthews House">Matthews House</option>
-                       </optgroup>
-                       <optgroup label="Hobson Hall">
-                       <option value="Dingemans House">Dingemans House</option>
-                       <option value="Hobson House">Hobson House</option>
-                       <option value="Livingstone House">Livingstone House</option>
-                       <option value="Milner House">Milner House</option>
-                       </optgroup>
-                       <optgroup label="Jan Smuts Hall">
-                       <option value="Adamson House">Adamson House</option>
-                       <option value="Atherstone House">Atherstone House</option>
-                       <option value="Jan Smuts House">Jan Smuts House</option>
-                       <option value="New House">New House</option>
-                       </optgroup>
-                       <optgroup label="Miriam Makeba Hall">
-                       <option value="Chris Hani House">Chris Hani House</option>
-                       <option value="Piet Retief House">Piet Retief House</option>
-                       <option value="Thomas Pringle House">Thomas Pringle House</option>
-                       <option value="Walker House">Walker House</option>
-                       </optgroup>
-                       <optgroup label="Kimberley Hall">
-                       <option value="Cullen Bowles House">Cullen Bowles House</option>
-                       <option value="De Beers House">De Beers House</option>
-                       <option value="Rosa Parks House">Rosa Parks House</option>
-                       <option value="Goldfields House">Goldfields House</option>
-                       </optgroup>
-                       <optgroup label="Lilian Ngoyi Hall">
-                       <option value="Centenary House">Centenary House</option>
-                       <option value="Ruth First House">Ruth First House</option>
-                       <option value="Joe Slovo House">Joe Slovo House</option>
-                       <option value="Victoria Mxenge House">Victoria Mxenge House</option>
-                       </optgroup>
-                       <optgroup label="Nelson Mandela Hall">
-                       <option value="Stanley Kidd House">Stanley Kidd House</option>
-                       <option value="Adelaide Tambo House">Adelaide Tambo House</option>
-                       <option value="Guy Butler House">Guy Butler House</option>
-                       <option value="Helen Joseph House">Helen Joseph House</option>
-                       </optgroup>
-                       <optgroup label="St Mary Hall">
-                       <option value="John Kotze House">John Kotze House</option>
-                       <option value="Lilian Britten House">Lilian Britten House</option>
-                       <option value="Olive Schreiner House">Olive Schreiner House</option>
-                       <option value="Phelps House">Phelps House</option>
-                       </optgroup>
-                       </select>
-                </select>
-                </div>
+                    <select name="residence" id="residence">
+                      <option value="Select Residence"></option>
+                      <optgroup label="Allen Webb Hall">
+                        <option value="AWCN">Canterbury House</option>
+                        <option value="AWCA">Canterbury Annex House</option>
+                        <option value="AWSL">Salisbury House</option>
+                        <option value="AWTR">Truro House</option>
+                        <option value="AWWC">Winchester House</option>
+                      </optgroup>
+                      <optgroup label="Courtenay-Latimer Hall">
+                        <option value="CHBE">Beit House</option>
+                        <option value="CHJM">Jameson House</option>
+                        <option value="CHOR">Oriel House</option>
+                      </optgroup>
+                      <optgroup label="Desmond Tutu Hall">
+                        <option value="DTEK">Ellen Kuzwayo House</option>
+                        <option value="DTAC">Amina Cachalia House</option>
+                        <option value="HMCT">Calata House</option>
+                        <option value="DTMS">Margaret Smith House</option>
+                        <option value="HMH7">Hilltop 7 House</option>
+                        <option value="HMH8">Hilltop 8 House</option>
+                      </optgroup>
+                      <optgroup label="Drostdy Hall">
+                        <option value="DHAG">Allan Gray House</option>
+                        <option value="DHCE">Celeste House</option>
+                        <option value="DHGH">Graham House</option>
+                        <option value="DHPA">Prince Alfred House</option>
+                      </optgroup>
+                      <optgroup label="Founders Hall">
+                        <option value="FHBT">Botha House</option>
+                        <option value="FHCL">College House</option>
+                        <option value="FHCR">Cory House</option>
+                        <option value="FHM">Matthews House</option>
+                      </optgroup>
+                      <optgroup label="Hobson Hall">
+                        <option value="HHDH">Dingemans House</option>
+                        <option value="HHHH">Hobson House</option>
+                        <option value="HHLH">Livingstone House</option>
+                        <option value="HHMH">Milner House</option>
+                      </optgroup>
+                      <optgroup label="Jan Smuts Hall">
+                        <option value="JSAD">Adamson House</option>
+                        <option value="JSAS">Atherstone House</option>
+                        <option value="JSRS">Jan Smuts House</option>
+                        <option value="JSNW">New House</option>
+                      </optgroup>
+                      <optgroup label="Miriam Makeba Hall">
+                        <option value="MMCH">Chris Hani House</option>
+                        <option value="MMPR">Piet Retief House</option>
+                        <option value="MMTP">Thomas Pringle House</option>
+                        <option value="MMWH">Walker House</option>
+                      </optgroup>
+                      <optgroup label="Kimberley Hall">
+                        <option value="KHCB">Cullen Bowles House</option>
+                        <option value="KHDB">De Beers House</option>
+                        <option value="KHRP">Rosa Parks House</option>
+                        <option value="KHGF">Goldfields House</option>
+                      </optgroup>
+                      <optgroup label="Lilian Ngoyi Hall">
+                        <option value="LNCY">Centenary House</option>
+                        <option value="LNRF">Ruth First House</option>
+                        <option value="LNJS">Joe Slovo House</option>
+                        <option value="LNVM">Victoria Mxenge House</option>
+                      </optgroup>
+                      <optgroup label="Nelson Mandela Hall">
+                        <option value="NMSK">Stanley Kidd House</option>
+                        <option value="NMAT">Adelaide Tambo House</option>
+                        <option value="NMGB">Guy Butler House</option>
+                        <option value="NMHJ">Helen Joseph House</option>
+                      </optgroup>
+                      <optgroup label="St Mary Hall">
+                        <option value="SMJK">John Kotze House</option>
+                        <option value="SMLB">Lilian Britten House</option>
+                        <option value="SMOS">Olive Schreiner House</option>
+                        <option value="SMPH">Phelps House</option>
+                      </optgroup>
+                    </select>
+                  </div>
 
                 <input type="hidden" name="role" value="HouseWarden">
 
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
                     <label for="termsAndConditions">
-                        I accept the <a href="#" id="termsLink">Terms and Conditions</a>
+                        I accept the <a href="8-TermsAndPolicy.html" id="termsLink">Terms and Conditions</a>
                     </label>
                 </div>
 
