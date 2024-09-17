@@ -120,18 +120,18 @@
             <form action="9-UserAddedSuccessful.php" method="POST">
                
                 <div class="form-group">
-                    <label for="First_name">First Name</label>
-                    <input type="text" id="First_name" name="First_name" required>
-                    <label for="Lastname">Last Name</label>
-                    <input type="text" id="Lastname" name="Lastname" required>
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname" name="lastname" required>
                 </div>
                 <div class="form-group">
-                    <label for="studentNumber">Student Number</label>
-                    <input type="text" id="studentNumber" name="studentNumber" required>
+                    <label for="userID">Student Number</label>
+                    <input type="text" id="userID" name="userID" pattern="^G[0-9]{2}[A-Za-z][0-9]{4}$" placeholder="G00X0000" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" pattern=".+@campus.ru.ac.za" title="Please use your university email" required>
+                    <input type="email" id="email" name="email" pattern=".+@campus.ru.ac.za" placeholder="G00X0000@campus.ru.ac.za" required>
                 </div>
             
             
@@ -146,7 +146,7 @@
 
                 <div class="form-group">
                     <label for="address">Select Residence:</label>
-                    <select name="Residence" id="Residence">
+                    <select name="residence" id="residence">
                         <option value="Select Residence"></option>
                        <optgroup label="Allen Webb Hall">
                        <option value="Canterbury House">Canterbury House</option>
