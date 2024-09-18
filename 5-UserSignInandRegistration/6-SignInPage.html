@@ -53,7 +53,6 @@
             display: flex;
             flex-direction: column;
         }
-
         h1 {
             font-size: 24px;
             font-weight: 100;
@@ -76,7 +75,7 @@
             border: 1px solid #d0d7de;
             border-radius: 4px;
         }
-        .btn {
+        .btn_signin {
             display: inline-block;
             padding: 10px 20px;
             background-color: #81589a;
@@ -89,6 +88,20 @@
         .btn:hover {
             background-color: #aaa;
         }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #81589a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 10px;
+            width: 100%;
+        }
         .forgot-password {
             display: inline-block;
             margin-top: 5px;
@@ -98,7 +111,7 @@
         }
         .register-container {
             margin-top: 20px;
-            font-size: 14px;
+            font-size: 14px; 
         }
         .register-link {
             color: #0969da;
@@ -134,7 +147,7 @@
                     <input type="checkbox" id="remember-me" name="remember-me">
                     <label for="remember-me">Remember me</label>
                 </div>
-                <button type="submit" class="btn">Sign In</button>
+                <button type="submit" class="btn_signin">Sign In</button>
             </form>
             <div class="register-container">
                 New to RUMaintained? <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="register-link">Register an account</a>
