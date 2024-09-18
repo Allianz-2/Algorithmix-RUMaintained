@@ -123,7 +123,7 @@
                     </select>
                   </div>
                 
-                <input type="hidden" name="role" value="S">
+                <input type="hidden" name="role" value="HW">
                 
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
