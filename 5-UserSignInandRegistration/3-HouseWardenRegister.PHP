@@ -32,6 +32,7 @@
                 <div class="form-group">
                     <label for="userID">Staff Number</label>
                     <input type="text" id="userID" name="userID" pattern="^SHW[A-Z]{1}[0-9]{4}$" placeholder="SHWX1234"required>
+                </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email_address" name="email_address" placeholder="Please use your university email" required>
