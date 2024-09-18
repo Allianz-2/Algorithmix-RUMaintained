@@ -3,7 +3,7 @@ body, html {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f6f8fa;
-    background-image: url('../Images/General/purple\ gradient\ background.jpeg');
+    background-image: url("../Images/General/purple\ gradient\ background.jpeg");
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,22 +44,15 @@ body, html {
     flex: 1;
     padding: 60px;
     display: flex;
-    overflow-y: auto;
-}
-.right-panel {
-    flex: 1;
-    padding: 40px;
-    display: flex;
     flex-direction: column;
 }
-
-
-
-
-
 h1 {
     font-size: 24px;
     font-weight: 100;
+    margin-bottom: 10px;
+}
+h2 {
+    font-size: 20px;
     margin-bottom: 20px;
 }
 .form-group {
@@ -68,15 +61,8 @@ h1 {
 label {
     display: block;
     margin-bottom: 5px;
-    
 }
 
-input[type="text"], input[type="password"], input[type="email"], input[type="tel"], select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #d0d7de;
-    border-radius: 4px;
-}
 .btn {
     display: inline-block;
     padding: 10px 20px;
@@ -86,28 +72,16 @@ input[type="text"], input[type="password"], input[type="email"], input[type="tel
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 10px;
 }
 .btn:hover {
     background-color: #aaa;
 }
-.error-message {
-    color: #d73a49;
-    margin-top: 10px;
-}
-
-.form-group label {
-display: inline;
-margin-left: 5px;
-font-size: 12px;
-color: #333;
-}
-.form-group input[type="checkbox"] {
-vertical-align: middle;
-}
-.form-group a {
-color: #81589a;
-text-decoration: underline;
-}
-.form-group a:hover {
-text-decoration: underline;
+ 
+.role-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
