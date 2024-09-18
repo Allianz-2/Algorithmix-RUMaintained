@@ -28,6 +28,7 @@
         $email = $_POST['email_address'];
         $resID = $_POST['residenceID'];
         $role = $_POST['role'];
+        $specialisation = $_POST['specialisation'];
 
         // Prepare the SQL statement
         $stmt1 = $conn->prepare("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)");
@@ -73,11 +74,11 @@
                     die('Execute failed: ' . htmlspecialchars($stmt2->error));
                 }
             } else if ($role == "MS") {
-                $stmt2 = $conn->prepare("INSERT INTO maintenancestaff VALUES (?, ?)");
+                $stmt2 = $conn->prepare("INSERT INTO maintenancestaff VALUES (?, ?, ?)");
                 if ($stmt2 === false) {
                     die('Prepare failed: ' . htmlspecialchars($conn->error));
                 }
-                $stmt2->bind_param("ss", $userID, $userID);
+                $stmt2->bind_param("sss", $userID, $userID, $specialisation);
                 if (!$stmt2->execute()) {
                     die('Execute failed: ' . htmlspecialchars($stmt2->error));
                 }
