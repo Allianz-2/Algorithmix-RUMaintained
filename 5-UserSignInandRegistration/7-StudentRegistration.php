@@ -117,13 +117,13 @@
         </div>
         <div class="right-panel">
             <h1>Student Registration</h1>
-            <form action="7-StudentRegistration.php" method="POST" autocomplete="off">
+            <form action="7-StudentRegistration.php" method="POST">
                
                 <div class="form-group">
                     <label for="firstname">First Name</label>
-                    <input type="text" id="firstname" name="firstname" autocomplete="off" required>
+                    <input type="text" id="firstname" name="firstname" required>
                     <label for="lastname">Last Name</label>
-                    <input type="text" id="lastname" name="lastname" autocomplete="off" required>
+                    <input type="text" id="lastname" name="lastname" required>
                 </div>
                 <div class="form-group">
                     <label for="userID">Student Number</label>
@@ -137,7 +137,8 @@
             
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" autocomplete="off" required>
+                    <input type="password" id="password" name="password" pattern=".{8,}" title="Password must be at least 8 characters long" required>                </div>
+
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>

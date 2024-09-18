@@ -17,8 +17,8 @@
         }
         .container {
             display: flex;
-            width: 900px;
-            height: 600px;
+            width: 1000px;
+            height: 700px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -117,13 +117,11 @@
         </div>
         <div class="right-panel">
             <h1>Hall Secretary Registration</h1>
-            <form id="registration-form">
+            <form action="2-HallSecretaryRegistration.php" method="post" id="registration-form">
                
                 <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstame" name="firstname" required>
-                </div>
-                <div class="form-group">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" required>
                     <label for="lastname">Last Name</label>
                     <input type="text" id="lastname" name="lastname" required>
                 </div>
@@ -139,7 +137,7 @@
             
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" pattern=".{8}" title="Password must be exactly 8 characters long" required>                </div>
+                    <input type="password" id="password" name="password" pattern=".{8,}" title="Password must be at least 8 characters long" required>                </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
@@ -165,7 +163,7 @@
                 </div>
                 
 
-                <input type="hidden" name="role" value="HallSecretary">
+                <input type="hidden" name="role" value="HS">
 
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
@@ -174,19 +172,91 @@
                     </label>
                 </div>
 
-                <button type="submit" class="btn">Register</button>
+                <button type="submit" name="submit" class="btn">Register</button>
             </form>
             <div id="error-message" class="error-message"></div>
         </div>
     </div>
 
-    <script>
-        document.getElementById('registration-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Here you would typically validate the form and send the data to your backend
-            console.log('Registration attempt');
-            // Add your form validation and submission logic here
-        });
-    </script>
+    <?php
+    if (isset($_POST['submit'])) {
+        include '../8-PHPTests/config.php';
+
+        // Initializes MySQLi
+        $conn = mysqli_init();
+
+        // Test if the CA certificate file can be read
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
+        }
+
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+        // Establish the connection
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+        // If connection failed, show the error
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
+
+        // Insert user into the user table
+        $userID = $_POST['userID'];
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $password = $_POST['password'];
+        $email = $_POST['email_address'];
+        $resID = $_POST['residenceID'];
+        $role = $_POST['role'];
+
+        // Prepare the SQL statement
+        $stmt1 = $conn->prepare("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)");
+
+        // Check if the prepare statement failed
+        if ($stmt1 === false) {
+            die('Prepare failed: ' . htmlspecialchars($conn->error));
+        }
+
+        // Bind parameters
+
+        $stmt1->bind_param("ssssss", $userID, $firstname, $lastname, $password, $email, $role);
+
+        if ($stmt1->execute()) {
+            // If user insertion is successful
+            echo "<script>
+                alert('Registration successful! You will now be redirected to the login page.');
+                window.location.href = '6-SignInPage.html'; // Redirect to login page
+            </script>";
+        } else {
+            // If there is an error, display the error message in an alert
+            $error_message = json_encode($stmt1->error);
+            echo "<script>
+                alert('Registration failed: ' + $error_message);
+                window.history.back(); // Redirect back to the form or previous page
+            </script>";
+        }
+        // Prepare the second SQL statement
+        $stmt2 = $conn->prepare("INSERT INTO hallsecretary VALUES (?, ?)");
+        
+        // Check if the prepare statement failed
+        if ($stmt2 === false) {
+            die('Prepare failed: ' . htmlspecialchars($conn->error));
+        }
+        
+        // Bind parameters for the second statement
+        $stmt2->bind_param("sss", $userID, $userID);
+        
+        // Execute the second statement
+        if (!$stmt2->execute()) {
+            die("<p>Student Registration Failed: " . htmlspecialchars($stmt2->error) . "</p>");
+        }
+        
+        // Close the statements and connection
+        $stmt1->close();
+        $stmt2->close();
+        $conn->close();
+    }
+    ?>
+
 </body>
 </html>
