@@ -36,57 +36,67 @@
         if ($stmt1 === false) {
             die('Prepare failed: ' . htmlspecialchars($conn->error));
         }
-
+        
         // Bind parameters
-
         $stmt1->bind_param("ssssss", $userID, $firstname, $lastname, $password, $email, $role);
-
+        
         if ($stmt1->execute()) {
             // If user insertion is successful
+            $registration_success = true;
+        
+            // Prepare the second SQL statement based on the role
+            if ($role == "S") {
+                $stmt2 = $conn->prepare("INSERT INTO student VALUES (?, ?, ?)");
+                if ($stmt2 === false) {
+                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                }
+                $stmt2->bind_param("sss", $userID, $userID, $resID);
+                if (!$stmt2->execute()) {
+                    die('Execute failed: ' . htmlspecialchars($stmt2->error));
+                }
+            } else if ($role == "HW") {
+                $stmt2 = $conn->prepare("INSERT INTO housewarden VALUES (?, ?)");
+                if ($stmt2 === false) {
+                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                }
+                $stmt2->bind_param("ss", $userID, $userID);
+                if (!$stmt2->execute()) {
+                    die('Execute failed: ' . htmlspecialchars($stmt2->error));
+                }
+            } else if ($role == "HS") {
+                $stmt2 = $conn->prepare("INSERT INTO hallsecretary VALUES (?, ?)");
+                if ($stmt2 === false) {
+                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                }
+                $stmt2->bind_param("ss", $userID, $userID);
+                if (!$stmt2->execute()) {
+                    die('Execute failed: ' . htmlspecialchars($stmt2->error));
+                }
+            } else if ($role == "MS") {
+                $stmt2 = $conn->prepare("INSERT INTO maintenancestaff VALUES (?, ?)");
+                if ($stmt2 === false) {
+                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                }
+                $stmt2->bind_param("ss", $userID, $userID);
+                if (!$stmt2->execute()) {
+                    die('Execute failed: ' . htmlspecialchars($stmt2->error));
+                }
+            }
+        
+            // If all statements are successful
             echo "<script>
                 alert('Registration successful! You will now be redirected to the login page.');
                 window.location.href = '6-SignInPage.html'; // Redirect to login page
-            </script>";
+                </script>";
+        
         } else {
-            // If there is an error, display the error message in an alert
-            $error_message = json_encode($stmt1->error);
+            // If there is an error, set the error message
+            $error_message = htmlspecialchars($stmt1->error);
             echo "<script>
-                alert('Registration failed: ' + $error_message);
+                alert('Registration failed: $error_message');
                 window.history.back(); // Redirect back to the form or previous page
-            </script>";
+                </script>";
         }
-        // Prepare the second SQL statement
-
-        if ($role == "S") {
-            $stmt2 = $conn->prepare("INSERT INTO student VALUES (?, ?, ?)");
-            if ($stmt2 === false) {
-                die('Prepare failed: ' . htmlspecialchars($conn->error));
-            }
-            $stmt2->bind_param("sss", $userID, $userID, $resID);
-
-        } else if ($role == "HW") {
-            $stmt2 = $conn->prepare("INSERT INTO housewarden VALUES (?, ?)");
-            if ($stmt2 === false) {
-                die('Prepare failed: ' . htmlspecialchars($conn->error));
-            }
-            $stmt2->bind_param("ss", $userID, $userID);
-
-        } else if ($role == "HS") {
-            $stmt2 = $conn->prepare("INSERT INTO hallsecretary VALUES (?, ?)");
-            if ($stmt2 === false) {
-                die('Prepare failed: ' . htmlspecialchars($conn->error));
-            }
-            $stmt2->bind_param("ss", $userID, $userID);
-
-        } else if ($role == "MS") {
-            $stmt2 = $conn->prepare("INSERT INTO maintenancestaff VALUES (?, ?)");
-            if ($stmt2 === false) {
-                die('Prepare failed: ' . htmlspecialchars($conn->error));
-            }
-            $stmt2->bind_param("ss", $userID, $userID);
-        }
-
-        // Close the statements and connection
         $stmt1->close();
         $stmt2->close();
         $conn->close();

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration - RUMaintained</title>
     <link rel="stylesheet" href="11-Registration.css">
-    </style>
+    <script src="12-RegistrationJavacript.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -19,12 +19,13 @@
         </div>
         <div class="right-panel">
             <h1>Student Registration</h1>
-            <form action="7-StudentRegistration.php" method="POST" id="registration-form">
-               
+            <form action="7-StudentRegistration.php" method="POST" id="registration-form" data-role="student">
             <div class="form-group">
-                    <label for="firstname">First Name</label>
+                    <label for="firstname">Firstname</label>
                     <input type="text" id="firstname" name="firstname" required>
-                    <label for="lastname">Last Name</label>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Lastname</label>
                     <input type="text" id="lastname" name="lastname" required>
                 </div>
                 <div class="form-group">
@@ -44,7 +45,7 @@
 
                 <div class="form-group">
                     <label for="address">Select Residence:</label>
-                    <select name="residenceID" id="residence">
+                    <select name="residenceID" id="residence" required>
                       <option value="Select Residence"></option>
                       <optgroup label="Allen Webb Hall">
                         <option value="AWCN">Canterbury House</option>
@@ -123,7 +124,7 @@
                     </select>
                   </div>
                 
-                <input type="hidden" name="role" value="HW">
+                <input type="hidden" name="role" value="S">
                 
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>

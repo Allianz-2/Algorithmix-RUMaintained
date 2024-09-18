@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>House Warden Registration - RUMaintained</title>
     <link rel="stylesheet" href="11-Registration.css">
+    <script src="12-RegistrationJavacript.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -44,7 +45,7 @@
 
                 <div class="form-group">
                     <label for="address">Select Residence:</label>
-                    <select name="residenceID" id="residence">
+                    <select name="residenceID" id="residence" required>
                       <option value="Select Residence"></option>
                       <optgroup label="Allen Webb Hall">
                         <option value="AWCN">Canterbury House</option>
@@ -123,7 +124,7 @@
                     </select>
                   </div>
                 
-                <input type="hidden" name="role" value="S">
+                <input type="hidden" name="role" value="HW">
                 
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
