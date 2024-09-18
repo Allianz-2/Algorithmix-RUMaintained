@@ -18,7 +18,8 @@
         <div class="right-panel">
             <h1>Maintenance Staff Registration</h1>
             <form action="4-MaintenanceStaffRegistration.php" method="POST" id="registration-form">
-               
+                <input type="hidden" id="role" name="role" value="MS">
+
                 <div class="form-group">
                     <label for="firstname">Firstname</label>
                     <input type="text" id="firstname" name="firstname" required>
@@ -66,12 +67,11 @@
                     </select>
                   </div>
 
-                <input type="hidden" name="role" value="MS">
                 
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
                     <label for="termsAndConditions">
-                        I accept the <a href="8-TermsAndPolicy.html" id="termsLink">Terms and Conditions</a>
+                        I accept the <a href="../3-UserRegistration/1-TermsPolicy.html" id="termsLink">Terms and Conditions</a>
                     </label>
                 </div>
 
@@ -80,8 +80,5 @@
             <div id="error-message" class="error-message"></div>
         </div>
     </div>
-
-   
-
 </body>
 </html>

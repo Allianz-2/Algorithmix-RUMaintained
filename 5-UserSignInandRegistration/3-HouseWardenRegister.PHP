@@ -20,6 +20,7 @@
         <div class="right-panel">
             <h1>House Warden Registration</h1>
             <form action="3-HouseWardenRegister.php" method="POST" id="registration-form">
+              <input type="hidden" id="role" name="role" value="HW">
                 <div class="form-group">
                     <label for="firstname">Firstname</label>
                     <input type="text" id="firstname" name="firstname" required>
@@ -124,7 +125,6 @@
                     </select>
                   </div>
                 
-                <input type="hidden" name="role" value="HW">
                 
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
