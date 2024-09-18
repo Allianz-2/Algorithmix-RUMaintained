@@ -1,111 +1,13 @@
+<?php
+    include '10-RegistrationPHP.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration - RUMaintained</title>
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f6f8fa;
-            background-image: url("../Images/General/purple\ gradient\ background.jpeg");
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            display: flex;
-            width: 1000px;
-            height: 700px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .left-panel {
-            flex: 1;
-            background-color: #0d1117;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0;
-            overflow: hidden;
-        }
-        .wallpaper {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-        .wallpaper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
-        .right-panel {
-            flex: 1;
-            padding: 20px 80px;
-            overflow-y: auto;
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: 100;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            
-        }
-        input[type="text"], input[type="password"], input[type="email"], input[type="tel"], select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #d0d7de;
-            border-radius: 4px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #81589a;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .btn:hover {
-            background-color: #aaa;
-        }
-        .error-message {
-            color: #d73a49;
-            margin-top: 10px;
-        }
-
-        .form-group label {
-    display: inline;
-    margin-left: 5px;
-    font-size: 12px;
-    color: #333;
-}
-.form-group input[type="checkbox"] {
-    vertical-align: middle;
-}
-.form-group a {
-    color: #81589a;
-    text-decoration: underline;
-}
-.form-group a:hover {
-    text-decoration: underline;
-}
-
+    <link rel="stylesheet" href="11-Registration.css">
     </style>
 </head>
 <body>
@@ -117,29 +19,24 @@
         </div>
         <div class="right-panel">
             <h1>Student Registration</h1>
-            <form action="7-StudentRegistration.php" method="POST">
+            <form action="7-StudentRegistration.php" method="POST" id="registration-form">
                
-                <div class="form-group">
+            <div class="form-group">
                     <label for="firstname">First Name</label>
                     <input type="text" id="firstname" name="firstname" required>
                     <label for="lastname">Last Name</label>
                     <input type="text" id="lastname" name="lastname" required>
                 </div>
                 <div class="form-group">
-                    <label for="userID">Student Number</label>
-                    <input type="text" id="userID" name="userID" pattern="^G[0-9]{2}[A-Za-z][0-9]{4}$" placeholder="G00X0000" required>
-                </div>
+                    <label for="userID">Staff Number</label>
+                    <input type="text" id="userID" name="userID" pattern="^G[0-9]{2}[A-Z]{1}[0-9]{4}$" placeholder="G12A3456" required>                </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" pattern=".+@campus.ru.ac.za" placeholder="G00X0000@campus.ru.ac.za" required>
+                    <input type="email" id="email_address" name="email_address" placeholder="Please use your university email" required>
                 </div>
-            
-            
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" pattern=".{8,}" title="Password must be at least 8 characters long" required>                </div>
-
-                </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
@@ -147,7 +44,7 @@
 
                 <div class="form-group">
                     <label for="address">Select Residence:</label>
-                    <select name="residenceID" id="residenceID">
+                    <select name="residenceID" id="residence">
                       <option value="Select Residence"></option>
                       <optgroup label="Allen Webb Hall">
                         <option value="AWCN">Canterbury House</option>
@@ -240,84 +137,5 @@
             <div id="error-message" class="error-message"></div>
         </div>
     </div>
-    <?php
-    if (isset($_POST['submit'])) {
-        include '../8-PHPTests/config.php';
-
-        // Initializes MySQLi
-        $conn = mysqli_init();
-
-        // Test if the CA certificate file can be read
-        if (!file_exists($ca_cert_path)) {
-            die("CA file not found: " . $ca_cert_path);
-        }
-
-        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-
-        // Establish the connection
-        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-        // If connection failed, show the error
-        if (mysqli_connect_errno()) {
-            die('Failed to connect to MySQL: ' . mysqli_connect_error());
-        }
-
-        // Insert user into the user table
-        $userID = $_POST['userID'];
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
-        $password = $_POST['password'];
-        $email = $_POST['email'];
-        $resID = $_POST['residenceID'];
-        $role = $_POST['role'];
-
-        // Prepare the SQL statement
-        $stmt1 = $conn->prepare("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)");
-
-        // Check if the prepare statement failed
-        if ($stmt1 === false) {
-            die('Prepare failed: ' . htmlspecialchars($conn->error));
-        }
-
-        // Bind parameters
-
-        $stmt1->bind_param("ssssss", $userID, $firstname, $lastname, $password, $email, $role);
-
-        if ($stmt1->execute()) {
-            // If user insertion is successful
-            echo "<script>
-                alert('Registration successful! You will now be redirected to the login page.');
-                window.location.href = '6-SignInPage.html'; // Redirect to login page
-            </script>";
-        } else {
-            // If there is an error, display the error message in an alert
-            $error_message = json_encode($stmt1->error);
-            echo "<script>
-                alert('Registration failed: ' + $error_message);
-                window.history.back(); // Redirect back to the form or previous page
-            </script>";
-        }
-        // Prepare the second SQL statement
-        $stmt2 = $conn->prepare("INSERT INTO student VALUES (?, ?, ?)");
-        
-        // Check if the prepare statement failed
-        if ($stmt2 === false) {
-            die('Prepare failed: ' . htmlspecialchars($conn->error));
-        }
-        
-        // Bind parameters for the second statement
-        $stmt2->bind_param("sss", $userID, $userID, $resID);
-        
-        // Execute the second statement
-        if (!$stmt2->execute()) {
-            die("<p>Student Registration Failed: " . htmlspecialchars($stmt2->error) . "</p>");
-        }
-        
-        // Close the statements and connection
-        $stmt1->close();
-        $stmt2->close();
-        $conn->close();
-    }
-    ?>
 </body>
 </html>
