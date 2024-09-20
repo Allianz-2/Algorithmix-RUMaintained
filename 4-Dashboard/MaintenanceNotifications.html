@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RU Maintained Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="Dashboard.css">
+    <style>
+        .notification-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .filter-sort {
+            display: flex;
+            gap: 10px;
+        }
+        select, input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .notification-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .notification-item.unread {
+            background-color: #e1e0e0;
+        }
+        .notification-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: #81589a;
+        }
+        .notification-content {
+            flex-grow: 1;
+        }
+        .notification-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .notification-message {
+            margin-bottom: 5px;
+        }
+        .notification-time {
+            font-size: 0.8em;
+            color: #888;
+        }
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s;
+        }
+        .btn-primary {
+            background-color: #81589a;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .page-link {
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #333;
+        }
+        .page-link.active {
+            background-color: #81589a;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav id="sidebar" class="sidebar">
+        <div class="logo">
+            <span class="user-welcome">Welcome, </span><!-- Add PHP code here for user name -->
+            <a href="user page"><i class="fas fa-user"></i></a> 
+        </div>
+        <ul>
+            <li><a href="#"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
+            <li><a href="#"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="#"><i class="fas fa-wrench"></i>Inventory Management</a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+            <li class="active"><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <div class="header-left">
+                <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
+                <strong>Maintenance Staff Dashboard</strong>
+            </div>
+            <div class="logo">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
+            </div>
+        </header>
+        
+        <div class="content">
+            <h2>Notifications</h2>
+
+            <div class="container">
+                <div class="notification-controls">
+                    <div class="filter-sort">
+                        <select id="filterType">
+                            <option value="">All Notifications</option>
+                            <option value="work-order">Work Orders</option>
+                            <option value="system-alert">System Alerts</option>
+                            <option value="urgent-task">Urgent Tasks</option>
+                        </select>
+                        <select id="sortOrder">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="markAllAsRead()">Mark All as Read</button>
+                </div>
+        
+                <div class="notification-list">
+                    <div class="notification-item unread">
+                        <div class="notification-icon"><i class="fas fa-tools"></i></div>
+                        <div class="notification-content">
+                            <div class="notification-title">Work Order Assigned</div>
+                            <div class="notification-message">Work Order #56789 has been assigned to you for electrical repairs in House B.</div>
+                            <div class="notification-time">5 minutes ago</div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn btn-primary" onclick="viewWorkOrder(56789)">View Work Order</button>
+                            <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
+                        </div>
+                    </div>
+                    <div class="notification-item unread">
+                        <div class="notification-icon"><i class="fas fa-exclamation-circle"></i></div>
+                        <div class="notification-content">
+                            <div class="notification-title">System Alert</div>
+                            <div class="notification-message">Scheduled system maintenance tonight at 11 PM.</div>
+                            <div class="notification-time">1 hour ago</div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn btn-primary" onclick="viewAlert()">View Details</button>
+                            <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-icon"><i class="fas fa-wrench"></i></div>
+                        <div class="notification-content">
+                            <div class="notification-title">Maintenance Completed</div>
+                            <div class="notification-message">Scheduled maintenance for Chris Hani House has been completed.</div>
+                            <div class="notification-time">1 day ago</div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn btn-primary" onclick="viewMaintenanceReport()">View Report</button>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="pagination">
+                    <a href="#" class="page-link active">1</a>
+                    <a href="#" class="page-link">2</a>
+                    <a href="#" class="page-link">Next</a>
+                </div>
+            </div>
+        
+            <script>
+                function markAllAsRead() {
+                    var items = document.getElementsByClassName('notification-item');
+                    for (var i = 0; i < items.length; i++) {
+                        items[i].classList.remove('unread');
+                    }
+                }
+        
+                function markAsRead(button) {
+                    button.closest('.notification-item').classList.remove('unread');
+                }
+        
+                function viewWorkOrder(workOrderId) {
+                    alert('Viewing Work Order #' + workOrderId);
+                }
+        
+                function viewAlert() {
+                    alert('Viewing System Alert Details');
+                }
+        
+                function viewMaintenanceReport() {
+                    alert('Viewing Maintenance Report');
+                }
+        
+                document.getElementById('filterType').addEventListener('change', function() {
+                    console.log('Filtering notifications by:', this.value);
+                });
+        
+                document.getElementById('sortOrder').addEventListener('change', function() {
+                    console.log('Sorting notifications by:', this.value);
+                });
+            </script>       
+       
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const hamburgerIcon = document.getElementById('hamburger-icon');
+                    const sidebar = document.getElementById('sidebar');
+                    const main = document.querySelector('main');
+
+                    hamburgerIcon.addEventListener('click', function() {
+                        sidebar.classList.toggle('collapsed');
+                        main.classList.toggle('sidebar-collapsed');
+                    });
+                });
+                function confirmLogout() {
+                    return confirm('Are you sure you want to log out?');
+                }
+            </script>
+        </div>
+    </main>
+</body>
+</html>
