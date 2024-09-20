@@ -6,7 +6,7 @@
     <title>RU Maintained Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="Dashboard.css">
+   <link rel="stylesheet" href="Dashboard.css">
         
 </head>
 <body>
@@ -16,11 +16,11 @@
            <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="/Users/naledimabusela/Downloads/HS Dashboard/HS DS Ticket Approval.html"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
-            <li><a href="/Users/naledimabusela/Downloads/HS Dashboard/HS DS Analytics.html"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li class="active"><a href="#" ><i class="fas fa-clipboard-list"></i>Requests</a></li>
+            <li><a href="HSDSTicketApproval.html"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
+            <li class="active"><a href="#"><i class="fas fa-chart-bar"></i>Analytics</a></li>
+            <li><a href="HSDS.html"><i class="fas fa-clipboard-list"></i>Requests</a></li>
             <li><a href="#"><i class="fas fa-home"></i>Residences</a></li>
-            <li><a href="/Users/naledimabusela/Downloads/HS Dashboard/HS DS Notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="HSDSNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -37,7 +37,7 @@
         </header>
         
         <div class="content">
-            <h2>Requests</h2>
+            <h2>Analytics</h2>
             <div class="filters">
                 <div class="filter-group">
                     <label for="date-filter">Date Range</label>
@@ -89,52 +89,13 @@
 
             <div class="charts">
                 <!-- Charts will be added here -->
-                <canvas id="requestChart"></canvas>
-                <canvas id="residenceChart"></canvas>
+                    <div id="open_tickets_chart" style="width: 100%; height: 400px;"></div>
+                    <div id="status_chart" style="width: 100%; height: 400px;"></div>
+                    <div id="resolution_time_chart" style="width: 100%; height: 400px;"></div>
+                    <div id="severity_category_chart" style="width: 100%; height: 400px;"></div>
+                
             </div>
-            <div class="stats">
-                <div class="stat-box">
-                    <h4> Total Requests</h4>
-                    <p id="total-requests"></p> <!-- <?php echo $totalRequests; ?> -->
-                </div>
-                <div class="stat-box">
-                    <h4>Pending Requests</h4>
-                    <p id="pending-requests"></p>
-                </div>
-                <div class="stat-box">
-                    <h4> Viewed Requests</h4>
-                    <p id="viewed-requests"></p>
-                </div>
-                <div class="stat-box">
-                    <h4> Completed Requests</h4>
-                    <p id="completed-requests"></p>
-                </div>
-                <div class="stat-box">
-                    <h4> Online Users</h4>
-                    <p id="online-users"></p>
-                </div>
-            </div>
-            <div class="recent-requests">
-                <h3>Most Recent Requests</h3>
-                <table id="requests-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="select-all"></th>
-                            <th>Category</th>
-                            <th>Photo</th>
-                            <th>Residence</th>
-                            <th>Status</th>
-                            <th>Submission Date</th>
-                            <th>Severity</th>
-                            <th>Work Order</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Table rows will be populated by PHP/ ticket entries -->
-                    </tbody>
-                </table>
-            </div>
+            
         </div>
     </main>
     
