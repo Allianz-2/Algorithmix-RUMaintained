@@ -87,7 +87,7 @@
             // If all statements are successful
             echo "<script>
                 alert('Registration successful! You will now be redirected to the login page.');
-                window.location.href = '6-SignInPage.html'; // Redirect to login page
+                window.location.href = '6-SignInPage.php'; // Redirect to login page
                 </script>";
         
         } else {

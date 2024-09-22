@@ -1,3 +1,6 @@
+<?php
+    include '13-Login.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,10 +147,10 @@
         <div class="right-panel">
             <h1>Welcome back to RUMaintained</h1>
             <h2>Sign In</h2>
-            <form id="signin-form">
+            <form action="6-SignInPage.php" method="POST" id="signin-form">
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="userID">Username</label>
+                    <input type="text" id="userID" name="userID" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -158,7 +161,7 @@
                     <input type="checkbox" id="remember-me" name="remember-me">
                     <label for="remember-me">Remember me</label>
                 </div>
-                <button type="submit" class="btn_signin">Sign In</button>
+                <button type="submit" name="submit" class="btn_signin">Sign In</button>
             </form>
             <div class="register-container">
                 New to RUMaintained? <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="register-link">Register an account</a>
@@ -166,20 +169,5 @@
             <div id="error-message" class="error-message"></div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('signin-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Simulate sign-in process
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            if (username && password) {
-                // Here you would typically send a request to your backend
-                console.log('Sign-in attempt');
-            } else {
-                document.getElementById('error-message').textContent = 'Invalid username or password';
-            }
-        });
-    </script>
 </body>
 </html>
