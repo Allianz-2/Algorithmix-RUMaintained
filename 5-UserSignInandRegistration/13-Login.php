@@ -33,12 +33,13 @@
         }
         
         // Bind parameters
-        $stmt1->bind_param("ss", $userID, $password);
+        $stmt1->bind_param("sss", $userID, $password, $role);
         if ($stmt1->execute()) {
             $stmt1->store_result();
             if ($stmt1->num_rows == 1) {
                 // A single result was returned
                 $_SESSION['userID'] = $userID; // Set session variable
+                $_SESSION['role'] = $role; // Set session variable
 
                 // Check if there's a redirect URL
         
