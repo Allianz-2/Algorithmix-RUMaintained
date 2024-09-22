@@ -1,5 +1,6 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
+    include '5-ProfileManagement.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,228 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="4-ProfileManage.css">
     <style>
-        body, html {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background-color: #f8f8f8;
-            color: #333;
-        }
-        .container {
-            display: flex;
-            height: 100%;
-        }
-        .sidebar {
-            width: 200px;
-            background-color: #333;
-            color: white;
-            padding: 30px 20px;
-            border-right: 1px solid #e0e0e0;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            overflow-y: auto;
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 30px;
-            overflow-y: auto;
-        
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 0 0 8px 0;
-        }
-        h2 {
-            font-size: 20px;
-            font-weight: 500;
-            margin: 0 0 24px 0;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        h3 {
-            font-size: 16px;
-            font-weight: 500;
-            margin: 0 0 16px 0;
-        }
-        p {
-            color: #666;
-            font-size: 14px;
-            margin: 0 0 24px 0;
-        }
-        .menu-item {
-            padding: 8px 12px;
-            margin-bottom: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            border-radius: 4px;
-        }
-        .menu-item.active {
-            background-color: #444;
-            font-weight: 500;
-        }
-        .menu-item svg {
-            margin-right: 10px;
-        }
-        .menu-item a {
-            color: white;
-            text-decoration: none;
-        }
-        .profile-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 32px;
-        }
-        .profile-info {
-            display: flex;
-            align-items: center;
-        }
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .profile-picture-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            overflow: hidden;
-            border-radius: 50%;
-            background-color: #f0f0f0; /* Light gray background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .profile-picture {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .default-icon {
-            font-size: 80px;
-            color: #cccccc;
-        }
-        .edit-picture {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            text-align: center;
-            padding: 5px;
-            cursor: pointer;
-        }
-        #file-input {
-            display: none;
-        }
-        
-        .edit-button {
-            padding: 6px 12px;
-            background-color: white;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #333;
-        }
-        .info-section {
-            margin-bottom: 32px;
-        }
-        .info-item {
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        .add-button {
-            color: #81589a;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            margin-top: 12px;
-        }
-        .add-button::before {
-            content: '+';
-            margin-right: 4px;
-            font-size: 18px;
-        }
-        .tag {
-            background-color: #f1f3f4;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: normal;
-            color: #5f6368;
-            margin-left: 8px;
-        }
-        .connected-account {
-            display: flex;
-            align-items: center;
-        }
-        .connected-account img {
-            margin-right: 8px;
-        }
-        .connected-account .email {
-            color: #5f6368;
-            margin-left: 4px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 200;
-            font-size: 14px;
-        }
-       
-        .save-button {
-            background-color: #81589a;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
 
-        .form-group input,
-        .form-group select { /* Added select here */
-            width: 90%;
-            padding: 8px;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            font-size: 14px;
-            background-color: white; /* Ensure background is white */
-            color: #333; /* Ensure text color is consistent */
-            appearance: auto; /* Remove default appearance */
-            -webkit-appearance: auto; /* For older versions of Safari */
-            -moz-appearance: auto; /* For Firefox */
-            }
-            .user-info {
-            background-color: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-
-        .info-item {
-            margin-bottom: 8px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .info-item strong {
-            display: inline-block;
-            width: 140px;
-            font-weight: 600;
-        }
-        
     </style>
 </head>
 <body>
@@ -247,7 +29,7 @@
             </a>
             </div>
             <div class="menu-item">
-                <a href="residence page in user managment .html">
+                <a href="2-UserResidenceInformationpage.php">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -279,7 +61,7 @@
                         <input type="file" id="file-input" accept="image/*" onchange="updateProfilePicture(event)">
                     </div>
                     <div class="profile-info">
-                        <h1>User Name</h1>
+                        <h1><?php echo $firstname . ' ' . $lastname ?></h1>
                     </div>
                 </div>
                 <button class="edit-button">Edit profile</button>
@@ -289,13 +71,13 @@
                 <h2><strong>Current User Information</strong></h2>
                 <div class="user-info">
                     <div class="info-item">
-                        <strong>Role:</strong> Student
+                        <strong>Role:</strong> <?php echo $roleFull ?>
                     </div>
                     <div class="info-item">
-                        <strong>Residence:</strong> Chris Hani
+                        <strong>Residence:</strong> <?php echo $resName ?>
                     </div>
                     <div class="info-item">
-                        <strong>Email:</strong> 123@gmail.com
+                        <strong>Email:</strong> <?php echo $email ?>
                     </div>
                     <div class="info-item">
                         <strong>Contact Number:</strong> 123903922
