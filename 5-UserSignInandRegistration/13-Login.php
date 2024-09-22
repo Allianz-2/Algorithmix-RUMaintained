@@ -52,7 +52,7 @@
                 if ($stmt2->execute()) {
                     $stmt2->bind_result($role);
                     $stmt2->fetch();
-                    $_SESSION['role'] = $role; // Set session variable
+                    $_SESSION['role'] = $role; // Set session variable  
                 } else {
                     // Execution failed
                     die('Execute failed: ' . htmlspecialchars($stmt2->error));
