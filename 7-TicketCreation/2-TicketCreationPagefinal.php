@@ -1,12 +1,14 @@
 <?php
 $Description = $_REQUEST['Description'];
 $Severity = $_REQUEST['Severity'];
-
+$Status = $_REQUEST['Status'];
 // Include database credentials
 require_once('config.php');
 
+
+
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli(SERVERNAME,Username,Password,Database);
 
 // Check connection
 if ($conn->connect_error) {
