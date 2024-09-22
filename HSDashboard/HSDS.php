@@ -22,4 +22,4 @@
 //issue query instruction 
 $
 
-    }
+?>
