@@ -23,6 +23,7 @@
 
         $userID = $_POST['userID'];
         $password = $_POST['password'];
+        $current_url = isset($_POST['current_url']) ? urldecode($_POST['current_url']) : '../1-GeneralPages/1-Home.html';
 
         $stmt1 = $conn->prepare("SELECT * FROM user WHERE userID = ? AND password = ?");
 
@@ -37,8 +38,15 @@
             $stmt1->store_result();
             if ($stmt1->num_rows == 1) {
                 // A single result was returned
-                echo "Login successful!";
-                $_SESSION["access"] = true;
+                $_SESSION['userID'] = $userID; // Set session variable
+
+                // Check if there's a redirect URL
+        
+                echo "<script>
+                    alert('Login successful!');
+                    window.location.href = '{$current_url}'; // Redirect to the original page or home page
+                </script>";
+
             } else {
                 // No result or more than one result was returned
                 echo "<script>
@@ -46,20 +54,11 @@
                     window.location.href = '6-SignInPage.php'; // Redirect to login page
                     </script>";
             }
-
-            echo "<script>
-                alert('Login successful!');
-                window.location.href = '../1-GeneralPages/1-Home.html'; // Redirect to login page
-                </script>";
         } else {
             // Execution failed
             die('Execute failed: ' . htmlspecialchars($stmt1->error));
         }
-
         $stmt1->close();
         $conn->close();
     }
 ?>
-
-
-

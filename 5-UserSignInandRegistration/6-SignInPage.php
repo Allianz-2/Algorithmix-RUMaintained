@@ -147,6 +147,7 @@
         <div class="right-panel">
             <h1>Welcome back to RUMaintained</h1>
             <h2>Sign In</h2>
+
             <form action="6-SignInPage.php" method="POST" id="signin-form">
                 <div class="form-group">
                     <label for="userID">Username</label>
@@ -161,6 +162,12 @@
                     <input type="checkbox" id="remember-me" name="remember-me">
                     <label for="remember-me">Remember me</label>
                 </div>
+                <?php 
+                    if (isset($_GET['redirect'])) {
+                        // Output a hidden input field with the value of the 'redirect' parameter
+                        echo '<input type="hidden" id="current_url" name="current_url" value="' . htmlspecialchars($_GET['redirect']) . '">';   
+                    }
+                ?>
                 <button type="submit" name="submit" class="btn_signin">Sign In</button>
             </form>
             <div class="register-container">
