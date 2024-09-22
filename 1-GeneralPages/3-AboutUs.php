@@ -9,14 +9,14 @@
 <body>
     <header>
         <div class="logo">
-            <a href="/1-GeneralPages/1-Home.html">
+            <a href="/1-GeneralPages/1-Home.php">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RUMaintained Logo">
             </a>
         </div>
         <nav>
-            <a href="1-Home.html">Home</a>
-            <a href="3-AboutUs.html"><strong>About Us</strong></a>
-            <div class="dropdown">
+            <a href="1-Home.php">Home</a>
+            <a href="3-AboutUs.php"><strong>About Us</strong></a>
+            <!-- <div class="dropdown">
                 <span>Services ▾</span>
                 <div class="dropdown-content">
                     <a href="/7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>
@@ -25,8 +25,22 @@
                     <a href="#">Hall Secretary Dashboard</a>
                     <a href="#">Maintenance Staff Dashboard</a>
                 </div>
-            </div>
-            <a href="2-ContactUs.html">Contact Us</a>
+            </div> -->
+            <?php
+                if (isset($_SESSION['userID'])) {
+                    echo '<div class="dropdown">
+                            <a href="">Services ▾</a>
+                            <div class="dropdown-content">
+                                <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>
+                                <a href="#">Student Dashboard</a>
+                                <a href="#">House Warden Dashboard</a>
+                                <a href="#">Hall Secretary Dashboard</a>
+                                <a href="#">Maintenance Dashboard</a>
+                            </div>
+                        </div>';
+                }
+            ?>
+            <a href="2-ContactUs.php">Contact Us</a>
         </nav>
         <div class="auth-buttons">
             <a href="/5-UserSignInandRegistration/5-RegistrationStep1.html" class="login-button">Register</a>
