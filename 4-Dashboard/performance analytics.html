@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RU Maintained Dashboard - Performance Analytics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="Dashboard.css">
+    <style>
+        .analytics-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        .analytics-card {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .chart-container {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .card-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .card-value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav id="sidebar" class="sidebar">
+        <div class="logo">
+            <span class="user-welcome">Welcome, </span><!-- Add PHP code here for user name -->
+            <a href="user page"><i class="fas fa-user"></i></a> 
+        </div>
+        <ul>
+            <li><a href="#"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
+            <li><a href="#"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="#"><i class="fas fa-wrench"></i>Inventory Management</a></li>
+            <li class="active"><a href="#"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+            <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <div class="header-left">
+                <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
+                <strong>Maintenance Staff Dashboard</strong>
+            </div>
+            <div class="logo">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
+            </div>
+        </header>
+
+        <div class="content">
+            <h2>Performance Analytics</h2>
+
+            <div class="analytics-container">
+                <div class="analytics-card">
+                    <div class="card-title">Total Maintenance Requests</div>
+                    <div class="card-value" id="total-requests">120</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="card-title">Completed Tasks</div>
+                    <div class="card-value" id="completed-tasks">90</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="card-title">Pending Tasks</div>
+                    <div class="card-value" id="pending-tasks">30</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="card-title">Urgent Tasks</div>
+                    <div class="card-value" id="urgent-tasks">15</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="completionRateChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="taskDistributionChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Data for Total Requests vs Completed Tasks
+        const completionRateData = {
+            labels: ['Total Requests', 'Completed Tasks', 'Pending Tasks'],
+            datasets: [{
+                label: 'Tasks Overview',
+                data: [120, 90, 30],
+                backgroundColor: ['#4caf50', '#ff9800', '#f44336'],
+                hoverOffset: 4
+            }]
+        };
+
+        // Configuration for Completion Rate Pie Chart
+        const completionRateConfig = {
+            type: 'pie',
+            data: completionRateData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Task Completion Rate'
+                    }
+                }
+            },
+        };
+
+        // Task Distribution Over Time (e.g., weekly)
+        const taskDistributionData = {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [
+                {
+                    label: 'Completed Tasks',
+                    backgroundColor: '#4caf50',
+                    borderColor: '#4caf50',
+                    data: [20, 25, 22, 23],
+                    fill: false,
+                },
+                {
+                    label: 'Pending Tasks',
+                    backgroundColor: '#f44336',
+                    borderColor: '#f44336',
+                    data: [10, 8, 6, 5],
+                    fill: false,
+                },
+                {
+                    label: 'Urgent Tasks',
+                    backgroundColor: '#ff9800',
+                    borderColor: '#ff9800',
+                    data: [3, 5, 4, 3],
+                    fill: false,
+                }
+            ]
+        };
+
+        // Configuration for Task Distribution Line Chart
+        const taskDistributionConfig = {
+            type: 'line',
+            data: taskDistributionData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Task Distribution Over Time'
+                    }
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Weeks'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Tasks'
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Rendering the Charts
+        const completionRateChart = new Chart(
+            document.getElementById('completionRateChart'),
+            completionRateConfig
+        );
+
+        const taskDistributionChart = new Chart(
+            document.getElementById('taskDistributionChart'),
+            taskDistributionConfig
+        );
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
+
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
+        function confirmLogout() {
+            return confirm('Are you sure you want to log out?');
+        }
+    </script>
+</body>
+</html>
