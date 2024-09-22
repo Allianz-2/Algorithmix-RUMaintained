@@ -29,6 +29,42 @@
         $resID = $_POST['residenceID'];
         $role = $_POST['role'];
         $specialisation = $_POST['specialisation'];
+        
+        if ($role == "HW") {
+            $stmt = $conn->prepare("SELECT HouseWardenID FROM residence WHERE ResidenceID = ?");
+            $stmt->bind_param("s", $resID);
+            $stmt->execute();
+            $stmt->bind_result($resAssigned);
+            $stmt->fetch();
+            $stmt->close();
+
+            if ($resAssigned !== null) {
+            echo "<script>
+                alert('Registration failed: This residence already has a house warden assigned.');
+                window.history.back(); // Redirect back to the form or previous page
+                </script>";
+            exit();
+            } 
+        }
+
+        if ($role == "HS") {
+            $stmt = $conn->prepare("SELECT HouseWardenID FROM residence WHERE ResidenceID = ?");
+            $stmt->bind_param("s", $resID);
+            $stmt->execute();
+            $stmt->bind_result($resAssigned);
+            $stmt->fetch();
+            $stmt->close();
+
+            if ($resAssigned !== null) {
+            echo "<script>
+                alert('Registration failed: This residence already has a house warden assigned.');
+                window.history.back(); // Redirect back to the form or previous page
+                </script>";
+            exit();
+            } 
+        }
+
+        }
 
         // Prepare the SQL statement
         $stmt1 = $conn->prepare("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)");
@@ -57,13 +93,23 @@
                 }
             } else if ($role == "HW") {
                 $stmt2 = $conn->prepare("INSERT INTO housewarden VALUES (?, ?)");
+                $stmt3 = $conn->prepare("UPDATE residence SET HouseWardenID = ? WHERE ResidenceID = ?");
+
                 if ($stmt2 === false) {
                     die('Prepare failed: ' . htmlspecialchars($conn->error));
                 }
+
+                if ($stmt2 === false) {
+                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                }
+
                 $stmt2->bind_param("ss", $userID, $userID);
-                if (!$stmt2->execute()) {
+                $stmt3->bind_param("ss", $userID, $resID);
+
+                if (!$stmt2->execute() || !$stmt3->execute()) {
                     die('Execute failed: ' . htmlspecialchars($stmt2->error));
                 }
+
             } else if ($role == "HS") {
                 $stmt2 = $conn->prepare("INSERT INTO hallsecretary VALUES (?, ?)");
                 if ($stmt2 === false) {
@@ -103,3 +149,6 @@
         $conn->close();
     }
     ?>
+
+
+

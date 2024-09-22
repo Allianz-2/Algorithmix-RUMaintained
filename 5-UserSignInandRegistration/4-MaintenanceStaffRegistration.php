@@ -1,21 +1,20 @@
 <?php
     include '10-RegistrationPHP.php';
 ?>
-<!DOCTYPE html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maintainace Staff Registration - RUMaintained</title>
-    <link rel="stylesheet" href="../CSS/5-UserSignInandRegistration/11-Registration.css">
     <link rel="stylesheet" href="11-Registration.css">
-
+    <script src="12-RegistrationJavacript.js" defer></script>
 </head>
 <body>
     <div class="container">
         <div class="left-panel">
             <div class="wallpaper">
-               <img src="../Images/General/rhodes image.jpeg" alt="wallpaper">
+            <img src="../Images/General/rhodes image.jpeg" alt="wallpaper">
             </div>
         </div>
         <div class="right-panel">
