@@ -2,6 +2,14 @@
 $Description = $_REQUEST['Description'];
 $Severity = $_REQUEST['Severity'];
 $Status = $_REQUEST['Status'];
+$DateCreated = date('Y-m-d H:i:s'); 
+$DateConfirmed = date('Y-m-d H:i:s'); 
+$DateRequisitioned = date('Y-m-d H:i:s'); 
+$DateResolved = date('Y-m-d H:i:s'); 
+$DateClosed = date('Y-m-d H:i:s'); 
+
+
+
 // Include database credentials
 require_once('config.php');
 
@@ -16,8 +24,8 @@ if ($conn->connect_error) {
 }
 
 // Prepare SQL query
-$sql = "INSERT INTO ticket (Description, Severity) 
-        VALUES ('$Description', '$Severity')";
+$sql = "INSERT INTO ticket (Description, Severity,Status,DateCreated,DateConfirmed,DateRequisitioned,DateResolved,DateClosed) 
+        VALUES ('$Description', '$Severity','$Status','$DateCreated','$DateConfirmed','$da)";
 
 // Execute query
 if ($conn->query($sql) === TRUE) {
