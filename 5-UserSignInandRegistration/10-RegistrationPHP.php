@@ -27,6 +27,7 @@
         $password = $_POST['password'];
         $email = $_POST['email_address'];
         $resID = $_POST['residenceID'];
+        $hallID = $_POST['hall'];
         $role = $_POST['role'];
         $specialisation = $_POST['specialisation'];
         
@@ -36,7 +37,6 @@
             $stmt->execute();
             $stmt->bind_result($resAssigned);
             $stmt->fetch();
-            $stmt->close();
 
             if ($resAssigned !== null) {
             echo "<script>
@@ -48,22 +48,24 @@
         }
 
         if ($role == "HS") {
-            $stmt = $conn->prepare("SELECT HouseWardenID FROM residence WHERE ResidenceID = ?");
-            $stmt->bind_param("s", $resID);
+            $stmt = $conn->prepare("SELECT HallSecretaryID
+                        FROM residence
+                        WHERE LEFT(ResidenceID, 2) = ?;");
+            $stmt->bind_param("s", $hallID);
             $stmt->execute();
-            $stmt->bind_result($resAssigned);
+            $stmt->store_result(); // Store the result to check the number of rows
+            $stmt->bind_result($hallAssigned);
             $stmt->fetch();
-            $stmt->close();
 
-            if ($resAssigned !== null) {
-            echo "<script>
-                alert('Registration failed: This residence already has a house warden assigned.');
-                window.history.back(); // Redirect back to the form or previous page
-                </script>";
-            exit();
-            } 
-        }
-
+            // Check if no rows are returned or HallSecretaryID is not null
+            if ($stmt->num_rows == 0 || $hallAssigned !== null) {
+                $stmt->close();
+                echo "<script>
+                    alert('Registration failed: This hall does not exist or already has a hall secretary assigned.');
+                    window.history.back(); // Redirect back to the form or previous page
+                    </script>";
+                exit();
+            }
         }
 
         // Prepare the SQL statement
@@ -112,13 +114,18 @@
 
             } else if ($role == "HS") {
                 $stmt2 = $conn->prepare("INSERT INTO hallsecretary VALUES (?, ?)");
-                if ($stmt2 === false) {
+                $stmt3 = $conn->prepare("UPDATE residence SET HallSecretaryID = ? WHERE LEFT(ResidenceID, 2) = ?");
+
+                if ($stmt2 === false || $stmt3 === false) {
                     die('Prepare failed: ' . htmlspecialchars($conn->error));
                 }
+
                 $stmt2->bind_param("ss", $userID, $userID);
-                if (!$stmt2->execute()) {
+                $stmt3->bind_param("ss", $userID, $hallID);
+                if (!$stmt2->execute() || !$stmt3->execute()) {
                     die('Execute failed: ' . htmlspecialchars($stmt2->error));
                 }
+            
             } else if ($role == "MS") {
                 $stmt2 = $conn->prepare("INSERT INTO maintenancestaff VALUES (?, ?, ?)");
                 if ($stmt2 === false) {
@@ -144,8 +151,18 @@
                 window.history.back(); // Redirect back to the form or previous page
                 </script>";
         }
-        $stmt1->close();
-        $stmt2->close();
+        if (isset($stmt)) {
+            $stmt->close();
+        }
+        if (isset($stmt1)) {
+            $stmt1->close();
+        }
+        if (isset($stmt2)) {
+            $stmt2->close();
+        }
+        if (isset($stmt3)) {
+            $stmt3->close();
+        }
         $conn->close();
     }
     ?>

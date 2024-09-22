@@ -20,7 +20,8 @@
         <div class="right-panel">
             <h1>Hall Secretary Registration</h1>
             <form action="2-HallSecretaryRegistration.php" method="post" id="registration-form">
-               
+            <input type="hidden" id="role" name="role" value="HS">
+
             <div class="form-group">
                     <label for="firstname">Firstname</label>
                     <input type="text" id="firstname" name="firstname" required>
@@ -48,26 +49,23 @@
 
                 <div class="form-group">
                     <label for="hall">Select Hall:</label>
-                    <select name="Hall" id="Hall">
+                    <select name="hall" id="hall">
                         <option value="Select Hall"></option>
-                        <option value="Allen Webb Hall">Allen Webb Hall</option>
-                        <option value="Courtenay-Latimer Hall">Courtenay-Latimer Hall</option>
-                        <option value="Desmond Tutu Hall">Desmond Tutu Hall</option>
-                        <option value="Drostdy Hall">Drostdy Hall</option>
-                        <option value="Founders Hall">Founders Hall</option>
-                        <option value="Hobson Hall">Hobson Hall</option>
-                        <option value="Jan Smuts Hall">Jan Smuts Hall</option>
-                        <option value="Miriam Makeba Hall">Miriam Makeba Hall</option>
-                        <option value="Kimberley Hall">Kimberley Hall</option>
-                        <option value="Lilian Ngoyi Hall">Lilian Ngoyi Hall</option>
-                        <option value="Nelson Mandela Hall">Nelson Mandela Hall</option>
-                        <option value="St Mary Hall">St Mary Hall</option>
+                        <option value="AW">Allen Webb Hall</option>
+                        <option value="CL">Courtenay-Latimer Hall</option>
+                        <option value="DT">Desmond Tutu Hall</option>
+                        <option value="DH">Drostdy Hall</option>
+                        <option value="FH">Founders Hall</option>
+                        <option value="HH">Hobson Hall</option>
+                        <option value="JS">Jan Smuts Hall</option>
+                        <option value="MM">Miriam Makeba Hall</option>
+                        <option value="KH">Kimberley Hall</option>
+                        <option value="LN">Lilian Ngoyi Hall</option>
+                        <option value="NM">Nelson Mandela Hall</option>
+                        <option value="SM">St Mary Hall</option>
                     </select>
                 </div>
                 
-
-                <input type="hidden" name="role" value="HS">
-
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
                     <label for="termsAndConditions">
