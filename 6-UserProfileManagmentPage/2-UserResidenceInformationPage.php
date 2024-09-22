@@ -1,9 +1,5 @@
 <?php
-    session_start();
-    if (!isset($_SESSION["access"])) {
-        header("Location: ../5-UserSignInandRegistration/6-SignInPage.php");
-        exit();
-    }
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
