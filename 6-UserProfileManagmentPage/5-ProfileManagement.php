@@ -36,14 +36,6 @@
          $stmt->bind_result($hallID);
          $stmt->fetch();
          $stmt->close();
-
-         $sql = "SELECT HallName FROM hall WHERE HallID = ?";
-         $stmt = $conn->prepare($sql);
-         $stmt->bind_param("s", $hallID);
-         $stmt->execute();
-         $stmt->bind_result($hallName);
-         $stmt->fetch();
-         $stmt->close();
      }
      else if($role == "HW") {
         $roleFull = "House Warden";
@@ -80,6 +72,17 @@
             $stmt->bind_result($resName);
             $stmt->fetch();
             $stmt->close();
+
+     }
+
+     if ($role =="S" || $role == "HW" || $role == "HS") {
+        $sql = "SELECT HallName FROM residence WHERE ResidenceID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $resID);
+        $stmt->execute();
+        $stmt->bind_result($hallName);
+        $stmt->fetch();
+        $stmt->close();
      }
      ?>
 

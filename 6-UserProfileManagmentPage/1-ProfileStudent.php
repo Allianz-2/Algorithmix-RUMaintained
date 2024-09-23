@@ -1,6 +1,8 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
     include '5-ProfileManagement.php';
+    include '8-ChangeEmail.php';
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,9 +12,21 @@
     <title>User Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="4-ProfileManage.css">
-    <style>
-
-    </style>
+    <script>
+        function toggleEmailEdit() {
+            var emailField = document.getElementById('email');
+            var saveButton = document.getElementById('save-button');
+            
+            if (emailField.readOnly) {
+                emailField.readOnly = false;
+                saveButton.textContent = 'Save Changes';
+            } else {
+                emailField.readOnly = true;
+                saveButton.textContent = 'Edit';
+                document.getElementById('ChangeEmail').submit(); // Submit the form
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -68,7 +82,7 @@
             </div>
 
             <div class="info-section">
-                <h2><strong>Current User Information</strong></h2>
+                <h2><strong>User Information</strong></h2>
                 <div class="user-info">
                     <div class="info-item">
                         <strong>Role:</strong> <?php echo $roleFull ?>
@@ -79,32 +93,40 @@
                     <div class="info-item">
                         <strong>Email:</strong> <?php echo $email ?>
                     </div>
-                    <div class="info-item">
+                    <!-- <div class="info-item">
                         <strong>Contact Number:</strong> 123903922
-                    </div>
+                    </div> -->
                 </div>
         
             <div class="info-section">
                 <h2><strong>Personal Information</strong></h2>
-                <form>
+                <form action="1-ProfileStudent.php" method="post" id="ChangeEmail">
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
-                        <input type="text" id="fullName" name="fullName">
+                        <input type="text" id="fullName" name="fullName" value="<?php echo $firstname . ' ' . $lastname; ?>" readonly>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="birthDate">Date of Birth</label>
                         <input type="date" id="birthDate" name="birthDate">
-                    </div>
+                    </div> -->
                     <div class="form-group">
-                        <label for="Email address">Email <address></address></label>
-                        <input type="email" id="email" name="email">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" value="<?php echo $email; ?>" readonly>
                     </div>
-                    <button type="submit" class="save-button">Save Changes</button>
-                </form>
+                    <button type="button" id="save-button" class="save-button" name="save-button" onclick="toggleEmailEdit()">Edit</button>
+                    </form>
             </div>
             <div class="info-section">
                 <h2><strong>Residence Details</strong></h2>
-                <form>
+                <div class="form-group">
+                    <label for="Residence">Residence:</label>
+                    <input type="text" id="residence" name="residence" value="<?php echo $resName ?>" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="Hall">Hall:</label>
+                    <input type="text" id="hall" name="hall" value="<?php echo $hallName ?>" readonly>
+                </div>
+                <!-- <form>
                     <div class="form-group">
                         <label for="address"></label>
                         <select name="Residence" id="Residence">
@@ -188,7 +210,7 @@
                     </div>
                    
                     <button type="submit" class="save-button">Update Residence</button>
-                </form>
+                </form> -->
             </div>
             <div class="info-section">
                 <h2><strong>Change Password</strong></h2>
