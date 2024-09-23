@@ -1,7 +1,7 @@
 <?php 
 require_once('config.php');
 
-// Example query to fetch notifications (customize as needed)
+// Example query to fetch notifications 
 $query = "SELECT * FROM notifications"; // Assuming there's a notifications table
 $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
 $results = mysqli_query($conn, $query);
