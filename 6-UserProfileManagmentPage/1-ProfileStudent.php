@@ -192,7 +192,7 @@
             </div>
             <div class="info-section">
                 <h2><strong>Change Password</strong></h2>
-                <form>
+                <form action="1-ProfileStudent.php" method="POST">
                     <div class="form-group">
                         <label for="currentPassword">Current Password</label>
                         <input type="password" id="currentPassword" name="currentPassword">
@@ -205,8 +205,8 @@
                         <label for="confirmPassword">Confirm New Password</label>
                         <input type="password" id="confirmPassword" name="confirmPassword">
                     </div>
-                    <button type="submit" class="save-button">Change Password</button>
-                </form>
+                    <button type="submit" name="submit-password" class="save-button">Change Password</button>
+                    </form>
             </div>
         </div>
     </div>
