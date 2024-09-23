@@ -126,23 +126,27 @@
             </div>
 
             <div class="stats">
-                <div class="stat-box">
-                    <h4>Total Tasks</h4>
-                    <p id="total-tasks"><?php echo $totalTasks; ?></p>
-                </div>
-                <div class="stat-box">
-                    <h4>Pending Tasks</h4>
-                    <p id="pending-tasks"><?php echo $pendingTasks; ?></p>
-                </div>
-                <div class="stat-box">
-                    <h4>Completed Tasks</h4>
-                    <p id="completed-tasks"><?php echo $completedTasks; ?></p>
-                </div>
-                <div class="stat-box">
-                    <h4>Emergency Tasks</h4>
-                    <p id="emergency-tasks"><?php echo $emergencyTasks; ?></p>
-                </div>
-            </div>
+    <div class="stat-box">
+        <i class="fas fa-tasks icon"></i>
+        <h4>Total Tasks</h4>
+        <p id="total-tasks"><?php echo $totalTasks; ?></p>
+    </div>
+    <div class="stat-box">
+        <i class="fas fa-clock icon"></i>
+        <h4>Pending Tasks</h4>
+        <p id="pending-tasks"><?php echo $pendingTasks; ?></p>
+    </div>
+    <div class="stat-box">
+        <i class="fas fa-check-circle icon"></i>
+        <h4>Completed Tasks</h4>
+        <p id="completed-tasks"><?php echo $completedTasks; ?></p>
+    </div>
+    <div class="stat-box">
+        <i class="fas fa-exclamation-triangle icon"></i>
+        <h4>Emergency Tasks</h4>
+        <p id="emergency-tasks"><?php echo $emergencyTasks; ?></p>
+    </div>
+</div>
 
             <h1>Maintenance Requests</h1>
 
@@ -195,6 +199,67 @@
             .filter-group { flex: 1; }
             .stat-box { background-color: #fff; padding: 20px; border-radius: 5px; text-align: center; margin: 10px; flex: 1; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
             .charts { display: flex; justify-content: space-around; margin-top: 20px; }
+
+            .stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.stat-box {
+    background-color: #E6E6FA; /* Light purple background */
+    color: #5c4b8a; /* Dark purple text */
+    border-radius: 10px; /* Smooth corners */
+    padding: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Deeper shadow for depth */
+    text-align: center; /* Center text */
+    flex: 1; /* Equal space distribution */
+    margin: 10px; /* Space between boxes */
+    position: relative; /* For icon positioning */
+    transition: transform 0.2s; /* Smooth hover effect */
+}
+
+.stat-box:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
+.stat-box h4 {
+    margin: 10px 0; /* Spacing between title and value */
+    font-size: 1.2em; /* Increase font size */
+}
+
+.stat-box p {
+    font-size: 2em; /* Larger number display */
+    font-weight: bold; /* Bold text for emphasis */
+}
+
+/* Icon styles */
+.icon {
+    font-size: 40px; /* Larger icon size */
+    color: #5c4b8a; /* Icon color */
+    position: absolute; /* Positioning */
+    top: 10px; /* Position from the top */
+    right: 10px; /* Position from the right */
+}
+
+/* Optional Background Pattern */
+.stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1); /* Light overlay */
+    border-radius: 10px; /* Match the corners */
+    z-index: 0; /* Behind content */
+}
+
+.stat-box > * {
+    position: relative; /* Ensures content is above the background */
+    z-index: 1; /* Ensure text is above the background */
+}
         </style>
     </main>
 </body>
