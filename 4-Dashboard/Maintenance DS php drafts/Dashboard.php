@@ -101,7 +101,7 @@ $results = mysqli_query($conn, $query);
                     <label for="status-filter">Status</label>
                     <select id="status-filter">
                         <option>Any</option>
-                        <option value="active">Active</option>
+                        <option value="active">Open</option>
                         <option value="Pending">Pending</option>
                         <option value="closed">Closed</option>
                     </select>
