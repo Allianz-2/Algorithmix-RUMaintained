@@ -1,5 +1,5 @@
 <?php
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,33 +19,33 @@
         <nav>
             <a href="1-Home.php">Home</a>
             <a href="3-AboutUs.php"><strong>About Us</strong></a>
-            <!-- <div class="dropdown">
-                <span>Services ▾</span>
-                <div class="dropdown-content">
-                    <a href="/7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>
-                    <a href="#">Student Dashboard</a>
-                    <a href="#">House Warden Dashboard</a>
-                    <a href="#">Hall Secretary Dashboard</a>
-                    <a href="#">Maintenance Staff Dashboard</a>
-                </div>
-            </div> -->
-            <?php
-                if (isset($_SESSION['userID'])) {
-                    echo '<div class="dropdown">
-                            <a href="">Services ▾</a>
-                            <div class="dropdown-content">
-                                <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>
-                                <a href="#">Student Dashboard</a>
-                                <a href="#">House Warden Dashboard</a>
-                                <a href="#">Hall Secretary Dashboard</a>
-                                <a href="#">Maintenance Dashboard</a>
-                            </div>
-                        </div>';
-                }
-            ?>
+                <?php
+                    if (isset($_SESSION['userID'])) {
+                        echo '<div class="dropdown">
+                                <a href="">Services ▾</a>
+                                <div class="dropdown-content">
+                                    <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>';
+                        if ($_SESSION['role'] == 'S') {
+                            echo '<a href="#">Student Dashboard</a>';
+                        } else if ($_SESSION['role'] == 'HW') {
+                            echo '<a href="#">House Warden Dashboard</a>';
+                        } else if ($_SESSION['role'] == 'HS') {
+                            echo '<a href="#">Hall Secretary Dashboard</a>';
+                        } else if ($_SESSION['role'] == 'MS') {
+                            echo '<a href="#">Maintenance Dashboard</a>';
+                        }
+                        echo '</div></div>';
+                            //         <!-- <a href="#">Student Dashboard</a>
+                            //         <a href="#">House Warden Dashboard</a>
+                            //         <a href="#">Hall Secretary Dashboard</a>
+                            //         <a href="#">Maintenance Dashboard</a>
+                            //     </div> -->
+                            // </div>';
+                    }
+                ?>
             <a href="2-ContactUs.php">Contact Us</a>
         </nav>
-        <div class="auth-buttons">
+        <div class="auth-buttons" style="visibility: <?php echo isset($_SESSION['userID']) ? 'hidden' : 'visible'; ?>;">
             <a href="/5-UserSignInandRegistration/5-RegistrationStep1.html" class="login-button">Register</a>
             <a href="/5-UserSignInandRegistration/6-SignInPage.php" class="signup-button">Sign in</a>
         </div>

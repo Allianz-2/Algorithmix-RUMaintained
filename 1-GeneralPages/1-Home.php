@@ -1,5 +1,5 @@
 <?php
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,20 +36,30 @@
                         echo '<div class="dropdown">
                                 <a href="">Services ▾</a>
                                 <div class="dropdown-content">
-                                    <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>
-                                    <a href="#">Student Dashboard</a>
-                                    <a href="#">House Warden Dashboard</a>
-                                    <a href="#">Hall Secretary Dashboard</a>
-                                    <a href="#">Maintenance Dashboard</a>
-                                </div>
-                            </div>';
+                                    <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>';
+                        if ($_SESSION['role'] == 'S') {
+                            echo '<a href="#">Student Dashboard</a>';
+                        } else if ($_SESSION['role'] == 'HW') {
+                            echo '<a href="#">House Warden Dashboard</a>';
+                        } else if ($_SESSION['role'] == 'HS') {
+                            echo '<a href="#">Hall Secretary Dashboard</a>';
+                        } else if ($_SESSION['role'] == 'MS') {
+                            echo '<a href="#">Maintenance Dashboard</a>';
+                        }
+                        echo '</div></div>';
+                            //         <!-- <a href="#">Student Dashboard</a>
+                            //         <a href="#">House Warden Dashboard</a>
+                            //         <a href="#">Hall Secretary Dashboard</a>
+                            //         <a href="#">Maintenance Dashboard</a>
+                            //     </div> -->
+                            // </div>';
                     }
                 ?>
                 <a href="2-ContactUs.php">Contact Us</a>
             </nav>
-            <div class="auth-buttons">
-                <a href="../5-UserSignInandRegistration/5-RegistrationStep1.php" class="cta-button login-button">Register</a>
+            <div class="auth-buttons" style="visibility: <?php echo isset($_SESSION['userID']) ? 'hidden' : 'visible'; ?>;">
                 <a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>
+                <a href="../5-UserSignInandRegistration/5-RegistrationStep1.php" class="cta-button login-button">Register</a>
             </div>
         </header>
 
@@ -59,7 +69,12 @@
                 <div class="hero-content">
                     <h1>Residence Maintenance System</h1>
                     <p><i>Your Maintenance Made Easy</i></p>
-                    <a href="/5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign In</a>
+                    <!-- <a href="/5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign In</a> -->
+                    <?php 
+                        if (!isset($_SESSION['userID'])) {
+                        echo '<a href="/5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign In</a>';
+                        }
+                    ?>
                 </div>
             </section>
 
@@ -143,11 +158,18 @@
                 </div>
             </section>
         </section>
-
-        <section class="section">
+        <?php
+            if (!isset($_SESSION['userID'])) {
+                echo '<section class="section">
+                        <h2>Get Started</h2>
+                        <a href="../5-UserSignInandRegistration/5-RegistrationStep1.php" class="cta-button">Register Now</a>
+                    </section>';
+            }
+        ?>
+        <!-- <section class="section">
             <h2>Get Started</h2>
             <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button">Register Now</a>
-        </section>
+        </section> -->
     </div>
 
     <script>
