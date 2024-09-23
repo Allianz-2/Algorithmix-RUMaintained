@@ -59,7 +59,7 @@
             </nav>
             <div class="auth-buttons" style="visibility: <?php echo isset($_SESSION['userID']) ? 'hidden' : 'visible'; ?>;">
                 <a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>
-                <a href="../5-UserSignInandRegistration/5-RegistrationStep1.php" class="cta-button login-button">Register</a>
+                <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button login-button">Register</a>
             </div>
         </header>
 
@@ -162,7 +162,7 @@
             if (!isset($_SESSION['userID'])) {
                 echo '<section class="section">
                         <h2>Get Started</h2>
-                        <a href="../5-UserSignInandRegistration/5-RegistrationStep1.php" class="cta-button">Register Now</a>
+                        <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button">Register Now</a>
                     </section>';
             }
         ?>
