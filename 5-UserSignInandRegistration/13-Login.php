@@ -40,8 +40,8 @@
                 // A single result was returned
                 $_SESSION['userID'] = $userID; // Set session variable
                 // Retrieve role from the user table using the userID
-                $stmt2 = $conn->prepare("SELECT role FROM user WHERE userID = ?");
-                
+                $stmt2 = $conn->prepare("SELECT role, Firstname, Lastname FROM user WHERE userID = ?");
+
                 // Check if the prepare statement failed
                 if ($stmt2 === false) {
                     die('Prepare failed: ' . htmlspecialchars($conn->error));
@@ -50,9 +50,14 @@
                 // Bind parameters
                 $stmt2->bind_param("s", $userID);
                 if ($stmt2->execute()) {
-                    $stmt2->bind_result($role);
+                    // Bind the result variables
+                    $stmt2->bind_result($role, $firstname, $lastname);
                     $stmt2->fetch();
-                    $_SESSION['role'] = $role; // Set session variable  
+                    
+                    // Set session variables
+                    $_SESSION['role'] = $role;
+                    $_SESSION['Firstname'] = $firstname;
+                    $_SESSION['Lastname'] = $lastname;
                 } else {
                     // Execution failed
                     die('Execute failed: ' . htmlspecialchars($stmt2->error));

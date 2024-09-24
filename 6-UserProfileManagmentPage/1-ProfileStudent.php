@@ -80,7 +80,7 @@
                 <div class="profile-header">
                     <div class="profile-picture-container">
                         <i class="fas fa-user default-icon" id="default-icon"></i>
-            <img src="" alt="Profile picture" class="profile-picture" id="profile-image" style="display: none;">
+                        <img src="" alt="Profile picture" class="profile-picture" id="profile-image" style="display: none;">
                         <div class="edit-picture" onclick="document.getElementById('file-input').click()">
                             Edit 
                         </div>
