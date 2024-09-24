@@ -15,7 +15,7 @@
             background-color: #ddd;
             display: flex;
             flex-direction: column;
-            background-image: url('/Users/naledimabusela/Documents/GitHub/Algorithmix-RUMaintained/Images/General/purple gradient background.jpeg');
+            background-image: url('Images\General\background.jpeg');
             background-size: cover;
             background-position: center;
         }
@@ -377,6 +377,30 @@
         .popup-menu-content.active {
             display: block;
         }
+     
+.upload-area {
+    border: 2px dashed #9b59b6; /* Purple border */
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #8e44ad; /* Darker purple on hover */
+}
+
+.upload-area i {
+    font-size: 40px;
+    color: #8e44ad; /* Purple icon color */
+}
+
+.upload-area p {
+    margin: 10px 0 0;
+    color: #9b59b6; /* Purple text */
+}
+
+
     </style>
 </head>
 <body>
@@ -461,7 +485,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
+                   <!--  <div class="form-group">
                         <label for="location" class="required">Specific Location of Fault:</label>
                         <div class="input-container">
                             <select id="location" required>
@@ -473,15 +497,15 @@
                                 <option value="other">Other</option>
                             </select>
                         </div>
-                    </div>
+                    </div>   -->
                     
-                    <div class="form-group">
+                 <!--   <div class="form-group">
                         <label for="nature" class="required">Nature of Fault:</label>
                         <div class="input-container radio-group">
                             <label><input type="radio" name="nature" value="new"> New Fault</label>
                             <label><input type="radio" name="nature" value="recurring"> Recurring Fault</label>
                         </div>
-                    </div>
+                    </div>  -->
 
                     <div class="separator"></div>
 
@@ -503,13 +527,38 @@
                     
                     <div class="form-group">
                         <label for="photo">Upload Photo:</label>
+                    
+                        <!-- Container for the custom upload area -->
                         <div class="input-container">
-                            <div class="upload-area" id="photo">
+                            <!-- Custom upload area with the file input hidden -->
+                            <div class="upload-area" id="upload-area">
                                 <i class="fas fa-image"></i>
                                 <p>Click or drag Photo to this area to upload</p>
+                    
+                                <!-- Actual file input, hidden from view -->
+                                <input type="file" name="photo" id="photo" style="display: none;">
+                    
                             </div>
                         </div>
                     </div>
+                    
+                    <script>
+                        // JavaScript to trigger file input click when the custom upload area is clicked
+                        const uploadArea = document.getElementById('upload-area');
+                        const fileInput = document.getElementById('photo');
+                    
+                        uploadArea.addEventListener('click', function() {
+                            fileInput.click();
+                        });
+                    
+                        // Optional: Show the selected file name
+                        fileInput.addEventListener('change', function() {
+                            if (fileInput.files.length > 0) {
+                                uploadArea.querySelector('p').textContent = fileInput.files[0].name;
+                            }
+                        });
+                    </script>
+                    
                     
                     <div class="button-group">
                         <button type="button" class="btn btn-secondary">Save for Later</button>
