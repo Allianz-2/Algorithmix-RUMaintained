@@ -125,6 +125,8 @@
                 <canvas id="residenceTaskChart"></canvas>
             </div>
 
+
+            
             <div class="stats">
     <div class="stat-box">
         <i class="fas fa-tasks icon"></i>

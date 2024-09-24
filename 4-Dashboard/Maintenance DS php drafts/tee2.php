@@ -83,6 +83,8 @@
              margin-left: auto;
              margin-right: auto;
         }
+
+        
     </style>
 </head>
 <body>
@@ -273,5 +275,6 @@
 
         // we can also add the second chart for residence tasks here similarly
     </script>
+    
 </body>
 </html>
