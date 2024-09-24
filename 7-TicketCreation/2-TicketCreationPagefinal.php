@@ -1,5 +1,30 @@
 <?php
+// Function to generate the next ticket ID
+function getNextTicketId($conn) {
+    // Query to get the last ticket ID from the ticket table
+    $query = "SELECT ticketid FROM ticket ORDER BY ticketid DESC LIMIT 1";
+    $result = $conn->query($query);
 
+    if ($result->num_rows > 0) {
+        // Fetch the last ticket ID
+        $row = $result->fetch_assoc();
+        $lastTicketId = $row['ticketid'];
+
+        // Extract the numeric part of the ticketid (assuming format 't000051')
+        $numericPart = intval(substr($lastTicketId, 1));
+
+        // Increment the numeric part
+        $newTicketNumber = $numericPart + 1;
+
+        // Format the new ticket ID (e.g., t000052)
+        $newTicketId = 't' . str_pad($newTicketNumber, 6, '0', STR_PAD_LEFT);
+
+        return $newTicketId;
+    } else {
+        // If no tickets exist, start from t000001
+        return 't000001';
+    }
+}
 
 // Check if the form has been submitted
 if (isset($_REQUEST['submit'])) {
@@ -22,13 +47,16 @@ if (isset($_REQUEST['submit'])) {
         die("<p class=\"error\">ERROR: Unable to connect to the database!</p>");
     }
 
-    // SQL query to insert the ticket data
-    $SQL = "INSERT INTO ticket (Description, Severity, Photo)
-            VALUES ('$Description', '$Severity', '$picture')";
+    // --- GENERATING NEXT TICKET ID ---
+    $newTicketId = getNextTicketId($conn);
+
+    // SQL query to insert the ticket data (including the new ticket ID)
+    $SQL = "INSERT INTO ticket (ticketid, Description, Severity, Photo)
+            VALUES ('$newTicketId', '$Description', '$Severity', '$picture')";
 
     // Executing the SQL query
     if ($conn->query($SQL) === true) {
-        echo "<strong class=\"success\">The information was correctly captured!</strong>";
+        echo "<strong class=\"success\">The information was correctly captured! Ticket ID: $newTicketId</strong>";
     } else {
         // Error handling for the SQL query
         die("<p class=\"error\">ERROR: Unable to execute the query!</p>");
