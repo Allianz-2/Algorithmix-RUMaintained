@@ -13,6 +13,7 @@
             background-color: #f9f9f9;
             margin: 0;
             padding: 20px;
+
         }
         h1 {
             text-align: center;
@@ -78,6 +79,9 @@
             display: flex;
             justify-content: space-around;
             margin-top: 20px;
+            max-width: 800px; 
+             margin-left: auto;
+             margin-right: auto;
         }
     </style>
 </head>
@@ -235,7 +239,7 @@
     </main>
 
     <script>
-        // Add your chart.js scripts here for rendering charts
+        // Add chart.js scripts here for rendering charts
         const ctx = document.getElementById('maintenanceRequestChart').getContext('2d');
         const maintenanceRequestChart = new Chart(ctx, {
             type: 'bar',
@@ -267,7 +271,7 @@
             }
         });
 
-        // You can also add the second chart for residence tasks here similarly
+        // we can also add the second chart for residence tasks here similarly
     </script>
 </body>
 </html>
