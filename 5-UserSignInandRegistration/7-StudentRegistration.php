@@ -29,7 +29,7 @@
                     <input type="text" id="lastname" name="lastname" required>
                 </div>
                 <div class="form-group">
-                    <label for="userID">Staff Number</label>
+                    <label for="userID">Student Number</label>
                     <input type="text" id="userID" name="userID" pattern="^G[0-9]{2}[A-Z]{1}[0-9]{4}$" placeholder="G12A3456" required>                </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>

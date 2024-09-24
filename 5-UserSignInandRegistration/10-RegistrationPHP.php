@@ -1,6 +1,6 @@
 <?php
     if (isset($_POST['submit'])) {
-        include '../8-PHPTests/config.php';
+        require '../8-PHPTests/config.php';
 
         // Initializes MySQLi
         $conn = mysqli_init();

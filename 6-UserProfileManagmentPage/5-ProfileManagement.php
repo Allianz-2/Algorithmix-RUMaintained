@@ -1,5 +1,5 @@
 <?php
-    include '../8-PHPTests/config.php';
+    require '../8-PHPTests/config.php';
 
      // Initializes MySQLi
      $conn = mysqli_init();
@@ -84,5 +84,7 @@
         $stmt->fetch();
         $stmt->close();
      }
-     ?>
+
+     $conn->close();
+?>
 

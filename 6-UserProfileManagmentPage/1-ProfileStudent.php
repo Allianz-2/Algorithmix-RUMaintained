@@ -1,8 +1,8 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
     include '5-ProfileManagement.php';
+    include '7-ChangePassword.php';
     include '8-ChangeEmail.php';
-    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,15 +16,27 @@
         function toggleEmailEdit() {
             var emailField = document.getElementById('email');
             var saveButton = document.getElementById('save-button');
+            var cancelButton = document.getElementById('cancel-button');
+            var editButton = document.getElementById('edit-button');
             
             if (emailField.readOnly) {
                 emailField.readOnly = false;
-                saveButton.textContent = 'Save Changes';
-            } else {
-                emailField.readOnly = true;
-                saveButton.textContent = 'Edit';
-                document.getElementById('ChangeEmail').submit(); // Submit the form
+                cancelButton.hidden = false;
+                saveButton.hidden = false;
+                editButton.hidden = true;
             }
+        }
+
+        function toggleCancelEdit() {
+            var emailField = document.getElementById('email');
+            var saveButton = document.getElementById('save-button');
+            var cancelButton = document.getElementById('cancel-button');
+            var editButton = document.getElementById('edit-button');
+
+            emailField.readOnly = true;
+            editButton.hidden = false;
+            cancelButton.hidden = true;
+            saveButton.hidden = true;
         }
     </script>
 </head>
@@ -78,7 +90,7 @@
                         <h1><?php echo $firstname . ' ' . $lastname ?></h1>
                     </div>
                 </div>
-                <button class="edit-button">Edit profile</button>
+                <!-- <button class="edit-button">Edit profile</button> -->
             </div>
 
             <div class="info-section">
@@ -89,6 +101,9 @@
                     </div>
                     <div class="info-item">
                         <strong>Residence:</strong> <?php echo $resName ?>
+                    </div>
+                    <div class="info-item">
+                        <strong>Hall:</strong> <?php echo $hallName ?>
                     </div>
                     <div class="info-item">
                         <strong>Email:</strong> <?php echo $email ?>
@@ -113,7 +128,11 @@
                         <label for="email">Email Address</label>
                         <input type="email" id="email" name="email" value="<?php echo $email; ?>" readonly>
                     </div>
-                    <button type="button" id="save-button" class="save-button" name="save-button" onclick="toggleEmailEdit()">Edit</button>
+                    <button type="button" id="cancel-button" class="save-button" name="cancel-button" hidden onclick="toggleCancelEdit()">Cancel</button>
+                    <button type="button" id="edit-button" class="save-button" name="edit-button" onclick="toggleEmailEdit()">Edit</button>
+                    <button type="submit" id="save-button" class="save-button" name="save-button" hidden>Save</button>
+
+
                     </form>
             </div>
             <div class="info-section">
@@ -217,15 +236,15 @@
                 <form action="1-ProfileStudent.php" method="POST">
                     <div class="form-group">
                         <label for="currentPassword">Current Password</label>
-                        <input type="password" id="currentPassword" name="currentPassword">
+                        <input type="password" id="currentPassword" name="currentPassword" required>
                     </div>
                     <div class="form-group">
                         <label for="newPassword">New Password</label>
-                        <input type="password" id="newPassword" name="newPassword">
+                        <input type="password" id="newPassword" name="newPassword" pattern=".{8,}" title="Password must be at least 8 characters long" required>                </div>
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword">Confirm New Password</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword">
+                        <input type="password" id="confirmPassword" name="confirmPassword" pattern=".{8,}" title="Password must be at least 8 characters long" required>                </div>
                     </div>
                     <button type="submit" name="submit-password" class="save-button">Change Password</button>
                     </form>
