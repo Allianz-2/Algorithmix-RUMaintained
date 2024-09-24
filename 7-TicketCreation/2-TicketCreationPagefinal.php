@@ -1,39 +1,40 @@
 <?php
-$Description = $_REQUEST['Description'];
-$Severity = $_REQUEST['Severity'];
-$Status = $_REQUEST['Status'];
-$DateCreated = date('Y-m-d H:i:s'); 
-$DateConfirmed = date('Y-m-d H:i:s'); 
-$DateRequisitioned = date('Y-m-d H:i:s'); 
-$DateResolved = date('Y-m-d H:i:s'); 
-$DateClosed = date('Y-m-d H:i:s'); 
 
 
+// Check if the form has been submitted
+if (isset($_REQUEST['submit'])) {
 
-// Include database credentials
-require_once('config.php');
+    // Get form input values
+    $Description = $_REQUEST['Description'];
+    $Severity = $_REQUEST['Severity'];
 
+    // Handling the file upload
+    $picture = time() . "_" . $_FILES['picture']['name'];
+    $destination = "images/" . $picture;
+    move_uploaded_file($_FILES['picture']['tmp_name'], $destination);
 
+    // Include database configuration and establish connection
+    require_once('config.php');
+    $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Create connection
-$conn = new mysqli(SERVERNAME,Username,Password,Database);
+    // Error handling for the database connection
+    if ($conn->connect_error) {
+        die("<p class=\"error\">ERROR: Unable to connect to the database!</p>");
+    }
 
-// Check connection
-if ($conn->connect_error) {
-    die("Unable to connect to the database: " . $conn->connect_error);
+    // SQL query to insert the ticket data
+    $SQL = "INSERT INTO ticket (Description, Severity, Photo)
+            VALUES ('$Description', '$Severity', '$picture')";
+
+    // Executing the SQL query
+    if ($conn->query($SQL) === true) {
+        echo "<strong class=\"success\">The information was correctly captured!</strong>";
+    } else {
+        // Error handling for the SQL query
+        die("<p class=\"error\">ERROR: Unable to execute the query!</p>");
+    }
+
+    // Closing the connection
+    $conn->close();
 }
-
-// Prepare SQL query
-$sql = "INSERT INTO ticket (Description, Severity,Status,DateCreated,DateConfirmed,DateRequisitioned,DateResolved,DateClosed) 
-        VALUES ('$Description', '$Severity','$Status','$DateCreated','$DateConfirmed','$da)";
-
-// Execute query
-if ($conn->query($sql) === TRUE) {
-    echo "The ticket was added successfully";
-} else {
-    die("Unable to add to the database: " . $conn->error);
-}
-
-// Close connection
-$conn->close();
 ?>
