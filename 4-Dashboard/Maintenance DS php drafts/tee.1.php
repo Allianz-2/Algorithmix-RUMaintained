@@ -9,29 +9,29 @@
     <link rel="stylesheet" href="Dashboard.css">
     <style>
         .content {
-            padding: 20px;
-        }
+    padding: 20px;
+}
 
-        .charts-row {
-            display: flex;
-            flex-wrap: wrap; /* Allows wrapping for smaller screens */
-            justify-content: space-between; /* Distributes space between items */
-        }
+.charts-row {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping for smaller screens */
+    justify-content: space-between; /* Distributes space between items */
+}
 
-        .chart-column {
-            flex: 1 1 30%; /* Allows the columns to grow and shrink, with a minimum width of 30% */
-            margin: 10px; /* Adds some space between columns */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a slight shadow for better visibility */
-            padding: 10px; /* Optional: adds some padding inside the column */
-            background-color: #fff; /* Optional: sets background color for better visibility */
-            border-radius: 8px; /* Optional: rounds the corners of the column */
-        }
+.chart-column {
+    flex: 1 1 30%; /* Allows the columns to grow and shrink, with a minimum width of 30% */
+    margin: 10px; /* Adds some space between columns */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds a slight shadow for better visibility */
+    padding: 10px; /* Optional: adds some padding inside the column */
+    background-color: #fff; /* Optional: sets background color for better visibility */
+    border-radius: 8px; /* Optional: rounds the corners of the column */
+}
 
-        /* Ensuring canvas elements are responsive */
-        canvas {
-            width: 100% !important; /* Forces canvas to take full width of column */
-            height: auto !important; /* Keeps the height proportional */
-        }
+/* Ensuring canvas elements are responsive */
+canvas {
+    width: 100% !important; /* Forces canvas to take full width of column */
+    height: auto !important; /* Keeps the height proportional */
+}
     </style>
 </head>
 
@@ -154,31 +154,31 @@
         ?>
         
         <div class="content">
-            <h3>Performance Analytics</h3>
+    <h3>Performance Analytics</h3>
 
-            <div class="charts-row">
-                <div class="chart-column">
-                    <h2>Maintenance Fault Stats per Semester per Residence</h2>
-                    <canvas id="faultStatsPerSemesterChart"></canvas>
-                </div>
-                <div class="chart-column">
-                    <h2>Maintenance Fault Progress</h2>
-                    <canvas id="faultProgressChart"></canvas>
-                </div>
-                <div class="chart-column">
-                    <h2>Average Turnaround Time (in Hours)</h2>
-                    <canvas id="turnaroundTimeChart"></canvas>
-                </div>
-                <div class="chart-column">
-                    <h2>Maintenance Fault Stats by Category</h2>
-                    <canvas id="categoryStatsChart"></canvas>
-                </div>
-                <div class="chart-column">
-                    <h2>History of Complaint Categories</h2>
-                    <canvas id="complaintHistoryChart"></canvas>
-                </div>
-            </div>
+    <div class="charts-row">
+        <div class="chart-column">
+            <h2>Maintenance Fault Stats per Semester per Residence</h2>
+            <canvas id="faultStatsPerSemesterChart"></canvas>
         </div>
+        <div class="chart-column">
+            <h2>Maintenance Fault Progress</h2>
+            <canvas id="faultProgressChart"></canvas>
+        </div>
+        <div class="chart-column">
+            <h2>Average Turnaround Time (in Hours)</h2>
+            <canvas id="turnaroundTimeChart"></canvas>
+        </div>
+        <div class="chart-column">
+            <h2>Maintenance Fault Stats by Category</h2>
+            <canvas id="categoryStatsChart"></canvas>
+        </div>
+        <div class="chart-column">
+            <h2>History of Complaint Categories</h2>
+            <canvas id="complaintHistoryChart"></canvas>
+        </div>
+    </div>
+</div>
 
     </main>
 
@@ -223,6 +223,7 @@
             data: {
                 labels: faultProgressLabels,
                 datasets: [{
+                    label: 'Fault Progress',
                     data: faultProgressCounts,
                     backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
                     borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)'],
@@ -230,11 +231,11 @@
                 }]
             },
             options: {
-                responsive: true
+                responsive: true,
             }
         });
 
-        // Turnaround Time
+        // Average Turnaround Time
         const turnaroundTimeData = <?php echo json_encode($turnaroundTime); ?>;
         const avgTurnaroundTime = turnaroundTimeData.AvgTurnaroundTime;
 
@@ -246,33 +247,6 @@
                 datasets: [{
                     label: 'Hours',
                     data: [avgTurnaroundTime],
-                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                    borderColor: 'rgba(255, 159, 64, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Maintenance Fault Stats by Category
-        const categoryStatsData = <?php echo json_encode($categoryStats); ?>;
-        const categoryLabels = categoryStatsData.map(data => data.CategoryName);
-        const categoryCounts = categoryStatsData.map(data => data.FaultCount);
-
-        const categoryStatsCtx = document.getElementById('categoryStatsChart').getContext('2d');
-        new Chart(categoryStatsCtx, {
-            type: 'bar',
-            data: {
-                labels: categoryLabels,
-                datasets: [{
-                    label: 'Fault Count',
-                    data: categoryCounts,
                     backgroundColor: 'rgba(153, 102, 255, 0.2)',
                     borderColor: 'rgba(153, 102, 255, 1)',
                     borderWidth: 1
@@ -287,31 +261,23 @@
             }
         });
 
-        // History of Complaint Categories
-        const complaintHistoryData = <?php echo json_encode($complaintHistory); ?>;
-        const complaintYears = [...new Set(complaintHistoryData.map(data => data.Year))]; // Unique years
-        const complaintCounts = complaintHistoryData.reduce((acc, curr) => {
-            acc[curr.Year] = acc[curr.Year] || {};
-            acc[curr.Year][curr.CategoryName] = (acc[curr.Year][curr.CategoryName] || 0) + curr.FaultCount;
-            return acc;
-        }, {});
+        // Maintenance Fault Stats by Category
+        const categoryStatsData = <?php echo json_encode($categoryStats); ?>;
+        const categoryStatsLabels = categoryStatsData.map(data => data.CategoryName);
+        const categoryStatsCounts = categoryStatsData.map(data => data.FaultCount);
 
-        const complaintChartData = complaintYears.map(year => {
-            return categoryLabels.map(category => complaintCounts[year][category] || 0);
-        });
-
-        const complaintHistoryCtx = document.getElementById('complaintHistoryChart').getContext('2d');
-        new Chart(complaintHistoryCtx, {
+        const categoryStatsCtx = document.getElementById('categoryStatsChart').getContext('2d');
+        new Chart(categoryStatsCtx, {
             type: 'bar',
             data: {
-                labels: complaintYears,
-                datasets: categoryLabels.map((category, index) => ({
-                    label: category,
-                    data: complaintChartData.map(data => data[index]),
-                    backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`,
-                    borderColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`,
+                labels: categoryStatsLabels,
+                datasets: [{
+                    label: 'Fault Count',
+                    data: categoryStatsCounts,
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
                     borderWidth: 1
-                }))
+                }]
             },
             options: {
                 scales: {
@@ -322,15 +288,61 @@
             }
         });
 
-        // Hamburger icon functionality
-        document.getElementById('hamburger-icon').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
+        // History of Complaint Categories
+        const complaintHistoryData = <?php echo json_encode($complaintHistory); ?>;
+        const complaintHistoryLabels = complaintHistoryData.map(data => `${data.Year} - ${data.CategoryName}`);
+        const complaintHistoryCounts = complaintHistoryData.map(data => data.FaultCount);
+
+        const complaintHistoryCtx = document.getElementById('complaintHistoryChart').getContext('2d');
+        new Chart(complaintHistoryCtx, {
+            type: 'line',
+            data: {
+                labels: complaintHistoryLabels,
+                datasets: [{
+                    label: 'Complaint Count',
+                    data: complaintHistoryCounts,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
 
         // Logout confirmation
         function confirmLogout() {
             return confirm("Are you sure you want to log out?");
         }
+
+        // Sidebar toggle
+        document.getElementById('hamburger-icon').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        });
     </script>
+    <style>
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px;
+}
+
+.column {
+    flex: 1 1 45%;
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+    </style>
 </body>
 </html>
