@@ -1,15 +1,17 @@
 <?php
     session_start();
+
     if (isset($_SESSION['alert'])) {
         echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
         unset($_SESSION['alert']); // Clear the alert message from the session
     }
+
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
 
     // Check if the user is logged in and has the appropriate role
-    if (!isset($_SESSION['userID']) || $_SESSION['role'] !== 'S') {
+    if ($_SESSION['role'] !== 'HW') {
         // Redirect to an error page or login page
-        header("Location: 6-UserProfileManagmentPage/10-ErrorPage.html");
+        header("Location: 10-ErrorPage.html");
         exit();
     }
 
@@ -85,6 +87,9 @@
             hallField.hidden = false;
 
         }
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
 
         
 
@@ -112,6 +117,9 @@
                 </svg>
                 Residence
             </a>
+            </div>
+            <div class="sidebar-footer">
+                <p><a href="../5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
             </div>
             <!-- <div class="menu-item">
                 <a href="security page Sys Dev.html">
@@ -165,7 +173,7 @@
         
             <div class="info-section">
                 <h2><strong>Personal Information</strong></h2>
-                <form action="1-ProfileStudent.php" method="post" id="ChangeEmail">
+                <form action="2-ProfileHW.php" method="post" id="ChangeEmail">
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
                         <input type="text" id="fullName" name="fullName" value="<?php echo $firstname . ' ' . $lastname; ?>" readonly>
@@ -187,7 +195,7 @@
             </div>
             <div class="info-section">
                 <h2><strong>Residence Details</strong></h2>
-                <form action="1-ProfileStudent.php" method="post" id="ChangeResidence">
+                <form action="2-ProfileHW.php" method="post" id="ChangeResidence">
                     <!-- <div class="form-group">
                         <label for="Residence">Residence:</label>
                         <input type="text" id="residence" name="residence" value="<?php echo $resName ?>" readonly>
@@ -286,7 +294,7 @@
             </div>
             <div class="info-section">
                 <h2><strong>Change Password</strong></h2>
-                <form action="1-ProfileStudent.php" method="POST">
+                <form action="2-ProfileHW.php" method="POST">
                     <div class="form-group">
                         <label for="currentPassword">Current Password</label>
                         <input type="password" id="currentPassword" name="currentPassword" required>

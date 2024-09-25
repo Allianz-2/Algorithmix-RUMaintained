@@ -55,7 +55,7 @@
                     $stmt2->fetch();
                     
                     // Set session variables
-                    $_SESSION['role'] = $role;
+                    $_SESSION['role'] = trim($role);
                     $_SESSION['Firstname'] = $firstname;
                     $_SESSION['Lastname'] = $lastname;
                 } else {
