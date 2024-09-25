@@ -2,20 +2,20 @@
 require_once('config.php');
 
 // Fetch all maintenance requests
-$query = "SELECT t.TicketID, t.Description, t.DateCreated, u.First_name, u.Lastname, u.StudentID
+$query = "select t.TicketID, t.Description, t.DateCreated, u.First_name, u.Lastname
           FROM ticket t
           JOIN user u ON t.StudentID = u.UserID
-          WHERE t.Status = 'Confirmed'";
+          WHERE t.Status = 'Confirmed'"; 
 $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
 $results = mysqli_query($conn, $query);
 
 // Function to fetch comments for a ticket
-function getComments($conn, $ticketId) {
-    $query = "SELECT c.CommentID, c.Comment, c.DateCreated, u.First_name, u.Lastname, u.Role
-              FROM comments c
+function getTicketComments($conn, $ticketId) {
+    $query = "SELECT c.ticketCommentID, c.CommentText, c.DatePosted, u.First_name, u.Lastname, u.role
+              FROM ticketcomment c
               JOIN user u ON c.UserID = u.UserID
-              WHERE c.TicketID = ?
-              ORDER BY c.DateCreated DESC";
+              order by c.DatePosted DESC
+                WHERE c.TicketID = ?";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, "i", $ticketId);
     mysqli_stmt_execute($stmt);
