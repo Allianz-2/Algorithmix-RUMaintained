@@ -1,47 +1,202 @@
-<?php 
+<?php
 require_once('config.php');
 
 // Fetch all maintenance requests
-$query = "SELECT t.TicketID, t.Description, t.DateCreated, u.First_name, u.Lastname 
+$query = "SELECT t.TicketID, t.Description, t.DateCreated, u.First_name, u.Lastname, u.StudentID
           FROM ticket t
-          JOIN user u ON t.StudentID = u.UserID";
-
+          JOIN user u ON t.StudentID = u.UserID
+          WHERE t.Status = 'Confirmed'";
 $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
 $results = mysqli_query($conn, $query);
+
+// Function to fetch comments for a ticket
+function getComments($conn, $ticketId) {
+    $query = "SELECT c.CommentID, c.Comment, c.DateCreated, u.First_name, u.Lastname, u.Role
+              FROM comments c
+              JOIN user u ON c.UserID = u.UserID
+              WHERE c.TicketID = ?
+              ORDER BY c.DateCreated DESC";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $ticketId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
 ?>
 
+// Fetch all maintenance requests
+$query = "SELECT t.TicketID, t.Description, t.DateCreated, u.First_name, u.Lastname, u.StudentID
+          FROM ticket t
+          JOIN user u ON t.StudentID = u.UserID
+          WHERE t.Status = 'Confirmed'";
+$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+$results = mysqli_query($conn, $query);
+
+// Function to fetch comments for a ticket
+function getComments($conn, $ticketId) {
+    $query = "SELECT c.CommentID, c.Comment, c.DateCreated, u.First_name, u.Lastname, u.Role
+              FROM comments c
+              JOIN user u ON c.UserID = u.UserID
+              WHERE c.TicketID = ?
+              ORDER BY c.DateCreated DESC";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $ticketId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Hall Secretary Ticket Approval</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Hall Secretary Dashboard - Ticket Approval</title>
+    <link rel="stylesheet" href="Dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>Ticket Approval</h1>
-    <table>
-        <tr>
-            <th>Ticket ID</th>
-            <th>Date Created</th>
-            <th>Student</th>
-            <th>Description</th>
-            <th>Approve</th>
-            <th>Deny</th>
-            <th>Add Comment</th>
-           
-        </tr>
-        <?php while ($row = mysqli_fetch_assoc($results)): ?>
-                        <tr>
-                            <td><?php echo $row['TicketID']; ?></td>
-                            <td><?php echo $row['DateCreated']; ?></td> 
-                            <td><?php echo $row['First_name'] . ' ' . $row['Lastname']; ?></td>
-                            <td><?php echo $row['Description']; ?></td>
-                            <td><a href="#">Approve</a></td>
-                            <td><a href="#">Deny</a></td>
-                            <td><a href="#">Add Comment</a></td>
-                           </tr>
-                <?php endwhile; ?>
-    </table>
-    <?php mysqli_close($conn); ?>
+   
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="user-welcome">Welcome, <?php echo $_SESSION['user_name']; ?></span>
+            <a href="user_profile.php"></a>
+        </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="HSDSTicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
+                <li><a href="HSDSAnalytics.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                <li><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
+                <li><a href="#"><i class="fas fa-building"></i> Residences</a></li>
+                <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+            <a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        </div>
+    </header>
 
-<!-- <style> body { font-family: Arial, sans-serif; background-color: #f9f9f9; /* Light background for contrast */ margin: 0; padding: 20px; } h1 { text-align: center; color: #5c4b8a; /* Darker shade of light purple */ } table { width: 100%; border-collapse: collapse; margin-top: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 5px; /* Rounded corners */ overflow: hidden; /* Clip child elements */ } th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; } tr:nth-child(even) { background-color: #eaeaea; /* Light gray for even rows */ } tr:hover { background-color: #d1c4e9; /* Light purple hover effect */ } th { background-color: #ab8cc6; /* Light purple header */ color: white; /* White text for contrast */ font-weight: bold; } /* Add responsive design */ @media (max-width: 768px) { th, td { font-size: 14px; /* Smaller text on mobile */ } h1 { font-size: 24px; /* Smaller title on mobile */ } } </style> -->
+    <main role="main">
+        <div>
+            <div class="header-left">
+                <div id="hamburger-icon" class="hamburger-icon">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <h2>Hall Secretary Dashboard</h2>
+            </div>
+            <div class="logo">
+                <img src="/path/to/rumaintained-logo.jpg" alt="rumaintained logo">
+            </div>
+        </div>
+
+
+        <div class="content">
+            <h2>Ticket Approval</h2>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress" class="progress"></div>
+                    <div class="step-wrapper">
+                        <div class="step">1</div>
+                        <div class="step-label">Create Ticket</div>
+                    </div>
+                    <div class="step-wrapper">
+                        <div class="step">2</div>
+                        <div class="step-label">House Warden Approval</div>
+                    </div>
+                    <div class="step-wrapper">
+                        <div class="step active">3</div>
+                        <div class="step-label">Hall Secretary Approval</div>
+                    </div>
+                </div>
+            </div>
+         
+            <h3>Recent Requests</h3>
+            <table>
+                <tr>
+                    <th>Ticket #</th>
+                    <th>Date Created</th>
+                    <th>Student Number</th>
+                    <th>Fault Description</th>
+                    <th>Approve</th>
+                    <th>Deny</th>
+                    <th>Comments</th>
+                </tr>
+                <?php while ($row = mysqli_fetch_assoc($results)): ?>
+                <tr>
+                    <td><a href="#" class="ticket-link"><?php echo $row['TicketID']; ?></a></td>
+                    <td><?php echo $row['DateCreated']; ?></td>
+                    <td><?php echo $row['StudentID']; ?></td>
+                    <td><?php echo $row['Description']; ?></td>
+                    <td><a href="#">Approve</a></td>
+                    <td><a href="#">Deny</a></td>
+                    <td><a href="#" onclick="toggleComments(<?php echo $row['TicketID']; ?>)">View/Add Comments</a></td>
+                </tr>
+                <tr id="comments-<?php echo $row['TicketID']; ?>" style="display: none;">
+                    <td colspan="7">
+                        <div class="comments-section">
+                            <h4>Comments for Ticket #<?php echo $row['TicketID']; ?></h4>
+                            <table class="comments-table">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>User</th>
+                                    <th>Comment</th>
+                                </tr>
+                                <?php 
+                                $comments = getComments($conn, $row['TicketID']);
+                                foreach ($comments as $comment):
+                                ?>
+                                <tr>
+                                    <td><?php echo $comment['DateCreated']; ?></td>
+                                    <td><?php echo $comment['First_name'] . ' ' . $comment['Lastname'] . ' (' . $comment['Role'] . ')'; ?></td>
+                                    <td><?php echo $comment['Comment']; ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                            <form action="add_comment.php" method="post">
+                                <input type="hidden" name="ticket_id" value="<?php echo $row['TicketID']; ?>">
+                                <textarea name="comment" placeholder="Add a comment" required></textarea>
+                                <button type="submit">Add Comment</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
+
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+    </script>
+
+    <script>
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+
+        function toggleComments(ticketId) {
+            var commentsRow = document.getElementById('comments-' + ticketId);
+            if (commentsRow.style.display === 'none') {
+                commentsRow.style.display = 'table-row';
+            } else {
+                commentsRow.style.display = 'none';
+            }
+        }
+    </script>
+</body>
 </html>
+<?php mysqli_close($conn); ?>

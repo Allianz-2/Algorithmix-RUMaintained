@@ -15,10 +15,10 @@
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li class="active"><a href="#"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
+            <li><a href="#"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
             <li><a href="TaskAssignment.html"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li><a href="inventorymanagement.html"><i class="fas fa-wrench"></i>Inventory Management</a></li>
-            <li><a href="performance analytics.html"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+            <li  class="active"><a href="performance analytics.html"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li><a href="MaintenanceNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>
         <div class="sidebar-footer">
@@ -68,7 +68,7 @@
         ?>
         
         <div class="content">
-            <h3>Maintenance Requests</h3>
+            <h3>Performance Analytics</h3>
             <div class="filters">
                 <div class="filter-group">
                     <label for="date-filter">Date Range</label>
@@ -125,6 +125,8 @@
                 <canvas id="residenceTaskChart"></canvas>
             </div>
 
+
+            
             <div class="stats">
     <div class="stat-box">
         <i class="fas fa-tasks icon"></i>
