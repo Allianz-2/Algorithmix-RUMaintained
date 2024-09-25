@@ -17,7 +17,7 @@
         }
         h1 {
             text-align: center;
-            color: #5c4b8a;
+            color: #81589a;
         }
         table {
             width: 100%;
@@ -33,7 +33,7 @@
             border-bottom: 1px solid #ddd;
         }
         th {
-            background-color: #5c4b8a;
+            background-color: #81589a;
             color: #fff;
         }
         .filters, .stats {
@@ -45,8 +45,8 @@
             flex: 1;
         }
         .stat-box {
-            background-color: #E6E6FA;
-            color: #5c4b8a;
+            background-color: #f1eaf5;
+            color:#81589a; 
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
@@ -63,10 +63,12 @@
         .stat-box h4 {
             margin: 10px 0;
             font-size: 1.2em;
+            color: #81589a;
         }
         .stat-box p {
             font-size: 2em;
             font-weight: bold;
+            
         }
         .icon {
             font-size: 40px;
@@ -83,6 +85,12 @@
              margin-left: auto;
              margin-right: auto;
         }
+
+        .stat-box i.icon {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #81589a; /* Color of icons */
+}
 
         
     </style>
@@ -113,7 +121,7 @@
                 <strong>Maintenance Staff Dashboard</strong>
             </div>
             <div class="logo">
-                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RU Maintained Logo">
+                <img src="Images\General\93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RU Maintained Logo">
             </div>
         </header>
 
