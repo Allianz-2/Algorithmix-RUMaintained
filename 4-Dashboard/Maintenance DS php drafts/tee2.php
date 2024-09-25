@@ -16,9 +16,11 @@
 
         }
         h1 {
-            text-align: center;
-            color: #81589a;
-        }
+    text-align: center;
+    color: #81589a; 
+    margin: 0; 
+    width: 100%;
+}
         table {
             width: 100%;
             border-collapse: collapse;

@@ -8,9 +8,18 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="Dashboard.css">
     <style>
+
+h1 {
+    text-align: center; 
+    color: #81589a;
+    margin: 0; 
+    width: 100%; /* Ensures it occupies the full width */
+}
+
         .content {
     padding: 20px;
 }
+
 
 .charts-row {
     display: flex;
@@ -31,6 +40,11 @@
 canvas {
     width: 100% !important; /* Forces canvas to take full width of column */
     height: auto !important; /* Keeps the height proportional */
+}
+
+.chart-column h2 {
+    text-align: center; /* Centers the text horizontally */
+    margin: 0; /* Removes default margin (optional) */
 }
     </style>
 </head>
@@ -154,11 +168,11 @@ canvas {
         ?>
         
         <div class="content">
-    <h3>Performance Analytics</h3>
+    <h1>Performance Analytics</h1>
 
     <div class="charts-row">
         <div class="chart-column">
-            <h2>Maintenance Fault Stats per Semester per Residence</h2>
+            <h2>Semester Maintenance Fault Stats by Res</h2>
             <canvas id="faultStatsPerSemesterChart"></canvas>
         </div>
         <div class="chart-column">
