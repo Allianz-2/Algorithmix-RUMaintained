@@ -1,18 +1,11 @@
 <?php
-    session_start();
     if (isset($_SESSION['alert'])) {
         echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
         unset($_SESSION['alert']); // Clear the alert message from the session
     }
+
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
-
-    // Check if the user is logged in and has the appropriate role
-    if (!isset($_SESSION['userID']) || $_SESSION['role'] !== 'S') {
-        // Redirect to an error page or login page
-        header("Location: 6-UserProfileManagmentPage/10-ErrorPage.html");
-        exit();
-    }
-
+    include '11-CheckPermission.php';
     include '7-ChangePassword.php';
     include '8-ChangeEmail.php';
     include '9-ChangeResidence.php';
@@ -26,69 +19,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="4-ProfileManage.css">
-    <script>
-        function toggleEmailEdit() {
-            var emailField = document.getElementById('email');
-            var saveButton = document.getElementById('save-button');
-            var cancelButton = document.getElementById('cancel-button');
-            var editButton = document.getElementById('edit-button');
-            
-            if (emailField.readOnly) {
-                emailField.readOnly = false;
-                cancelButton.hidden = false;
-                saveButton.hidden = false;
-                editButton.hidden = true;
-            }
-        }
-
-        function toggleCancelEdit() {
-            var emailField = document.getElementById('email');
-            var saveButton = document.getElementById('save-button');
-            var cancelButton = document.getElementById('cancel-button');
-            var editButton = document.getElementById('edit-button');
-
-            emailField.readOnly = true;
-            editButton.hidden = false;
-            cancelButton.hidden = true;
-            saveButton.hidden = true;
-        }
-        function toggleResidenceEdit() {
-            var residenceField = document.getElementById('residence');
-            var saveResidenceButton = document.getElementById('res-save-button');
-            var cancelResidenceButton = document.getElementById('res-cancel-button');
-            var editResidenceButton = document.getElementById('res-edit-button');
-            var hallField = document.getElementById('hallGroup');
-            
-            if (residenceField.disabled) {
-            residenceField.disabled = false;
-            cancelResidenceButton.hidden = false;
-            saveResidenceButton.hidden = false;
-            editResidenceButton.hidden = true;
-            hallField.hidden = true;
-
-            }
-        }
-
-        function toggleCancelResidenceEdit() {
-            var residenceField = document.getElementById('residence');
-            var saveResidenceButton = document.getElementById('res-save-button');
-            var cancelResidenceButton = document.getElementById('res-cancel-button');
-            var editResidenceButton = document.getElementById('res-edit-button');
-            var hallField = document.getElementById('hallGroup');
-
-
-            residenceField.disabled = true;
-            editResidenceButton.hidden = false;
-            cancelResidenceButton.hidden = true;
-            saveResidenceButton.hidden = true;
-            hallField.hidden = false;
-
-        }
-
-        
-
-    </script>
+    <link rel="stylesheet" href="13-ProfileManage.css">
+    <script src="12-EditSave.js" defer></script>
 </head>
 <body>
     <div class="container">

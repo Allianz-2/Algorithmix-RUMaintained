@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 if (isset($_POST['residenceID'])) {
     require '../8-PHPTests/config.php';

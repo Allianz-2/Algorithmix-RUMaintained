@@ -1,6 +1,4 @@
 <?php
-    session_start();
-
     require '../8-PHPTests/config.php';
 
      // Initializes MySQLi
@@ -31,11 +29,11 @@
 
      if ($role == "HS") {
         $roleFull = "Hall Secretary";
-         $sql = "SELECT HallID FROM hall_secretary WHERE UserID = ?";
+         $sql = "SELECT HallName FROM residence WHERE HallSecretaryID = ?";
          $stmt = $conn->prepare($sql);
          $stmt->bind_param("s", $_SESSION['userID']);
          $stmt->execute();
-         $stmt->bind_result($hallID);
+         $stmt->bind_result($hallName);
          $stmt->fetch();
          $stmt->close();
      }
@@ -68,6 +66,16 @@
             $stmt->fetch();
             $stmt->close();
 
+     }
+     else if ($role == "MS" ){
+        $roleFull = "Maintenance Staff";
+        $sql = "SELECT Specialisation FROM maintenancestaff WHERE UserID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $_SESSION['userID']);
+        $stmt->execute();
+        $stmt->bind_result($specialisation);
+        $stmt->fetch();
+        $stmt->close();
      }
 
      if ($role =="S" || $role == "HW" || $role == "HS") {
