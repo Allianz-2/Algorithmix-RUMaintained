@@ -1,3 +1,8 @@
+<?php
+include '2-TicketCreationPagefinal.php'
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RU Maintained - Create Ticket</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
     <style>
         body, html {
             font-family: Arial, sans-serif;
@@ -448,27 +454,28 @@
                         </div>
                     </div>
                     
-                <form action="2-TicketCreationPagefinal.php">
+                <form action="1-TicketCreationPagefinal.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="status" name="status" value="Open">
+
                     <div class="section-title">Ticket Details</div>
-                    
                     <div class="form-group">
                         <label for="description" class="required">Description of Fault:</label>
                         <div class="input-container">
-                            <input type="text" id="description" placeholder="e.g Broken tap faucet" required>
+                            <input type="text" id="description" name="description" placeholder="e.g Broken tap faucet" required>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="category" class="required">Category of Fault:</label>
                         <div class="input-container">
-                            <select id="category" required>
-                                <option value="">Select category</option>
-                                <option value="plumbing">Plumbing</option>
-                                <option value="electrical">Electrical</option>
-                                <option value="structural">Exterior</option>
-                                <option value="HVAC">Bedroom</option>
-                                <option value="Appliance">Bathroom</option>
-                                <option value="other">Other</option>
+                            <select id="category" name="category" required>
+                                <option value="CE049">Select category</option>
+                                <option value="CE049">Plumbing</option>
+                                <option value="CE049">Electrical</option>
+                                <option value="CE049">Exterior</option>
+                                <option value="CE049">Bedroom</option>
+                                <option value="CE049">Bathroom</option>
+                                <option value="CE049">Other</option>
                             </select>
                         </div>
                     </div>
@@ -476,7 +483,7 @@
                     <div class="form-group">
                         <label for="severity" class="required">Severity of Fault:</label>
                         <div class="input-container">
-                            <select id="severity" required>
+                            <select id="severity" name="severity" required>
                                 <option value="">Select severity</option>
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
@@ -485,10 +492,10 @@
                         </div>
                     </div>
                     
-                   <!--  <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="location" class="required">Specific Location of Fault:</label>
                         <div class="input-container">
-                            <select id="location" required>
+                            <select id="location" name="location" required>
                                 <option value="">Select location</option>
                                 <option value="bathroom">Bathroom</option>
                                 <option value="kitchen">Kitchen</option>
@@ -497,31 +504,31 @@
                                 <option value="other">Other</option>
                             </select>
                         </div>
-                    </div>   -->
+                    </div> -->
                     
-                 <!--   <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="nature" class="required">Nature of Fault:</label>
                         <div class="input-container radio-group">
                             <label><input type="radio" name="nature" value="new"> New Fault</label>
                             <label><input type="radio" name="nature" value="recurring"> Recurring Fault</label>
                         </div>
-                    </div>  -->
-
+                    </div> -->
+                    
                     <div class="separator"></div>
-
+                    
                     <div class="section-title">Additional Information</div>
                     
                     <div class="form-group">
                         <label for="affected-items">Affected Items:</label>
                         <div class="input-container">
-                            <input type="text" id="affected-items" placeholder="e.g. damaged floor and sink">
+                            <input type="text" id="affected-items" name="affected-items" placeholder="e.g. damaged floor and sink">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="comments">Comments:</label>
                         <div class="input-container">
-                            <textarea id="comments" placeholder="Please enter additional comments on issue"></textarea>
+                            <textarea id="comments" name="comments" placeholder="Please enter additional comments on issue"></textarea>
                         </div>
                     </div>
                     
@@ -537,7 +544,6 @@
                     
                                 <!-- Actual file input, hidden from view -->
                                 <input type="file" name="photo" id="photo" style="display: none;">
-                    
                             </div>
                         </div>
                     </div>
@@ -561,8 +567,9 @@
                     
                     
                     <div class="button-group">
-                        <button type="button" class="btn btn-secondary">Save for Later</button>
-                        <button type="submit" class="btn btn-primary">Create Ticket</button>
+                        <input type="submit" name="submit" value="Create Ticket">
+                        <!-- <input type="submit" name="SAVE" value="Save Ticket"> -->
+                     
                     </div>
                 </form>
             </div>
