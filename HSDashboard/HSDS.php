@@ -1,8 +1,14 @@
 <?php
-require_once('config.php');
+
+// Define database connection constants
+define('SERVERNAME', 'IS3-DEV.ICT.RU.AC.ZA');
+define('USERNAME', 'Algorithmix');
+define('PASSWORD', 'U3fuC7P5');
+define('DATABASE', 'Algorithmix');
+
+
 session_start();
 
-// Check if user is logged in and is a Hall Secretary
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Hall Secretary') {
     header("Location: login.php");
     exit();
@@ -10,21 +16,20 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Hall Secretary') {
 
 $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
 
-// Fetch filter values (you may want to implement these as actual form inputs)
-$dateRange = isset($_GET['date_range']) ? $_GET['date_range'] : 'Last 7 Days';
-$residence = isset($_GET['residence']) ? $_GET['residence'] : 'All';
-$severity = isset($_GET['severity']) ? $_GET['severity'] : 'All';
-$category = isset($_GET['category']) ? $_GET['category'] : 'All';
-$status = isset($_GET['status']) ? $_GET['status'] : 'All';
+// Fetch filter values
+$dateRange = isset($_POST['date_range']) ? $_POST['date_range'] : 'Last 7 Days';
+$residence = isset($_POST['residence']) ? $_POST['residence'] : 'All';
+$severity = isset($_POST['severity']) ? $_POST['severity'] : 'All';
+$category = isset($_POST['category']) ? $_POST['category'] : 'All';
+$status = isset($_POST['status']) ? $_POST['status'] : 'All';
 
-// Build the query based on filters
-$query = "SELECT t.TicketID, t.CategoryID, t.ResidenceID, t.Status, t.DateCreated, t.Severity
+// Use prepared statements to avoid SQL injection
+$query = "SELECT t.TicketID, t.Category, t.ResidenceID, t.Status, t.DateCreated, t.Severity, t.PhotoURL, r.ResName
           FROM ticket t 
-          JOIN residence r ON t.ResidenceID = r.ResidenceID
+          JOIN residence r ON t.ResidenceID = r.ResidenceID 
           WHERE 1=1";
 
 if ($dateRange !== 'All') {
-    // Add date range filter
     $date = date('Y-m-d', strtotime("-7 days")); // Example for "Last 7 Days"
     $query .= " AND t.DateCreated >= '$date'";
 }
@@ -44,6 +49,9 @@ if ($status !== 'All') {
 $query .= " ORDER BY t.DateCreated DESC LIMIT 10";
 
 $result = mysqli_query($conn, $query);
+if (!$result) {
+    die('Error: ' . mysqli_error($conn));
+}
 
 // Fetch statistics
 $totalRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket"))['count'];
@@ -54,6 +62,7 @@ $onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count 
 
 mysqli_close($conn);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -139,17 +148,17 @@ mysqli_close($conn);
                         <th>Status</th>
                         <th>Submission Date</th>
                         <th>Severity</th>
-                        <th>Work Order</th>
+                
                     </tr>
                     <?php while ($row = mysqli_fetch_assoc($result)): ?>
                     <tr>
                         <td><?php echo htmlspecialchars($row['Category']); ?></td>
-                        <td><!-- Add photo handling logic here --></td>
+                        <td><img src="<?php echo htmlspecialchars($row['PhotoURL']); ?>" alt="Request Photo" width="50"></td><!-- Add photo handling logic here -->
                         <td><?php echo htmlspecialchars($row['ResidenceID']); ?></td>
                         <td><?php echo htmlspecialchars($row['Status']); ?></td>
                         <td><?php echo htmlspecialchars($row['DateCreated']); ?></td>
                         <td><?php echo htmlspecialchars($row['Severity']); ?></td>
-                        <td><?php echo htmlspecialchars($row['WorkOrder']); ?></td>
+            
                     </tr>
                     <?php endwhile; ?>
                 </table>
