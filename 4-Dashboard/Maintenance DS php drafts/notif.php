@@ -38,7 +38,6 @@
             flex: 1; /* Equal spacing */
             margin: 10px; /* Margin around boxes */
         }
-        /* Additional CSS styles can be added here */
     </style>
 </head>
 <body>
@@ -74,54 +73,43 @@
         <div class="container mt-5">
             <h1>Notifications</h1>
 
- <!-- New Tickets Section -->
-<section>
-    <h2><i class="fas fa-ticket-alt"></i> New Tickets</h2>
-    <?php
-    // Include the database connection file
-    include 'db_connection.php';
+            <!-- New Tickets Section -->
+            <section>
+                <h2><i class="fas fa-ticket-alt"></i> New Tickets</h2>
+                <?php
+                // Include the database connection file
+                include 'db_connection.php';
 
-    // Fetch new tickets that are not closed with a limit of 10
-    $sql_tickets = "SELECT t.TicketID, t.Description, t.Status, t.DateCreated, u.First_name, u.Lastname, r.ResName
-                    FROM ticket t
-                    JOIN user u ON t.StudentID = u.UserID
-                    JOIN residence r ON t.ResidenceID = r.ResidenceID
-                    WHERE t.Status != 'Closed'
-                    ORDER BY t.DateCreated DESC
-                    LIMIT 10";
+                // Fetch new tickets that are not closed with a limit of 10
+                $sql_tickets = "SELECT t.TicketID, t.Description, t.Status, t.DateCreated, u.First_name, u.Lastname, r.ResName
+                                FROM ticket t
+                                JOIN user u ON t.StudentID = u.UserID
+                                JOIN residence r ON t.ResidenceID = r.ResidenceID
+                                WHERE t.Status != 'Closed'
+                                ORDER BY t.DateCreated DESC
+                                LIMIT 10";
 
-    $tickets_stmt = $conn->prepare($sql_tickets);
-    $tickets_stmt->execute();
-    $tickets_result = $tickets_stmt->get_result();
+                $tickets_stmt = $conn->prepare($sql_tickets);
+                $tickets_stmt->execute();
+                $tickets_result = $tickets_stmt->get_result();
 
-    // Variable to track if there's an approved ticket
-    $approvedTicket = false;
+                if ($tickets_result->num_rows > 0) {
+                    while ($ticket = $tickets_result->fetch_assoc()) {
+                        echo "<div class='notification'>";
+                        echo "<p><strong>Ticket ID:</strong> " . $ticket['TicketID'] . "</p>";
+                        echo "<p><strong>Description:</strong> " . $ticket['Description'] . "</p>";
+                        echo "<p><strong>Status:</strong> " . $ticket['Status'] . "</p>";
+                        echo "<p><strong>Reported by:</strong> " . $ticket['First_name'] . " " . $ticket['Lastname'] . "</p>";
+                        echo "<p><strong>Residence:</strong> " . $ticket['ResName'] . "</p>";
+                        echo "<p><strong>Date Created:</strong> " . date('F j, Y, g:i a', strtotime($ticket['DateCreated'])) . "</p>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p>No new tickets available.</p>";
+                }
+                ?>
+            </section>
 
-    if ($tickets_result->num_rows > 0) {
-        while ($ticket = $tickets_result->fetch_assoc()) {
-            // Check if the ticket status is "Approved"
-            if ($ticket['Status'] == 'Approved') {
-                $approvedTicket = true; // Set the flag
-            }
-            echo "<div class='notification'>";
-            echo "<p><strong>Ticket ID:</strong> " . $ticket['TicketID'] . "</p>";
-            echo "<p><strong>Description:</strong> " . $ticket['Description'] . "</p>";
-            echo "<p><strong>Status:</strong> " . $ticket['Status'] . "</p>";
-            echo "<p><strong>Reported by:</strong> " . $ticket['First_name'] . " " . $ticket['Lastname'] . "</p>";
-            echo "<p><strong>Residence:</strong> " . $ticket['ResName'] . "</p>";
-            echo "<p><strong>Date Created:</strong> " . date('F j, Y, g:i a', strtotime($ticket['DateCreated'])) . "</p>";
-            echo "</div>";
-        }
-    } else {
-        echo "<p>No new tickets available.</p>";
-    }
-
-    // If an approved ticket was found, trigger a JavaScript alert
-    if ($approvedTicket) {
-        echo "<script type='text/javascript'>alert('A ticket has been approved!');</script>";
-    }
-    ?>
-</section>
             <!-- Recent Comments Section -->
             <section>
                 <h2><i class="fas fa-comments"></i> Recent Comments on Tickets</h2>
@@ -181,17 +169,43 @@
                 ?>
             </section>
 
-            <script>            document.addEventListener('DOMContentLoaded', function() {
-                const hamburgerIcon = document.getElementById('hamburger-icon');
-                const sidebar = document.getElementById('sidebar');
-                const main = document.querySelector('main');
+            <!-- Alert for Approved Tickets -->
+            <script>
+                // Function to check if there are any approved tickets
+                function checkApprovedTickets() {
+                    <?php
+                    // Fetch approved tickets
+                    $sql_approved = "SELECT t.TicketID, u.First_name, u.Lastname 
+                                     FROM ticket t
+                                     JOIN user u ON t.StudentID = u.UserID
+                                     WHERE t.Status = 'Approved' AND t.DateCreated > DATE_SUB(NOW(), INTERVAL 1 DAY)";
+                    $approved_stmt = $conn->prepare($sql_approved);
+                    $approved_stmt->execute();
+                    $approved_result = $approved_stmt->get_result();
 
-                hamburgerIcon.addEventListener('click', function() {
-                    sidebar.classList.toggle('collapsed');
-                    main.classList.toggle('sidebar-collapsed');
-                });
-            });</script>
+                    if ($approved_result->num_rows > 0) {
+                        while ($approved_ticket = $approved_result->fetch_assoc()) {
+                            echo "alert('Ticket ID: " . $approved_ticket['TicketID'] . " approved for " . $approved_ticket['First_name'] . " " . $approved_ticket['Lastname'] . "!');";
+                        }
+                    }
+                    ?>
+                }
+                window.onload = checkApprovedTickets; // Call the function when the page loads
+            </script>
+        </div>
+    </main>
 
- 
+    <script>
+        // Add functionality to the hamburger icon to toggle the sidebar
+        document.getElementById('hamburger-icon').onclick = function () {
+            var sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        };
+
+        // Function to confirm logout
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+    </script>
 </body>
 </html>

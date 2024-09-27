@@ -340,6 +340,16 @@ canvas {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         });
+        document.addEventListener('DOMContentLoaded', function() {
+                const hamburgerIcon = document.getElementById('hamburger-icon');
+                const sidebar = document.getElementById('sidebar');
+                const main = document.querySelector('main');
+
+                hamburgerIcon.addEventListener('click', function() {
+                    sidebar.classList.toggle('collapsed');
+                    main.classList.toggle('sidebar-collapsed');
+                });
+            });
     </script>
     <style>
 
