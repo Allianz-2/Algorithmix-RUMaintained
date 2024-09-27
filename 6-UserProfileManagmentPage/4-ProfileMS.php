@@ -9,6 +9,7 @@
     include '7-ChangePassword.php';
     include '8-ChangeEmail.php';
     include '9-ChangeResidence.php';
+    include '15-ChangeSpecialisation.php';
     include '5-ProfileManagement.php';
 ?>
 
@@ -82,10 +83,7 @@
                         <strong>Role:</strong> <?php echo $roleFull ?>
                     </div>
                     <div class="info-item">
-                        <strong>Residence:</strong> <?php echo $resName ?>
-                    </div>
-                    <div class="info-item">
-                        <strong>Hall:</strong> <?php echo $hallName ?>
+                        <strong>Specialisation:</strong> <?php echo $specialisation ?>
                     </div>
                     <div class="info-item">
                         <strong>Email:</strong> <?php echo $email ?>
@@ -97,7 +95,7 @@
         
             <div class="info-section">
                 <h2><strong>Personal Information</strong></h2>
-                <form action="1-ProfileStudent.php" method="post" id="ChangeEmail">
+                <form action="4-ProfileMS.php" method="post" id="ChangeEmail">
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
                         <input type="text" id="fullName" name="fullName" value="<?php echo $firstname . ' ' . $lastname; ?>" readonly>
@@ -118,107 +116,42 @@
                     </form>
             </div>
             <div class="info-section">
-                <h2><strong>Residence Details</strong></h2>
-                <form action="1-ProfileStudent.php" method="post" id="ChangeResidence">
-                    <!-- <div class="form-group">
-                        <label for="Residence">Residence:</label>
-                        <input type="text" id="residence" name="residence" value="<?php echo $resName ?>" readonly>
-                    </div> -->
-
+                <h2><strong>Department or Division</strong></h2>
+                <form action="4-ProfileMS.php" method="post" id="ChangeSpecialisation" >
                     <div class="form-group">
-                    <label for="address">Select Residence:</label>
-                    <select name="residenceID" id="residence" disabled required>
-                      <option value="Select Residence"><?php echo $resName ?></option>
-                      <optgroup label="Allen Webb Hall">
-                        <option value="AWCN">Canterbury House</option>
-                        <option value="AWCA">Canterbury Annex House</option>
-                        <option value="AWSL">Salisbury House</option>
-                        <option value="AWTR">Truro House</option>
-                        <option value="AWWC">Winchester House</option>
-                      </optgroup>
-                      <optgroup label="Courtenay-Latimer Hall">
-                        <option value="CHBE">Beit House</option>
-                        <option value="CHJM">Jameson House</option>
-                        <option value="CHOR">Oriel House</option>
-                      </optgroup>
-                      <optgroup label="Desmond Tutu Hall">
-                        <option value="DTEK">Ellen Kuzwayo House</option>
-                        <option value="DTAC">Amina Cachalia House</option>
-                        <option value="HMCT">Calata House</option>
-                        <option value="DTMS">Margaret Smith House</option>
-                        <option value="HMH7">Hilltop 7 House</option>
-                        <option value="HMH8">Hilltop 8 House</option>
-                      </optgroup>
-                      <optgroup label="Drostdy Hall">
-                        <option value="DHAG">Allan Gray House</option>
-                        <option value="DHCE">Celeste House</option>
-                        <option value="DHGH">Graham House</option>
-                        <option value="DHPA">Prince Alfred House</option>
-                      </optgroup>
-                      <optgroup label="Founders Hall">
-                        <option value="FHBT">Botha House</option>
-                        <option value="FHCL">College House</option>
-                        <option value="FHCR">Cory House</option>
-                        <option value="FHM">Matthews House</option>
-                      </optgroup>
-                      <optgroup label="Hobson Hall">
-                        <option value="HHDH">Dingemans House</option>
-                        <option value="HHHH">Hobson House</option>
-                        <option value="HHLH">Livingstone House</option>
-                        <option value="HHMH">Milner House</option>
-                      </optgroup>
-                      <optgroup label="Jan Smuts Hall">
-                        <option value="JSAD">Adamson House</option>
-                        <option value="JSAS">Atherstone House</option>
-                        <option value="JSRS">Jan Smuts House</option>
-                        <option value="JSNW">New House</option>
-                      </optgroup>
-                      <optgroup label="Miriam Makeba Hall">
-                        <option value="MMCH">Chris Hani House</option>
-                        <option value="MMPR">Piet Retief House</option>
-                        <option value="MMTP">Thomas Pringle House</option>
-                        <option value="MMWH">Walker House</option>
-                      </optgroup>
-                      <optgroup label="Kimberley Hall">
-                        <option value="KHCB">Cullen Bowles House</option>
-                        <option value="KHDB">De Beers House</option>
-                        <option value="KHRP">Rosa Parks House</option>
-                        <option value="KHGF">Goldfields House</option>
-                      </optgroup>
-                      <optgroup label="Lilian Ngoyi Hall">
-                        <option value="LNCY">Centenary House</option>
-                        <option value="LNRF">Ruth First House</option>
-                        <option value="LNJS">Joe Slovo House</option>
-                        <option value="LNVM">Victoria Mxenge House</option>
-                      </optgroup>
-                      <optgroup label="Nelson Mandela Hall">
-                        <option value="NMSK">Stanley Kidd House</option>
-                        <option value="NMAT">Adelaide Tambo House</option>
-                        <option value="NMGB">Guy Butler House</option>
-                        <option value="NMHJ">Helen Joseph House</option>
-                      </optgroup>
-                      <optgroup label="St Mary Hall">
-                        <option value="SMJK">John Kotze House</option>
-                        <option value="SMLB">Lilian Britten House</option>
-                        <option value="SMOS">Olive Schreiner House</option>
-                        <option value="SMPH">Phelps House</option>
-                      </optgroup>
-                    </select>
-                </div>
-                
-                <div class="form-group" id="hallGroup">
-                        <label for="Hall">Hall:</label>
-                        <input type="text" id="hall" name="hall" value="<?php echo $hallName ?>" readonly>
+                        <label for="specialisation">Select Department or Divisions</label>
+                        <select name="specialisation" id="specialisation" disabled required>
+                            <option value="Select Department or Division"><?php echo $specialisation ?></option>
+                            <option value="Electrical Maintenance">Electrical Maintenance</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="Carpentry">Carpentry</option>
+                            <option value="HVAC">HVAC</option>
+                            <option value="General Maintenance">General Maintenance</option>
+                            <option value="Painting and Decorating">Painting and Decorating</option>
+                            <option value="Groundskeeping and Landscaping">Groundskeeping and Landscaping</option>
+                            <option value="Pest Control">Pest Control</option>
+                            <option value="Security Systems Maintenance">Security Systems Maintenance</option>
+                            <option value="Fire Safety Maintenance">Fire Safety Maintenance</option>
+                            <option value="Waste Management">Waste Management</option>
+                            <option value="Lift/Elevator Maintenance">Lift/Elevator Maintenance</option>
+                            <option value="Roofing and Waterproofing">Roofing and Waterproofing</option>
+                            <option value="Masonry">Masonry</option>
+                            <option value="Appliance Repair">Appliance Repair</option>
+                        </select>
                     </div>
-                    <button type="button" id="res-cancel-button" class="save-button" name="res-cancel-button" hidden onclick="toggleCancelResidenceEdit()">Cancel</button>
-                    <button type="button" id="res-edit-button" class="save-button" name="res-edit-button" onclick="toggleResidenceEdit()">Edit</button>
-                    <button type="submit" id="res-save-button" class="save-button" name="res-save-button" hidden>Save</button>
+                    <button type="button" id="spec-cancel-button" class="save-button" name="spec-cancel-button" hidden onclick="toggleCancelSpecialisationEdit()">Cancel</button>
+                    <button type="button" id="spec-edit-button" class="save-button" name="spec-edit-button" onclick="toggleSpecialisationEdit()">Edit</button>
+                    <button type="submit" id="spec-save-button" class="save-button" name="spec-save-button" hidden>Save</button>
                 </form>
-                
             </div>
+
+
+
+
+
             <div class="info-section">
                 <h2><strong>Change Password</strong></h2>
-                <form action="1-ProfileStudent.php" method="POST">
+                <form action="4-ProfileMS.php" method="POST">
                     <div class="form-group">
                         <label for="currentPassword">Current Password</label>
                         <input type="password" id="currentPassword" name="currentPassword" required>

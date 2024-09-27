@@ -45,6 +45,9 @@
                 Residence
             </a>
             </div>
+            <div class="sidebar-footer">
+                <p><a href="../5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+            </div>
             <!-- <div class="menu-item">
                 <a href="security page Sys Dev.html">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,7 +100,7 @@
         
             <div class="info-section">
                 <h2><strong>Personal Information</strong></h2>
-                <form action="1-ProfileStudent.php" method="post" id="ChangeEmail">
+                <form action="2-ProfileHW.php" method="post" id="ChangeEmail">
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
                         <input type="text" id="fullName" name="fullName" value="<?php echo $firstname . ' ' . $lastname; ?>" readonly>
@@ -119,7 +122,7 @@
             </div>
             <div class="info-section">
                 <h2><strong>Residence Details</strong></h2>
-                <form action="1-ProfileStudent.php" method="post" id="ChangeResidence">
+                <form action="2-ProfileHW.php" method="post" id="ChangeResidence">
                     <!-- <div class="form-group">
                         <label for="Residence">Residence:</label>
                         <input type="text" id="residence" name="residence" value="<?php echo $resName ?>" readonly>
@@ -218,7 +221,7 @@
             </div>
             <div class="info-section">
                 <h2><strong>Change Password</strong></h2>
-                <form action="1-ProfileStudent.php" method="POST">
+                <form action="2-ProfileHW.php" method="POST">
                     <div class="form-group">
                         <label for="currentPassword">Current Password</label>
                         <input type="password" id="currentPassword" name="currentPassword" required>

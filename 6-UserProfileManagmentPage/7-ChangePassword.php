@@ -19,7 +19,8 @@
         $confirmPassword = $_POST['confirmPassword'];
 
         if ($newPassword != $confirmPassword) {
-            echo "<script>alert('Passwords do not match. Please try again.'); window.location.href='1-ProfileStudent.php';</script>";
+            $_SESSION['alert'] = 'Passwords do not match. Please try again.';
+            header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         }
 
@@ -28,9 +29,11 @@
         
 
         if (!mysqli_stmt_prepare($stmt, $sql)) {
-            echo "<script>alert('SQL error occurred. Please try again.'); window.location.href='1-ProfileStudent.php';</script>";
+            $_SESSION['alert'] = 'SQL error occurred. Please try again.';
+            header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         } 
+        
         else {
             mysqli_stmt_bind_param($stmt, "s", $userID);
             mysqli_stmt_execute($stmt);
@@ -42,27 +45,34 @@
                     $stmt = mysqli_stmt_init($conn);
 
                     if (!mysqli_stmt_prepare($stmt, $sql)) {
-                        echo "<script>alert('SQL error occurred. Please try again.'); window.location.href='1-ProfileStudent.php';</script>";
+                        $_SESSION['alert'] = 'SQL error occurred. Please try again.';
+                        header("Location: " . $_SERVER['PHP_SELF']);
                         exit();
+                        
                     } else {
                         mysqli_stmt_bind_param($stmt, "ss", $newPassword, $userID);
                         mysqli_stmt_execute($stmt);
-                        echo "<script>alert('Password changed successfully.'); window.location.href='1-ProfileStudent.php';</script>";
+                        $_SESSION['alert'] = 'Password changed successfully.';
+                        header("Location: " . $_SERVER['PHP_SELF']);
                         exit();
                     }
-                } 
-                else {
-                    echo "<script>alert('Incorrect current password. Please try again.'); window.location.href='1-ProfileStudent.php';</script>";
+                
+                } else {
+                    $_SESSION['alert'] = 'Incorrect current password. Please try again.';
+                    header("Location: " . $_SERVER['PHP_SELF']);
                     exit();
                 }
-                    
+                
             } else {
-                    echo "<script>alert('Incorrect current password. Please try again.'); window.location.href='7-ChangePassword.php';</script>";
-                    exit();
-                }
-            } 
+                $_SESSION['alert'] = 'User not found';
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        }
         unset($_POST['submit-password']);
         $conn->close();
-        }
+
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
 ?>
-    

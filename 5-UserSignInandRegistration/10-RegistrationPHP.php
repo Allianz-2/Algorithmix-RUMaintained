@@ -21,11 +21,11 @@
         }
 
         // Insert user into the user table
-        $userID = $_POST['userID'];
+        $userID = strtoupper($_POST['userID']);
         $firstname = $_POST['firstname'];
         $lastname = $_POST['lastname'];
         $password = $_POST['password'];
-        $email = $_POST['email_address'];
+        $email = strtoupper($_POST['email_address']);
         $resID = $_POST['residenceID'];
         $hallID = $_POST['hall'];
         $role = $_POST['role'];

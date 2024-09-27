@@ -18,7 +18,7 @@ $category = isset($_GET['category']) ? $_GET['category'] : 'All';
 $status = isset($_GET['status']) ? $_GET['status'] : 'All';
 
 // Build the query based on filters
-$query = "SELECT t.TicketID, t.Category, t.ResidenceID, t.Status, t.DateCreated, t.Severity, t.WorkOrder 
+$query = "SELECT t.TicketID, t.CategoryID, t.ResidenceID, t.Status, t.DateCreated, t.Severity
           FROM ticket t 
           JOIN residence r ON t.ResidenceID = r.ResidenceID
           WHERE 1=1";

@@ -11,10 +11,10 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Hall Secretary') {
 $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
 
 // Fetch recent ticket updates
-$ticket_query = "SELECT t.TicketID, t.Description, t.DateCreated, t.Status, r.ResidenceName 
-                 FROM ticket t 
-                 JOIN residence r ON t.ResidenceID = r.ResidenceID 
-                 ORDER BY t.DateCreated DESC LIMIT 5";
+$ticket_query = "SELECT t.TicketID, t.Description, t.DateCreated, t.Status, r.ResName 
+    FROM ticket t 
+    JOIN residence r ON t.ResidenceID = r.ResidenceID 
+    ORDER BY t.DateCreated DESC LIMIT 5";
 $ticket_result = mysqli_query($conn, $ticket_query);
 
 // Fetch system alerts (you might need to create this table or adjust based on your system)

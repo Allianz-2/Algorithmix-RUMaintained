@@ -44,13 +44,13 @@
                                 <div class="dropdown-content">
                                     <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>';
                         if ($_SESSION['role'] == 'S') {
-                            echo '<a href="#">Student Dashboard</a>';
+                            echo '<a href="../6-UserProfileManagmentPage\1-ProfileStudent.php">Student Dashboard</a>';
                         } else if ($_SESSION['role'] == 'HW') {
-                            echo '<a href="#">House Warden Dashboard</a>';
+                            echo '<a href="../6-UserProfileManagmentPage\2-ProfileHW.php">House Warden Dashboard</a>';
                         } else if ($_SESSION['role'] == 'HS') {
-                            echo '<a href="#">Hall Secretary Dashboard</a>';
+                            echo '<a href="../6-UserProfileManagmentPage\3-ProfileHS.php">Hall Secretary Dashboard</a>';
                         } else if ($_SESSION['role'] == 'MS') {
-                            echo '<a href="#">Maintenance Dashboard</a>';
+                            echo '<a href="../6-UserProfileManagmentPage\4-ProfileMS.php">Maintenance Dashboard</a>';
                         }
                         echo '</div></div>';
                             //         <!-- <a href="#">Student Dashboard</a>
