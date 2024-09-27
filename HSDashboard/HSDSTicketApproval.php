@@ -1,5 +1,26 @@
 <?php
-require_once('config.php');
+    if (isset($_POST['submit'])) {
+        session_start();
+        require_once('../8-PHPTests/config.php');
+
+        // Initializes MySQLi
+        $conn = mysqli_init();
+
+        // Test if the CA certificate file can be read
+        if (!file_exists($ca_cert_path)) {
+        die("CA file not found: " . $ca_cert_path);
+        }
+
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+        // Establish the connection
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+        // If connection failed, show the error
+        if (mysqli_connect_errno()) {
+        die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
+
 
 // Fetch all maintenance requests
 $query = "select t.TicketID, t.Description, t.DateCreated, u.First_name, u.Lastname
@@ -22,30 +43,10 @@ function getTicketComments($conn, $ticketId) {
     $result = mysqli_stmt_get_result($stmt);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+    }
+    mysqli_close($conn);
 ?>
 
-// Fetch all maintenance requests
-$query = "SELECT t.TicketID, t.Description, t.DateCreated, u.First_name, u.Lastname, u.StudentID
-          FROM ticket t
-          JOIN user u ON t.StudentID = u.UserID
-          WHERE t.Status = 'Confirmed'";
-$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
-$results = mysqli_query($conn, $query);
-
-// Function to fetch comments for a ticket
-function getComments($conn, $ticketId) {
-    $query = "SELECT c.CommentID, c.Comment, c.DateCreated, u.First_name, u.Lastname, u.Role
-              FROM comments c
-              JOIN user u ON c.UserID = u.UserID
-              WHERE c.TicketID = ?
-              ORDER BY c.DateCreated DESC";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "i", $ticketId);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

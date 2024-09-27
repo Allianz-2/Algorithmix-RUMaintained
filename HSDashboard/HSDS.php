@@ -1,20 +1,26 @@
 <?php
+    if (isset($_POST['submit'])) {
+        session_start();
+        require_once('../8-PHPTests/config.php');
 
-// Define database connection constants
-define('SERVERNAME', 'IS3-DEV.ICT.RU.AC.ZA');
-define('USERNAME', 'Algorithmix');
-define('PASSWORD', 'U3fuC7P5');
-define('DATABASE', 'Algorithmix');
+        // Initializes MySQLi
+        $conn = mysqli_init();
 
+        // Test if the CA certificate file can be read
+        if (!file_exists($ca_cert_path)) {
+        die("CA file not found: " . $ca_cert_path);
+        }
 
-session_start();
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Hall Secretary') {
-    header("Location: login.php");
-    exit();
-}
+        // Establish the connection
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
-$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+        // If connection failed, show the error
+        if (mysqli_connect_errno()) {
+        die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
+    
 
 // Fetch filter values
 $dateRange = isset($_POST['date_range']) ? $_POST['date_range'] : 'Last 7 Days';
@@ -61,6 +67,7 @@ $completedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as 
 $onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM user WHERE LastActive > DATE_SUB(NOW(), INTERVAL 15 MINUTE)"))['count'];
 
 mysqli_close($conn);
+    }
 ?>
 
 
