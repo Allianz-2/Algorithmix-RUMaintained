@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RUMaintained</title>
     <link rel="stylesheet" href="/1-GeneralPages/CSS/1-Home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .home-section .profile-info {
         margin-right: 20px;
@@ -44,13 +45,13 @@
                                 <div class="dropdown-content">
                                     <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>';
                         if ($_SESSION['role'] == 'S') {
-                            echo '<a href="../6-UserProfileManagmentPage\1-ProfileStudent.php">Student Dashboard</a>';
+                            echo '<a href="../6-UserProfileManagmentPage\1-ProfileStudent.php">Profile</a>';
                         } else if ($_SESSION['role'] == 'HW') {
-                            echo '<a href="../6-UserProfileManagmentPage\2-ProfileHW.php">House Warden Dashboard</a>';
+                            echo '<a href="../6-UserProfileManagmentPage\2-ProfileHW.php">Profile</a>';
                         } else if ($_SESSION['role'] == 'HS') {
-                            echo '<a href="../6-UserProfileManagmentPage\3-ProfileHS.php">Hall Secretary Dashboard</a>';
+                            echo '<a href="../6-UserProfileManagmentPage\3-ProfileHS.php">Profile</a>';
                         } else if ($_SESSION['role'] == 'MS') {
-                            echo '<a href="../6-UserProfileManagmentPage\4-ProfileMS.php">Maintenance Dashboard</a>';
+                            echo '<a href="../6-UserProfileManagmentPage\4-ProfileMS.php">Profile</a>';
                         }
                         echo '</div></div>';
                             //         <!-- <a href="#">Student Dashboard</a>
@@ -65,7 +66,8 @@
             </nav>
             <?php if (isset($_SESSION['userID'])) {
                 echo '<div class="profile-info">
-                        <i class="fas fa-user default-icon" id="default-icon"></i>
+                        <a href= "7-RedirectProfile.php">
+                            <i class="fas fa-user default-icon" id="default-icon"></i></a>
                         <span class="profile-name">
                             ' . htmlspecialchars('Welcome '. $_SESSION['Firstname'] . '!') . '
                         </span>

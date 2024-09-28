@@ -7,7 +7,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RUMaintained - Campus Maintenance Made Easy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="/1-GeneralPages/CSS/3-AboutUs.css">
+    <style>
+        .home-section .profile-info {
+        margin-right: 20px;
+        font-size: 1.1rem
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -45,10 +52,20 @@
                 ?>
             <a href="2-ContactUs.php">Contact Us</a>
         </nav>
-        <div class="auth-buttons" style="visibility: <?php echo isset($_SESSION['userID']) ? 'hidden' : 'visible'; ?>;">
-            <a href="/5-UserSignInandRegistration/5-RegistrationStep1.html" class="login-button">Register</a>
-            <a href="/5-UserSignInandRegistration/6-SignInPage.php" class="signup-button">Sign in</a>
-        </div>
+        <?php if (isset($_SESSION['userID'])) {
+                echo '<div class="profile-info">
+                        <i class="fas fa-user default-icon" id="default-icon"></i>
+                        <span class="profile-name">
+                            ' . htmlspecialchars('Welcome '. $_SESSION['Firstname'] . '!') . '
+                        </span>
+                    </div>';
+            } else {
+                echo '<div class="auth-buttons">
+                        <a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>
+                        <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button login-button">Register</a>
+                    </div>';
+            }
+            ?>
     </header>
 
     <img src="../Images/General/Image.jpeg" alt="Campus view" class="hero" />
