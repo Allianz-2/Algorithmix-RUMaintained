@@ -118,7 +118,6 @@
         <ul>
             <li><a href="#"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
             <li class="active"><a href="TaskAssignment.html"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
-            <li><a href="inventorymanagement.html"><i class="fas fa-wrench"></i>Inventory Management</a></li>
             <li><a href="performance_analytics.html"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li><a href="MaintenanceNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>
@@ -140,26 +139,62 @@
         </header>
 
         <?php 
-require_once('config.php');
+//require_once('config.php');
+
+
+
+
+
+
+// Connection information//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+require '../../8-PHPTests/config.php';
+
+// Initializes MySQLi
+$conn = mysqli_init();
+$ca_cert_path = "../../CACertificate/DigiCertGlobalRootCA.crt.pem"; // Absolute path to the CA cert
+
+// Test if the CA certificate file can be read
+if (!file_exists($ca_cert_path)) {
+    die("CA file not found: " . $ca_cert_path);
+}
+
+mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+// Establish the connection
+mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+// If connection failed, show the error
+if (mysqli_connect_errno()) {
+    die('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
+
+// Connection information//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 // Fetch all maintenance requests
 $query = "
     SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, 
-           u.First_name AS StudentFirstName, u.Lastname AS StudentLastName
+           u.Firstname AS StudentFirstName, u.Lastname AS StudentLastName
     FROM ticket t
     JOIN user u ON t.StudentID = u.UserID";
-$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+// $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
 $results = mysqli_query($conn, $query);
 
 // Fetch task statistics
 $totalTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTasks FROM ticket"))['TotalTasks'];
 $pendingTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTasks FROM ticket WHERE Status = 'Open'"))['PendingTasks'];
 $completedTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTasks FROM ticket WHERE Status = 'Resolved'"))['CompletedTasks'];
-$emergencyTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as EmergencyTasks FROM ticket WHERE Severity = 'high'"))['EmergencyTasks'];
+$emergencyTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as EmergencyTasks FROM ticket WHERE Severity = 'High'"))['EmergencyTasks'];
 
 // Fetch assigned maintenance staff for each ticket
-$sql_assignments = "
-    SELECT a.TicketID, u.First_name AS AssignedFirstName, u.Lastname AS AssignedLastName
+$sql_assignments = "SELECT a.TicketID, u.Firstname AS AssignedFirstName, u.Lastname AS AssignedLastName
     FROM assignment a
     JOIN maintenancestaff ms ON a.MaintenanceStaffID = ms.MaintenanceStaffID
     JOIN user u ON ms.UserID = u.UserID";
@@ -260,7 +295,12 @@ while ($assignment = mysqli_fetch_assoc($assignments_result)) {
             }
         });
   
-            document.addEventListener('DOMContentLoaded', function() {
+        // Sidebar toggle
+        document.getElementById('hamburger-icon').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        });
+        document.addEventListener('DOMContentLoaded', function() {
                 const hamburgerIcon = document.getElementById('hamburger-icon');
                 const sidebar = document.getElementById('sidebar');
                 const main = document.querySelector('main');
