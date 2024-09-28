@@ -133,7 +133,7 @@
                 <strong>House Warden Dashboard</strong>
             </div>
             <div class="logo">
-                <img src="Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RU Maintained Logo">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
             </div>
         </header>
 
