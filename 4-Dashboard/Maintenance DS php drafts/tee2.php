@@ -143,7 +143,7 @@
         ?>
 
         <div class="content">
-            <h3>Maintenance Requests</h3>
+            <h2>Maintenance Requests</h2>
             <div class="filters">
                 <div class="filter-group">
                     <label for="date-filter">Date Range</label>

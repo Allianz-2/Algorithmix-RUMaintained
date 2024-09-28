@@ -132,7 +132,7 @@ $onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as Online
 
 ?>
         <div class="content">
-            <h3>Maintenance Requests</h3>
+            <h2>Maintenance Requests</h2>
             <div class="filters">
                 <div class="filter-group">
                     <label for="date-filter">Date Range</label>
@@ -335,20 +335,7 @@ $onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as Online
         }
 
 
-        document.addEventListener('DOMContentLoaded', function() {
-                const hamburgerIcon = document.getElementById('hamburger-icon');
-                const sidebar = document.getElementById('sidebar');
-                const main = document.querySelector('main');
-
-                hamburgerIcon.addEventListener('click', function() {
-                    sidebar.classList.toggle('collapsed');
-                    main.classList.toggle('sidebar-collapsed');
-                });
-            });
-
-            function confirmLogout() {
-                return confirm("Are you sure you want to log out?");
-            } 
+        
     </script>
 </body>
 </html>
