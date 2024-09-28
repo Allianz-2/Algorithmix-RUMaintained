@@ -1,4 +1,5 @@
 <?php
+
     if (isset($_POST['email'])) {
         require '../8-PHPTests/config.php';
 
