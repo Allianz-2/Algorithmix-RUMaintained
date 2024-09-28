@@ -1,3 +1,10 @@
+<?php
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,11 +171,13 @@
         }
 
         table {
+            align-self: center;
             width: 100%;
             border-collapse: collapse;
         }
 
         th, td {
+            align-items: center;
             border: 1px solid #ddd;
             padding: 12px;
             text-align: middle;
@@ -200,28 +209,45 @@
     color: #fff;
     cursor: pointer;
 }
+
+button {
+    padding: 5px 10px; 
+    font-size: 1rem; 
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #81589a;
+    color: #ffffff;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
 
 <?php
+    require '../8-PHPTests/config.php';
 
-require_once("config.php");
+            
+    $conn = mysqli_init(); 
+    if (!file_exists($ca_cert_path)) {
+        die("CA file not found: " . $ca_cert_path);
+    }
+    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
-$conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DATABASE);
-
-//connection error info here
+    if (mysqli_connect_errno()) {
+        die('Failed to connect to MySQL: ' . mysqli_connect_error());
+    }
 
 $sql = "SELECT * FROM ticket";
 
 $result = $conn->query($sql);
 
-
 ?>
 
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+            <span class="user-welcome"><?php 'Welcome '. $_SESSION['Firstname'] . '!'?></span>
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
@@ -247,7 +273,9 @@ $result = $conn->query($sql);
             </div>
         </header>
     <body>
-        
+    <div>
+                    <a href="#"><button class="ticketButton" type ="submit">Create New Ticket</button></a>
+            </div> 
 <div>
     <h3>My Tickets</h3>
 
@@ -273,7 +301,7 @@ $result = $conn->query($sql);
                         echo "<td>{$row['Status']}</td>";
                         echo "<td>{$row['Description']}</td>";
                         echo "<td>{$row['Severity']}</td>";
-                        echo "<td><a href='#'>Details</a></td>";       
+                        echo "<td><button>Details</a></td>";       
                         echo "</tr>";
                     
                         }
@@ -281,10 +309,8 @@ $result = $conn->query($sql);
                         ?>
 
             </div>
-            <br>
-                <div>
-                    <a href="#"><button class="ticketButton" type ="submit">Create New Ticket</button></a>
-            </div>
+        
+               
             </body>
 
     <script>

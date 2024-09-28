@@ -1,3 +1,24 @@
+<?php
+ require '../8-PHPTests/config.php';
+
+            
+ $conn = mysqli_init(); 
+ if (!file_exists($ca_cert_path)) {
+     die("CA file not found: " . $ca_cert_path);
+ }
+ mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+ mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+ if (mysqli_connect_errno()) {
+     die('Failed to connect to MySQL: ' . mysqli_connect_error());
+ }
+
+$sql = "SELECT CategoryID FROM ticekt";
+
+$result = $conn->query($sql);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +26,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        <?php 
+
+$sql = "SELECT CategoryID, count(TicketID) FROM ticekt";
+
+$result = $conn->query($sql);
+
+echo "var data = google.visualization.arrayToDataTable([";
+        echo   "['Task', 'Hours per Day'],";
+
+        while ($row = $result->fetch_assoc()) {
+         echo    "['{$row['CategoryID']}, {$row['count(TicketID)']}],";
+        }
+          
+          
+       echo "]);";
+
+       ?>
+
+        var options = {
+          title: 'My Daily Activities',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
     <style>
         :root {
             --sidebar-width: 250px;
@@ -203,6 +257,7 @@
     </style>
 </head>
 <body>
+
     <nav id="sidebar" class="sidebar">
         <div class="logo">
             <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
@@ -276,7 +331,7 @@
                 </div>
             </div>
     
-       
+            <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
