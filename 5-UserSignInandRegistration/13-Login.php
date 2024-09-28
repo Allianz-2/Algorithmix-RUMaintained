@@ -21,6 +21,13 @@
         die('Failed to connect to MySQL: ' . mysqli_connect_error());
         }
 
+
+
+
+
+
+
+        
         $userID = $_POST['userID'];
         $password = $_POST['password'];
         $current_url = isset($_POST['current_url']) ? urldecode($_POST['current_url']) : '../1-GeneralPages/1-Home.php';
