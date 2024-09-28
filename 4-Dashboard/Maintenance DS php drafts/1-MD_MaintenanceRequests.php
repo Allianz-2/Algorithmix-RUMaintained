@@ -125,13 +125,34 @@
         </header>
 
         <?php 
-        require_once('config.php');
+        // require_once('config.php');
+
+        require '../../8-PHPTests/config.php';
+
+// Initializes MySQLi
+$conn = mysqli_init();
+$ca_cert_path = "../../CACertificate/DigiCertGlobalRootCA.crt.pem"; // Absolute path to the CA cert
+
+// Test if the CA certificate file can be read
+if (!file_exists($ca_cert_path)) {
+    die("CA file not found: " . $ca_cert_path);
+}
+
+mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+// Establish the connection
+mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+// If connection failed, show the error
+if (mysqli_connect_errno()) {
+    die('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
 
         // Fetch all maintenance requests
-        $query = "SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, u.First_name, u.Lastname 
+        $query = "SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, u.Firstname, u.Lastname 
                   FROM ticket t
                   JOIN user u ON t.StudentID = u.UserID";
-        $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+        // $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
         $results = mysqli_query($conn, $query);
 
         // Fetch task statistics
@@ -240,7 +261,7 @@
                     <td><?php echo $row['Status']; ?></td>
                     <td><?php echo $row['Severity']; ?></td>
                     <td><?php echo $row['DateCreated']; ?></td>
-                    <td><?php echo $row['First_name'] . " " . $row['Lastname']; ?></td>
+                    <td><?php echo $row['Firstname'] . " " . $row['Lastname']; ?></td>
                 </tr>
                 <?php endwhile; ?>
             </table>

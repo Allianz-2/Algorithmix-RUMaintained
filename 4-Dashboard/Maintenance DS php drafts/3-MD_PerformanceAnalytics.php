@@ -79,7 +79,7 @@ canvas {
         </header>
         
         <?php
-        // Database connection parameters
+        //Database connection parameters
         define('SERVERNAME', 'IS3-DEV.ICT.RU.AC.ZA');
         define('USERNAME', 'Algorithmix');
         define('PASSWORD', 'U3fuC7P5');
@@ -93,6 +93,7 @@ canvas {
             echo "Connection failed: " . $e->getMessage();
             exit();
         }
+
 
         // Fetch maintenance fault stats per semester per residence
         function getMaintenanceFaultStatsPerSemester($conn) {
@@ -108,9 +109,11 @@ canvas {
                 JOIN residence r ON t.ResidenceID = r.ResidenceID
                 WHERE t.Status = 'Resolved'
                 GROUP BY r.ResName, Year, Semester
-            ";
+         ";
             return $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
         }
+
+
 
         // Fetch maintenance fault progress
         function getMaintenanceFaultProgress($conn) {
