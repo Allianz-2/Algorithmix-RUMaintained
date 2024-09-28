@@ -92,6 +92,20 @@
     color: #81589a; /* Color of icons */
 }
 
+.btn-delete {
+    background-color: #e57373; /* Light red color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: #c62828; /* Darker red on hover */
+}
+
         
     </style>
 </head>
@@ -194,17 +208,17 @@ while ($assignment = mysqli_fetch_assoc($assignments_result)) {
                     ?>
                 </td>
                 <td>
-                    <!-- Form for Update -->
-                    <form action="update-ticket.php" method="post" style="display:inline;">
-                        <input type="hidden" name="TicketID" value="<?php echo $row['TicketID']; ?>">
-                        <button type="submit" class="btn-update">Update</button>
-                    </form>
+<!-- Form for Update -->
+<form action="update-ticket.php" method="post" style="display:inline; margin-right: 10px;"> <!-- Added margin to right -->
+    <input type="hidden" name="TicketID" value="<?php echo $row['TicketID']; ?>">
+    <button type="submit" class="btn-update" style="padding: 5px 10px; font-size: 14px;">Update</button> <!-- Smaller button -->
+</form>
 
-                    <!-- Form for Delete -->
-                    <form action="delete-ticket.php" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this ticket?');">
-                        <input type="hidden" name="TicketID" value="<?php echo $row['TicketID']; ?>">
-                        <button type="submit" class="btn-delete">Delete</button>
-                    </form>
+<!-- Form for Delete -->
+<form action="delete-ticket.php" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this ticket?');">
+    <input type="hidden" name="TicketID" value="<?php echo htmlspecialchars($row['TicketID']); ?>">
+    <button type="submit" class="btn-delete" style="background-color: #e57373; color: white; border: none; padding: 5px 10px; font-size: 14px; border-radius: 5px; cursor: pointer; margin-left: 10px;">Delete</button> <!-- Added margin to left -->
+</form>
                 </td>
             </tr>
             <?php endwhile; ?>
