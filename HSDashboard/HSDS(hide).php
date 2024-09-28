@@ -1,9 +1,7 @@
 <?php
-<<<<<<< Updated upstream
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
 
     if (isset($_POST['submit'])) {
-        session_start();
         require_once('../8-PHPTests/config.php');
 
         // Initializes MySQLi
@@ -13,41 +11,6 @@
         if (!file_exists($ca_cert_path)) {
         die("CA file not found: " . $ca_cert_path);
         }
-=======
-    require '../8-PHPTests/config.php';
-
-    // Initializes MySQLi
-    $conn = mysqli_init();
-
-    // Test if the CA certificate file can be read
-    if (!file_exists($ca_cert_path)) {
-        die("CA file not found: " . $ca_cert_path);
-    }
-
-    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-
-    // Establish the connection
-    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-    // If connection failed, show the error
-    if (mysqli_connect_errno()) {
-        die('Failed to connect to MySQL: ' . mysqli_connect_error());
-    }
-
-// Check if user is logged in and is a Hall Secretary
-// if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Hall Secretary') {
-//     header("Location: ../5-UserSignInandRegistration/6-SignInPage.php");
-//     exit();
-// }
-
-
-// Fetch filter values (you may want to implement these as actual form inputs)
-$dateRange = isset($_POST['date_range']) ? $_POST['date_range'] : 'Last 7 Days';
-$residence = isset($_POST['residence']) ? $_POST['residence'] : 'All';
-$severity = isset($_POST['severity']) ? $_POST['severity'] : 'All';
-$category = isset($_POST['category']) ? $_POST['category'] : 'All';
-$status = isset($_POST['status']) ? $_POST['status'] : 'All';
->>>>>>> Stashed changes
 
         mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
 
@@ -60,52 +23,54 @@ $status = isset($_POST['status']) ? $_POST['status'] : 'All';
         }
     
 
-// Fetch filter values
-$dateRange = isset($_POST['date_range']) ? $_POST['date_range'] : 'Last 7 Days';
-$residence = isset($_POST['residence']) ? $_POST['residence'] : 'All';
-$severity = isset($_POST['severity']) ? $_POST['severity'] : 'All';
-$category = isset($_POST['category']) ? $_POST['category'] : 'All';
-$status = isset($_POST['status']) ? $_POST['status'] : 'All';
+        // Fetch filter values
+        $dateRange = isset($_POST['date_range']) ? $_POST['date_range'] : 'Last 7 Days';
+        $residence = isset($_POST['residence']) ? $_POST['residence'] : 'All';
+        $severity = isset($_POST['severity']) ? $_POST['severity'] : 'All';
+        $category = isset($_POST['category']) ? $_POST['category'] : 'All';
+        $status = isset($_POST['status']) ? $_POST['status'] : 'All';
 
-// Use prepared statements to avoid SQL injection
-$query = "SELECT t.TicketID, t.Category, t.ResidenceID, t.Status, t.DateCreated, t.Severity, t.PhotoURL, r.ResName
-          FROM ticket t 
-          JOIN residence r ON t.ResidenceID = r.ResidenceID 
-          WHERE 1=1";
+        // Use prepared statements to avoid SQL injection
+        $query = "SELECT t.TicketID, t.Category, t.ResidenceID, t.Status, t.DateCreated, t.Severity, t.PhotoURL, r.ResName
+                FROM ticket t 
+                JOIN residence r ON t.ResidenceID = r.ResidenceID 
+                WHERE 1=1";
 
-if ($dateRange !== 'All') {
-    $date = date('Y-m-d', strtotime("-7 days")); // Example for "Last 7 Days"
-    $query .= " AND t.DateCreated >= '$date'";
-}
-if ($residence !== 'All') {
-    $query .= " AND r.ResidenceName = '$residence'";
-}
-if ($severity !== 'All') {
-    $query .= " AND t.Severity = '$severity'";
-}
-if ($category !== 'All') {
-    $query .= " AND t.Category = '$category'";
-}
-if ($status !== 'All') {
-    $query .= " AND t.Status = '$status'";
-}
+        if ($dateRange !== 'All') {
+            $date = date('Y-m-d', strtotime("-7 days")); // Example for "Last 7 Days"
+            $query .= " AND t.DateCreated >= '$date'";
+        }
+        if ($residence !== 'All') {
+            $query .= " AND r.ResidenceName = '$residence'";
+        }
+        if ($severity !== 'All') {
+            $query .= " AND t.Severity = '$severity'";
+        }
+        if ($category !== 'All') {
+            $query .= " AND t.Category = '$category'";
+        }
+        if ($status !== 'All') {
+            $query .= " AND t.Status = '$status'";
+        }
 
-$query .= " ORDER BY t.DateCreated DESC LIMIT 10";
+        $query .= " ORDER BY t.DateCreated DESC LIMIT 10";
 
-$result = mysqli_query($conn, $query);
-if (!$result) {
-    die('Error: ' . mysqli_error($conn));
-}
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            die('Error: ' . mysqli_error($conn));
+        }
 
-// Fetch statistics
-$totalRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket"))['count'];
-$pendingRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Pending'"))['count'];
-$viewedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Viewed'"))['count'];
-$completedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Completed'"))['count'];
+        mysqli_close($conn);
 
-
-mysqli_close($conn);
     }
+        // Fetch statistics
+        $totalRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket"))['count'];
+        $pendingRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Pending'"))['count'];
+        $viewedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Viewed'"))['count'];
+        $completedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Completed'"))['count'];
+
+
+    
 ?>
 
 
@@ -113,7 +78,7 @@ mysqli_close($conn);
 <html lang="en">
 <head>
     <title>Hall Secretary Dashboard - Requests</title>
-    <link rel="stylesheet" href="HSDashboard\Dashboard.css">
+    <link rel="stylesheet" href="Dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
@@ -190,11 +155,7 @@ mysqli_close($conn);
                         <th>Status</th>
                         <th>Submission Date</th>
                         <th>Severity</th>
-<<<<<<< Updated upstream
                 
-=======
-                       
->>>>>>> Stashed changes
                     </tr>
                     <?php while ($row = mysqli_fetch_assoc($result)): ?>
                     <tr>
@@ -204,11 +165,7 @@ mysqli_close($conn);
                         <td><?php echo htmlspecialchars($row['Status']); ?></td>
                         <td><?php echo htmlspecialchars($row['DateCreated']); ?></td>
                         <td><?php echo htmlspecialchars($row['Severity']); ?></td>
-<<<<<<< Updated upstream
             
-=======
-                        
->>>>>>> Stashed changes
                     </tr>
                     <?php endwhile; ?>
                 </table>

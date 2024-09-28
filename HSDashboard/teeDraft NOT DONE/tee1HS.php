@@ -6,6 +6,8 @@
     <title>RU Maintained Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="Z:\Algorithmix-RUMaintained\HSDashboard\teeDraft NOT DONE\tee1HS.js"></script>
     <link rel="stylesheet" href="Dashboard.css">
     <style>
         body {
@@ -44,7 +46,7 @@
             flex: 1;
         }
         .stat-box {
-            background-color: #f1eaf5;
+            background-color: white;
             color:#81589a; 
             border-radius: 10px;
             padding: 20px;
@@ -62,7 +64,7 @@
         .stat-box h4 {
             margin: 10px 0;
             font-size: 1.2em;
-            color: #81589a;
+            color: #333;
         }
         .stat-box p {
             font-size: 2em;
@@ -75,14 +77,32 @@
             top: 10px;
             right: 10px;
         }
-        .charts {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            max-width: 800px; 
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .chart-container {
+    background-color: white;
+    color: #81589a;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+    margin: 20px; /* Increased margin to match other elements */
+    transition: transform 0.2s;
+    flex: 1;
+    text-align: center;
+    position: relative;
+    max-width: 380px; /* Ensures consistency in chart width */
+}
+
+.chart-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.charts {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    padding: 20px;
+}
+
     </style>
 </head>
 <body>
@@ -108,7 +128,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Maintenance Staff Dashboard</strong>
+                <strong>Hall Secretary Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RU Maintained Logo">
@@ -128,11 +148,11 @@ $completedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as C
 $viewedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as ViewedTickets FROM ticketcomment WHERE TicketID IN (SELECT TicketID FROM ticket WHERE Status IN ('Resolved', 'Closed'))"))['ViewedTickets'];
 
 // Fetch online users
-$onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as OnlineUsers FROM user WHERE role = 'ST' AND UserID IN (SELECT UserID FROM student)"))['OnlineUsers'];
+//$onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as OnlineUsers FROM user WHERE role = 'ST' AND UserID IN (SELECT UserID FROM student)"))['OnlineUsers'];
 
 ?>
         <div class="content">
-            <h2>Maintenance Requests</h2>
+            <h2> Requests</h2>
             <div class="filters">
                 <div class="filter-group">
                     <label for="date-filter">Date Range</label>
@@ -193,8 +213,42 @@ $onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as Online
 
             <div class="charts">
                 <!-- Charts will be added here -->
-                <canvas id="requestChart"></canvas>
-                <canvas id="residenceChart"></canvas>
+                <div id="requestChart" style="width: 400px; height: 300px;"></div>
+<div id="residenceChart" style="width: 400px; height: 300px;"></div>
+
+                <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        // Chart 1: Requests by Residence
+        var requestData = google.visualization.arrayToDataTable([
+            ['Residence', 'Requests'],
+            ['Chris Hani House', 10],
+            ['Other Residence', 30]
+        ]);
+        var requestOptions = {
+            title: 'Requests by Residence'
+        };
+        var requestChart = new google.visualization.PieChart(document.getElementById('requestChart'));
+        requestChart.draw(requestData, requestOptions);
+
+        // Chart 2: Ticket Status
+        var ticketData = google.visualization.arrayToDataTable([
+            ['Status', 'Count'],
+            ['Pending', <?php echo $pendingTickets; ?>],
+            ['Completed', <?php echo $completedTickets; ?>],
+            ['Viewed', <?php echo $viewedTickets; ?>]
+        ]);
+        var ticketOptions = {
+            title: 'Ticket Status Distribution'
+        };
+        var ticketChart = new google.visualization.BarChart(document.getElementById('residenceChart'));
+        ticketChart.draw(ticketData, ticketOptions);
+    }
+</script>
+
+                
             </div>
             <div class="stats">
     <div class="stat-box">
@@ -213,10 +267,7 @@ $onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as Online
         <h4>Viewed Tickets</h4>
         <p id="viewed-tickets"><?php echo $viewedTickets; ?></p>
     </div>
-    <div class="stat-box">
-        <h4>Online Users</h4>
-        <p id="online-users"><?php echo $onlineUsers; ?></p>
-    </div>
+    
 </div>
 
             <table>
@@ -336,6 +387,21 @@ $onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as Online
 
 
         
+    </script>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
+
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
     </script>
 </body>
 </html>
