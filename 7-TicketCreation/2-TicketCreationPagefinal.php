@@ -26,9 +26,9 @@
         $description =  $_POST['description'];
         $severity = $_POST['severity'];
         $date_created = strval(date("Y-m-d H:i:s"));
-        $hallWardenID = "SHWS6666";
-        $categoryID = "CE049";
-        $studentID = "G21G6825";
+        // $hallWardenID = "SHWS6666";
+        // $categoryID = "CE049";
+        $studentID = $_SESSION["userID"];
 
 
         $SQL_res = $conn->prepare("SELECT ResidenceID from residence WHERE HouseWardenID = ?");

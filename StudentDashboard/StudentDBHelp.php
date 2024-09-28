@@ -3,13 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="Dashboard.css">
-        
-</head>
-<body>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --sidebar-width: 250px;
@@ -27,7 +22,7 @@
 
         .sidebar {
             width: var(--sidebar-width);
-            background-color: purple;
+            background-color: #81589a;
             color: white;
             height: 100vh;
             position: fixed;
@@ -183,20 +178,6 @@
             background-color: white;
         }
 
-        button {
-            background-color: #333333;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-   
 
 .logo img {
     max-height: 60px;  /* Adjust this value as needed */
@@ -209,99 +190,129 @@
     margin-right: 20px;
 }   
 
-.search-container {
-    margin: 20px 0; /* Add some margin */
+.sectionfaq-section {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+}
+.faq-item {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.faq-question {
+    background-color: #fff;
+    color: #81589a;
+    padding: 15px;
+    cursor: pointer;
+    position: relative;
+}
+.faq-question::after {
+    content: '+';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.faq-answer {
+    display: none;
+    padding: 15px;
+    background-color: #f8f9fa;
 }
 
-#searchInput {
-    width: 10%; /* Full width */
-    padding: 10px; /* Padding for the input */
-    font-size: 16px; /* Font size */
-    border: 1px solid #ccc; /* Border style */
-    border-radius: 4px; /* Rounded corners */
+.contactButton {
+    padding: 10px 20px; 
+    font-size: 1rem; 
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #81589a;
+    color: #fff;
+    cursor: pointer;
 }
-
     </style>
-      <nav id="sidebar" class="sidebar">
+</head>
+<body>
+    <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span> <!-- <?php echo $fullName; ?> I THINK -->
-           <a href="user page"><i class="fas fa-user"></i></a> 
+            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+            <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="#"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="#"><i class="fa fa-spinner"></i>Ticket Progress</a></li>
-            <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="#"><i class="fas fa-university"></i>Res Communication</a></li>
-            <li><a href="#"><i class="fa fa-ticket"></i>Lodge Ticket</a></li>
-
+            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+            <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li class="active"><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
+
     <main>
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>House Warden Dashboard</strong>
+                <strong>Student Dashboard</strong>
             </div>
-            <div class="logo"><img src="../Images/General//93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo2"></div>
+            <div class="logo">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
+            </div>
         </header>
+
         
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question">What is this system used for?</div>
+                <div class="faq-answer">This system is designed to help students and staff report and manage maintenance issues within university residences efficiently.</div>
             </div>
-        </header>
+            <div class="faq-item">
+                <div class="faq-question">How do I report a maintenance issue?</div>
+                <div class="faq-answer">You can report an issue by logging into your account, navigating to the "Report Issue" section, and filling out the necessary details about the problem.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I track the status of my maintenance request?</div>
+                <div class="faq-answer">Yes, once you report an issue, you can track its status from your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What type of maintenance issue can I report?</div>
+                <div class="faq-answer">You can report any issue related to the upkeep and maintenance of your residence, including plumbing, electrical, or general repairs.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What should I do if I forget my password?</div>
+                <div class="faq-answer">Click on the "Forgot Password" link on the login page and follow the instructions to reset your password.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Didn't find an answer?</div>
+                <div class="faq-answer"><a href="#"><button class="contactButton" type ="submit">Contact Us</button></a></div>
+            </div>
+       
+       
 
-        </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
 
-        <h2>Track Ticket Progress</h2>
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
 
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search..." />
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Ticket Description</th>
-                    <th>Ticket Status</th>
-                    <th>Ticket Severity</th>
-                    <th>Date Approved</th>
-                    <th>Maintenace Staff responsible</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>The pool table at the res has collapsed</td>
-                    <td>Open</td>
-                    <td>Medium</td>
-                    <td>5th of April 2023</td>
-                    <td>Banoyolo Sicwebu</td>
-                </tr>
-                <tr>
-                    <td>The pool table at the res has collapsed</td>
-                    <td>Open</td>
-                    <td>Medium</td>
-                    <td>5th of April 2023</td>
-                    <td>Banoyolo Sicwebu</td>
-                </tr>
-                <tr>
-                    <td>The pool table at the res has collapsed</td>
-                    <td>Open</td>
-                    <td>Medium</td>
-                    <td>5th of April 2023</td>
-                    <td>Banoyolo Sicwebu</td>
-                </tr>
-                <tr>
-                    <td>The pool table at the res has collapsed</td>
-                    <td>Open</td>
-                    <td>Medium</td>
-                    <td>5th of April 2023</td>
-                    <td>Banoyolo Sicwebu</td>
-                </tr>
-                </tr>
-            </tbody>
-        </table>
-    </main>
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                question.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>

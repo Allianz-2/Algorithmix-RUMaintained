@@ -3,196 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="Dashboard.css">
-<style>
-    :root {
-    --sidebar-width: 250px;
-    --sidebar-collapsed-width: 0px;
-}
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --sidebar-collapsed-width: 0px;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    color: #333333;
-    background-color: #f2f2f2;
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            color: #333333;
+            background-color: #f2f2f2;
+        }
 
-.sidebar {
-    width: var(--sidebar-width);
-    background-color: #81589a;
-    color: white;
-    height: 100vh;
-    position: fixed;
-    transition: all 0.3s;
-    left: 0;
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #81589a;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            transition: all 0.3s;
+            left: 0;
+    
+        }
 
-}
-
-.sidebar a {
+        .sidebar a {
     color: white;
     text-decoration: none;
 }
 
-.sidebar.collapsed {
-    left: calc(-1 * var(--sidebar-width));
-    display: none;
-}
+        .sidebar.collapsed {
+            left: calc(-1 * var(--sidebar-width));
+            display: none;
+        }
 
-.sidebar .logo {
-    padding: 20px;
-    text-align: right;
-}
+        .sidebar .logo {
+            padding: 20px;
+            text-align: right;
+        }
 
-.sidebar .logo a {
-    color: white;  /* Change user icon to white */
-}
+        .sidebar .logo a {
+            color: white;  /* Change user icon to white */
+        }
 
-.sidebar ul {
-    list-style-type: none;
-    padding: 0;
-}
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
-.sidebar li {
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        .sidebar li {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-.sidebar li:hover, .sidebar li.active {
-    background-color: rgba(255, 255, 255, 0.1);
-}
+        .sidebar li:hover, .sidebar li.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
 
-.sidebar .badge {
-    background-color: purple;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 50%;
-    font-size: 0.8em;
-    margin-left: 5px;
-}
+        .sidebar .badge {
+            background-color: purple;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
 
-.sidebar-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    padding: 20px;
-    font-size: 16px;
-}
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 20px;
+            font-size: 16px;
+        }
 
-.sidebar li i, .sidebar-footer button i {
-    margin-right: 10px;
-    width: 20px;
-    text-align: center;
-}
+        .sidebar li i, .sidebar-footer button i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
 
-main {
-    flex-grow: 1;
-    margin-left: var(--sidebar-width);
-    padding: 20px;
-    transition: margin-left 0.3s;
-}
+        main {
+            flex-grow: 1;
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
 
-main.sidebar-collapsed {
-    margin-left: 0;
-}
+        main.sidebar-collapsed {
+            margin-left: 0;
+        }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    background-color: white;  /* Change header to a banner style */
-    color: #333333;
-    padding: 10px 20px;
-    /* Adjust for padding */
-}
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;  /* Change header to a banner style */
+            color: #333333;
+            padding: 10px 20px;
+            /* Adjust for padding */
+        }
 
-.hamburger-icon {
-    font-size: 24px;
-    cursor: pointer;
-    display: inline-block;
-    padding: 10px;
-}
+        .hamburger-icon {
+            font-size: 24px;
+            cursor: pointer;
+            display: inline-block;
+            padding: 10px;
+        }
 
-.filters {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
+        .filters {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
 
-.filter-group select {
-    padding: 5px;
-    border-radius: 4px;
-    border: 1px solid #d1d5db;
-    background-color: white;
-    margin-right: 10px;
+        .filter-group select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #d1d5db;
+            background-color: white;
+            margin-right: 10px;
 
-}
+        }
 
-.filter-group {
-    display: flex;
-    flex-direction: column;
-}
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
 
-.filter-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
+        .filter-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-.charts {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
+        .charts {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
 
-.stats {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
 
-.stat-box {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    flex: 1;
-    text-align: center;
-}
+        .stat-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            flex: 1;
+            text-align: center;
+        }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: middle;
-}
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: middle;
+        }
 
-th {
-    background-color: white;
-}
-
-button {
-    background-color: #333333;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 18px;
-}
-
-button:hover {
-    opacity: 0.9;
-}
+        th {
+            background-color: white;
+        }
 
 
 .logo img {
@@ -206,100 +190,9 @@ button:hover {
     margin-right: 20px;
 }   
 
-.progress-container {
-    width: 90%;
-   margin-left: 30px;
-   
-}
-.progress-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    position: relative;
-    margin-bottom: 50px;
-}
-.step-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 1;
-}
-.step {
-    width: 30px;
-    height: 30px;
-    background-color: #fff;
-    border: 3px solid #dcdcdc;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    color: #dcdcdc;
-    margin-bottom: 5px;
-}
-.step.active {
-    border-color: #81598a;
-    background-color: #81598a;
-    color: white;
-}
-.step-label {
-    font-size: 12px;
-    color: #333;
-    text-align: center;
-    max-width: 80px;
-}
-.progress-bar::before {
-    content: "";
-    position: absolute;
-    top: 15px;
-    left: 0;
-    transform: translateY(-50%);
-    height: 3px;
-    width: 100%;
-    background-color: #dcdcdc;
-    z-index: 0;
-}
-.progress {
-    position: absolute;
-    top: 15px;
-    left: 0;
-    transform: translateY(-50%);
-    height: 3px;
-    background-color: #81598a;
-    z-index: 0;
-    transition: width 0.3s ease;
-}
-
-.requests-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.requests-table td {
-    text-align: center;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background-color: white;
-}
-
-.requests-table td a {
-    text-decoration: none;
-}
-
-.requests-table th {
-    background-color: dimgray;
-    color: white;
-}
-
-.ticket-link {
-    color: #0066cc;
-    text-decoration: none;
-    font-weight: bold;
-}
 
 
-
-    .notification-controls {
+.notification-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -390,41 +283,40 @@ button:hover {
             background-color: #81589a;
             color: white;
         }
-</style>
-
-
+    </style>
 </head>
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span> <!-- <?php echo $fullName; ?> I THINK -->
-           <a href="user page"><i class="fas fa-user"></i></a> 
+            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+            <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="#"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="#"><i class="fa fa-spinner"></i>Ticket Progress</a></li>
-            <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="#"><i class="fas fa-university"></i>Res Communication</a></li>
-            <li><a href="#"><i class="fa fa-ticket"></i>Lodge Ticket</a></li>
+            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+            <li class="active"><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
+
     <main>
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-               <strong>House Warden Dashboard</strong>
+                <strong>Student Dashboard</strong>
             </div>
-            <div class="logo"><img src="../Images/General//93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
+            <div class="logo">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
+            </div>
         </header>
-        
+
         <div class="content">
             <h2>Notifications</h2>
-            <P> <strong></strong> </P> <!-- Echo relevant hall name -->
+            <P> <strong></strong> </P> 
 
             <div class="container">
                 <div class="notification-controls">
@@ -433,7 +325,6 @@ button:hover {
                             <option value="">All Notifications</option>
                             <option value="ticket">Ticket Updates</option>
                             <option value="system">System Alerts</option>
-                            <option value="maintenance">Maintenance</option>
                         </select>
                         <select id="sortOrder">
                             <option value="newest">Newest First</option>
@@ -449,11 +340,11 @@ button:hover {
                         <div class="notification-icon"><i class="fas fa-ticket-alt"></i></div>
                         <div class="notification-content">
                             <div class="notification-title">Ticket Update</div>
-                            <div class="notification-message">Ticket #12345 has been updated with a new comment.</div>
-                            <div class="notification-time">2 minutes ago</div>
+                            <div class="notification-message">Ticket #76549 has been updated with a new comment.</div>
+                            <div class="notification-time">45 minutes ago</div>
                         </div>
                         <div class="notification-actions">
-                            <button class="btn btn-primary" onclick="viewTicket(12345)">View Ticket</button>
+                            <button class="btn btn-primary" onclick="viewTicket(76549)">View Ticket</button>
                             <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
                         </div>
                     </div>
@@ -469,18 +360,21 @@ button:hover {
                             <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
                         </div>
                     </div>
-                    <div class="notification-item">
-                        <div class="notification-icon"><i class="fas fa-wrench"></i></div>
-                        <div class="notification-content">
-                            <div class="notification-title">Maintenance Completed</div>
-                            <div class="notification-message">The scheduled maintenance for Chris Hani House has been completed.</div>
-                            <div class="notification-time">1 day ago</div>
-                        </div>
-                        <div class="notification-actions">
-                            <button class="btn btn-primary" onclick="viewMaintenanceReport()">View Report</button>
-                        </div>
+                        <div class="notification-item unread">
+                            <div class="notification-icon"><i class="fas fa-ticket-alt"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Ticket Update</div>
+                                <div class="notification-message">Ticket #23654 has been resolved.</div>
+                                <div class="notification-time">2 days ago</div>
+                            </div>
+                            <div class="notification-actions">
+                                <button class="btn btn-primary" onclick="viewTicket(23654)">View Ticket</button>
+                                <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
+                            </div>
+                    
+            
                     </div>
-                    <!-- Add more notification items as needed -->
+                    
                 </div>
         
                 <div class="pagination">
@@ -489,8 +383,26 @@ button:hover {
                     <a href="#" class="page-link">Next</a>
                 </div>
             </div>
+    
         
-            <script>
+       
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
+
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
+
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+
                 function markAllAsRead() {
                     var items = document.getElementsByClassName('notification-item');
                     for (var i = 0; i < items.length; i++) {
@@ -512,10 +424,6 @@ button:hover {
                     // In a real app, this would show more information about the alert
                 }
         
-                function viewMaintenanceReport() {
-                    alert('Viewing Maintenance Report');
-                    // In a real app, this would show the maintenance report
-                }
         
                 document.getElementById('filterType').addEventListener('change', function() {
                     console.log('Filtering notifications by:', this.value);
@@ -525,12 +433,8 @@ button:hover {
                 document.getElementById('sortOrder').addEventListener('change', function() {
                     console.log('Sorting notifications by:', this.value);
                     // Implement sorting logic here
-                });
-            </script>       
+                });     
        
-            
-             
-<script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburgerIcon = document.getElementById('hamburger-icon');
             const sidebar = document.getElementById('sidebar');
@@ -543,7 +447,8 @@ button:hover {
         });
         function confirmLogout() {
             return confirm("Are you sure you want to log out?");
-        }
+        };
+
     </script>
 </body>
 </html>

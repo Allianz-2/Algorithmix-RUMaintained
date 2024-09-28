@@ -133,7 +133,7 @@
                 <strong>House Warden Dashboard</strong>
             </div>
             <div class="logo">
-                <img src="Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RU Maintained Logo">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
             </div>
         </header>
 
@@ -232,24 +232,27 @@
                 <!-- Sample PHP Code to Fetch and Display Tickets -->
                 <?php 
                         require_once('config.php');
-
-                        // Fetch all maintenance requests
                         $query = "SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, u.First_name, u.Lastname 
-                                  FROM ticket t
-                                  JOIN user u ON t.StudentID = u.UserID";
-                        $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
-                        $results = mysqli_query($conn, $query);
-                // Assuming you've fetched ticket data from your database
-                while ($row = mysqli_fetch_assoc($results)): ?>
-                <tr>
-                    <td><?php echo $row['TicketID']; ?></td>
-                    <td><?php echo $row['Description']; ?></td>
-                    <td><?php echo $row['Status']; ?></td>
-                    <td><?php echo $row['Severity']; ?></td>
-                    <td><?php echo $row['DateCreated']; ?></td>
-                    <td><?php echo $row['First_name'] . " " . $row['Lastname']; ?></td>
-                </tr>
-                <?php endwhile; ?>
+                        FROM ticket t
+                        JOIN user u ON t.StudentID = u.UserID
+                        WHERE t.Status != 'open'
+                        ORDER BY t.DateCreated DESC
+                        LIMIT 10"; // Adjust the limit as needed
+              
+              $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+              $results = mysqli_query($conn, $query);
+              
+              while ($row = mysqli_fetch_assoc($results)): ?>
+                  <tr>
+                      <td><?php echo $row['TicketID']; ?></td>
+                      <td><?php echo $row['Description']; ?></td>
+                      <td><?php echo $row['Status']; ?></td>
+                      <td><?php echo $row['Severity']; ?></td>
+                      <td><?php echo $row['DateCreated']; ?></td>
+                      <td><?php echo $row['First_name'] . " " . $row['Lastname']; ?></td>
+                  </tr>
+              <?php endwhile; ?>
+              
             </table>
         </div>
     </main>
