@@ -37,8 +37,16 @@
             $stmt->execute();
             $stmt->bind_result($resAssigned);
             $stmt->fetch();
+            
+            $stmt2 = $conn->prepare("SELECT Status FROM user WHERE userID = ?");
+            $stmt2->bind_param("s", $resAssigned);
+            $stmt2->execute();
+            $stmt2->bind_result($status);
+            $stmt2->fetch();
+            $stmt2->close();
 
-            if ($resAssigned !== null) {
+            if ($resAssigned !== null && $status !== "Inactive") {
+                $stmt->close();
             echo "<script>
                 alert('Registration failed: This residence already has a house warden assigned.');
                 window.history.back(); // Redirect back to the form or previous page

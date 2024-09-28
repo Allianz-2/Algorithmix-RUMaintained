@@ -26,28 +26,14 @@
         <nav>
             <a href="1-Home.php">Home</a>
             <a href="3-AboutUs.php"><strong>About Us</strong></a>
-                <?php
+            <?php
                     if (isset($_SESSION['userID'])) {
                         echo '<div class="dropdown">
                                 <a href="">Services ▾</a>
                                 <div class="dropdown-content">
-                                    <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>';
-                        if ($_SESSION['role'] == 'S') {
-                            echo '<a href="#">Student Dashboard</a>';
-                        } else if ($_SESSION['role'] == 'HW') {
-                            echo '<a href="#">House Warden Dashboard</a>';
-                        } else if ($_SESSION['role'] == 'HS') {
-                            echo '<a href="#">Hall Secretary Dashboard</a>';
-                        } else if ($_SESSION['role'] == 'MS') {
-                            echo '<a href="#">Maintenance Dashboard</a>';
-                        }
-                        echo '</div></div>';
-                            //         <!-- <a href="#">Student Dashboard</a>
-                            //         <a href="#">House Warden Dashboard</a>
-                            //         <a href="#">Hall Secretary Dashboard</a>
-                            //         <a href="#">Maintenance Dashboard</a>
-                            //     </div> -->
-                            // </div>';
+                                    <a href="../7-TicketCreation/1-TicketCreation.php">Create Ticket</a>
+                                    <a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a></div></div>';
+
                     }
                 ?>
             <a href="2-ContactUs.php">Contact Us</a>

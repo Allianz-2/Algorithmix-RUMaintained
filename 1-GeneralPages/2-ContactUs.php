@@ -18,8 +18,9 @@
 </head>
 <body>
     <header>
-        <div class="logo">            <a href="/1-GeneralPages/1-Home.php">
-            <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RUMaintained Logo">
+        <div class="logo">            
+            <a href="/1-GeneralPages/1-Home.php">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RUMaintained Logo">
             </a>
         </div>
         <nav>
@@ -30,31 +31,28 @@
                         echo '<div class="dropdown">
                                 <a href="">Services ▾</a>
                                 <div class="dropdown-content">
-                                    <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>';
-                        if ($_SESSION['role'] == 'S') {
-                            echo '<a href="#">Student Dashboard</a>';
-                        } else if ($_SESSION['role'] == 'HW') {
-                            echo '<a href="#">House Warden Dashboard</a>';
-                        } else if ($_SESSION['role'] == 'HS') {
-                            echo '<a href="#">Hall Secretary Dashboard</a>';
-                        } else if ($_SESSION['role'] == 'MS') {
-                            echo '<a href="#">Maintenance Dashboard</a>';
-                        }
-                        echo '</div></div>';
-                            //         <a href="#">Student Dashboard</a>
-                            //         <a href="#">House Warden Dashboard</a>
-                            //         <a href="#">Hall Secretary Dashboard</a>
-                            //         <a href="#">Maintenance Dashboard</a>
-                            //     </div>
-                            // </div>';
+                                    <a href="../7-TicketCreation/1-TicketCreation.php">Create Ticket</a>
+                                    <a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a></div></div>';
+
                     }
                 ?>
             <a href="2-ContactUs.php"><strong>Contact Us</strong></a>
         </nav>
-        <div class="auth-buttons" style="visibility: <?php echo isset($_SESSION['userID']) ? 'hidden' : 'visible'; ?>;">
-            <a href="/5-UserSignInandRegistration\5-RegistrationStep1.html" class="cta-button login-button">Register</a>
-            <a href="/5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>
-        </div>
+        <?php if (isset($_SESSION['userID'])) {
+                echo '<div class="profile-info">
+                        <a href= "7-RedirectProfile.php">
+                            <i class="fas fa-user default-icon" id="default-icon"></i></a>
+                        <span class="profile-name">
+                            ' . htmlspecialchars('Welcome '. $_SESSION['Firstname'] . '!') . '
+                        </span>
+                    </div>';
+            } else {
+                echo '<div class="auth-buttons">
+                        <a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>
+                        <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button login-button">Register</a>
+                    </div>';
+            }
+            ?>
     </header>
 
     <main>

@@ -7,154 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Security Settings</title>
-    <style>
-        body, html {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background-color: #f8f8f8;
-            color: #333;
-        }
-        .container {
-            display: flex;
-            height: 100%;
-        }
-        .sidebar {
-            width: 200px;
-            background-color: #333;
-            color: white;
-            padding: 30px 20px;
-            border-right: 1px solid #e0e0e0;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            overflow-y: auto;
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 30px;
-            overflow-y: auto;
-            background-color: #f8f8f8;
-        }
-        .profile-details {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 24px;
-            margin-bottom: 30px;
-        }
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 0 0 8px 0;
-        }
-        h2 {
-            font-size: 20px;
-            font-weight: 500;
-            margin: 0 0 24px 0;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        h3 {
-            font-size: 18px;
-            font-weight: 500;
-            margin: 0 0 16px 0;
-        }
-        h4 {
-            font-size: 16px;
-            font-weight: 500;
-            margin: 16px 0 8px 0;
-        }
-        p {
-            color: #666;
-            font-size: 14px;
-            margin: 0 0 16px 0;
-        }
-        .menu-item {
-            padding: 8px 12px;
-            margin-bottom: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            border-radius: 4px;
-        }
-        .menu-item.active {
-            background-color: #444;
-            font-weight: 500;
-            color: white;
-        }
-        .menu-item svg {
-            margin-right: 10px;
-        }
-        .menu-item a {
-            color: white;
-            text-decoration: none;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 200;
-            font-size: 14px;
-        }
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            font-size: 14px;
-            background-color: white;
-            color: #333;
-        }
-        .form-group select {
-            appearance: auto;
-            -webkit-appearance: auto;
-            -moz-appearance: auto;
-            padding-right: 8px;
-        }
-        .save-button {
-            background-color: #81589a;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .edit-button {
-            padding: 6px 12px;
-            background-color: transparent;
-            border: 1px solid #d0d0d0;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #333;
-        }
-        .info-section {
-            margin-top: 24px;
-        }
-        .activity-log {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 16px;
-        }
-        .activity-log th,
-        .activity-log td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .activity-log th {
-            background-color: #f1f3f4;
-            font-weight: 500;
-        }
-        .activity-log tr:last-child td {
-            border-bottom: none;
-        }
-    </style>
+    <link rel="stylesheet" href="../6-UserProfileManagementPage\6-CSS\17-UserSecurity.css">
 </head>
 <body>
     <div class="container">
@@ -209,34 +62,19 @@
                 </div>
             </div>
             <div class="profile-details">
-                <h3>User Activity Logs</h3>
-                <p>Below is a record of recent account activity. If you notice any suspicious activity, please contact support immediately.</p>
-                <table class="activity-log">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Action</th>
-                            <th>IP Address</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>2024-08-30 14:23</td>
-                            <td>Login successful</td>
-                            <td>192.168.1.1</td>
-                        </tr>
-                        <tr>
-                            <td>2024-08-29 09:45</td>
-                            <td>Password changed</td>
-                            <td>192.168.1.1</td>
-                        </tr>
-                        <tr>
-                            <td>2024-08-28 16:30</td>
-                            <td>Login successful</td>
-                            <td>192.168.1.1</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h3>Delete Account</h3>
+                <p>If you wish to delete your account, please enter your email address and confirm your decision. This action is irreversible.</p>
+                <form action="delete_account.php" method="POST">
+                    <div class="form-group">
+                        <label for="delete-email">Email Address</label>
+                        <input type="email" id="delete-email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-delete">Type "DELETE" to confirm</label>
+                        <input type="text" id="confirm-delete" name="confirm_delete" required>
+                    </div>
+                    <button type="submit" class="save-button">Delete Account</button>
+                </form>
             </div>
         </div>
     </div>
