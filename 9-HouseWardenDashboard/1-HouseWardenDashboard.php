@@ -114,7 +114,6 @@
             <a href="user-page"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-            <li class="active"><a href="#"><i class="fas fa-ticket-alt"></i>Ticket Requests</a></li>
             <li><a href="analytics.html"><i class="fas fa-chart-pie"></i>Analytics</a></li>
             <li><a href="ticket-progress.html"><i class="fas fa-tasks"></i>Ticket Progress</a></li>
             <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
