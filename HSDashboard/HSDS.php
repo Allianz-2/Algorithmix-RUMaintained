@@ -1,4 +1,6 @@
 <?php
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+
     if (isset($_POST['submit'])) {
         session_start();
         require_once('../8-PHPTests/config.php');
@@ -64,7 +66,7 @@ $totalRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as coun
 $pendingRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Pending'"))['count'];
 $viewedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Viewed'"))['count'];
 $completedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Completed'"))['count'];
-$onlineUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM user WHERE LastActive > DATE_SUB(NOW(), INTERVAL 15 MINUTE)"))['count'];
+
 
 mysqli_close($conn);
     }
@@ -75,14 +77,14 @@ mysqli_close($conn);
 <html lang="en">
 <head>
     <title>Hall Secretary Dashboard - Requests</title>
-    <link rel="stylesheet" href="Dashboard.css">
+    <link rel="stylesheet" href="HSDashboard\Dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
 <body>
     <header>
         <div class="logo">
-            <span class="user-welcome">Welcome, <?php echo $_SESSION['user_name']; ?></span>
+            <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span>
             <a href="user_profile.php"></a>
         </div>
         <nav>
@@ -139,10 +141,7 @@ mysqli_close($conn);
                     <h4>Completed Requests</h4>
                     <p><?php echo $completedRequests; ?></p>
                 </div>
-                <div class="stat-box">
-                    <h4>Online Users</h4>
-                    <p><?php echo $onlineUsers; ?></p>
-                </div>
+                
             </div>
 
             <div class="recent-requests">
