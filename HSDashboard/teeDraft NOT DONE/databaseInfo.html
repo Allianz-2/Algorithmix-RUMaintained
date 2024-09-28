@@ -1,0 +1,92 @@
+Table: assignment
+Columns:
+AssignmentID varchar(25) PK 
+MaintenanceStaffID varchar(25) 
+TicketID varchar(25)
+
+Table: faultcategory
+Columns:
+CategoryID varchar(25) PK 
+CategoryName varchar(100) 
+Description text
+
+Table: hallsecretary
+Columns:
+HallSecretaryID varchar(25) PK 
+UserID varchar(25)
+
+Table: housewarden
+Columns:
+HouseWardenID varchar(25) PK 
+UserID varchar(25)
+
+Table: maintenancestaff
+Columns:
+MaintenanceStaffID varchar(25) PK 
+UserID varchar(25)
+
+Table: photo
+Columns:
+PhotoID varchar(25) PK 
+PhotoPath varchar(255) 
+DateUploaded datetime 
+TicketID varchar(25)
+
+Table: residence
+Columns:
+ResidenceID varchar(25) PK 
+ResName varchar(100) 
+Address varchar(255) 
+Capacity int 
+HouseWardenID varchar(25)
+
+Table: student
+Columns:
+StudentID varchar(25) PK 
+UserID varchar(25) 
+ResidenceID varchar(25)
+
+Table: ticket
+Columns:
+TicketID varchar(25) PK 
+Status varchar(50) 
+Description text 
+Severity varchar(50) 
+DateCreated datetime 
+DateConfirmed datetime 
+DateRequisitioned datetime 
+DateResolved datetime 
+DateClosed datetime 
+ResidenceID varchar(25) 
+StudentID varchar(25) 
+HouseWardenID varchar(25) 
+CategoryID varchar(25) 
+Nature_of_fault varchar(45) 
+Location of fault varchar(45) 
+Affected items text
+
+Table: ticketcomment
+Columns:
+TicketCommentID varchar(25) PK 
+CommentText text 
+DatePosted datetime 
+TicketID varchar(25) 
+UserID varchar(25)
+
+Table: user
+Columns:
+UserID varchar(20) PK 
+First_name varchar(45) 
+Lastname varchar(45) 
+password varchar(45) 
+email_address varchar(45) 
+role char(2)
+
+
+config.php
+<?php 
+define('SERVERNAME', 'IS3-DEV.ICT.RU.AC.ZA');
+define('USERNAME', 'Algorithmix');
+define('PASSWORD', 'U3fuC7P5');
+define('DATABASE', 'Algorithmix');
+?>

@@ -1,10 +1,25 @@
 <?php
-require_once('config.php');
-$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE);
+    if (isset($_POST['submit'])) {
+        session_start();
+        require_once('../8-PHPTests/config.php');
 
-if (!$conn) {
-    die('Unable to connect to the database: ' . mysqli_connect_error());
-}
+        // Initializes MySQLi
+        $conn = mysqli_init();
+
+        // Test if the CA certificate file can be read
+        if (!file_exists($ca_cert_path)) {
+        die("CA file not found: " . $ca_cert_path);
+        }
+
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+        // Establish the connection
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+        // If connection failed, show the error
+        if (mysqli_connect_errno()) {
+        die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
 
 // Function to fetch data for charts
 function fetchChartData($conn, $query) {
@@ -33,6 +48,7 @@ $resolutionTimeData = fetchChartData($conn, $resolutionTimeQuery);
 $severityCategoryData = fetchChartData($conn, $severityCategoryQuery);
 
 mysqli_close($conn);
+    }
 ?>
 
 <!DOCTYPE html>
