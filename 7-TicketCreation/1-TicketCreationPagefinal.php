@@ -1,5 +1,7 @@
 <?php
-include '2-TicketCreationPagefinal.php'
+require_once("../5-UserSignInandRegistration/14-secure.php"); 
+
+include '2-TicketCreationPagefinal.php';
 
 
 ?>
