@@ -104,7 +104,6 @@
         <ul>
             <li class="active"><a href="#"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
             <li><a href="TaskAssignment.html"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
-            <li><a href="inventorymanagement.html"><i class="fas fa-wrench"></i>Inventory Management</a></li>
             <li><a href="performance_analytics.html"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li><a href="MaintenanceNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>

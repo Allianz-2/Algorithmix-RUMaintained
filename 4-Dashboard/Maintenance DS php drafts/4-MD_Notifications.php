@@ -50,7 +50,6 @@
         <ul>
             <li><a href="#"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
             <li><a href="TaskAssignment.html"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
-            <li><a href="inventorymanagement.html"><i class="fas fa-wrench"></i>Inventory Management</a></li>
             <li><a href="performance analytics.html"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li class="active"><a href="MaintenanceNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>
@@ -74,7 +73,7 @@
         <div class="container mt-5">
             <h1>Notifications</h1>
 
- <!-- New Tickets Section -->
+ New Tickets Section
 <section>
     <h2><i class="fas fa-ticket-alt"></i> New Tickets</h2>
     <?php

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --sidebar-width: 250px;
@@ -23,7 +22,7 @@
 
         .sidebar {
             width: var(--sidebar-width);
-            background-color: purple;
+            background-color: #81589a;
             color: white;
             height: 100vh;
             position: fixed;
@@ -179,20 +178,6 @@
             background-color: white;
         }
 
-        button {
-            background-color: #333333;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-   
 
 .logo img {
     max-height: 60px;  /* Adjust this value as needed */
@@ -205,39 +190,49 @@
     margin-right: 20px;
 }   
 
+.ticketButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #81589a;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
     </style>
 </head>
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span> <!-- <?php echo $fullName; ?> I THINK -->
-           <a href="user page"><i class="fas fa-user"></i></a> 
+            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+            <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="#"><i class="fas fa-tasks"></i>Ticket Requests</a></li>
-            <li><a href="#"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="#"><i class="fa fa-spinner"></i>Ticket Progress</a></li>
-            <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="#"><i class="fas fa-university"></i>Res Communication</a></li>
-            <li><a href="#"><i class="fa fa-ticket"></i>Lodge Ticket</a></li>
-
+            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+            <li class="active"><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+            <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
+
     <main>
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>House Warden Dashboard</strong>
+                <strong>Student Dashboard</strong>
             </div>
-            <div class="logo"><img src="../Images/General//93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo2"></div>
+            <div class="logo">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
+            </div>
         </header>
-        
+
         <div class="content">
-            <h3>Requests</h3>
+            <h2>Analytics</h2>
             <div class="filters">
                 <div class="filter-group">
                     <label for="date-filter">Date Range</label>
@@ -250,7 +245,6 @@
                         <option value="3 months">Last 3 Months</option>
                     </select>
                 </div>
-
                 <div class="filter-group">
                     <label for="severity-filter">Severity</label>
                     <select id="severity-filter">
@@ -281,56 +275,9 @@
                     </select>
                 </div>
             </div>
-
-            <div class="charts">
-                <!-- Charts will be added here -->
-                <canvas id="requestChart"></canvas>
-                <canvas id="residenceChart"></canvas>
-            </div>
-            <div class="stats">
-                <div class="stat-box">
-                    <h4> Total Requests</h4>
-                    <p id="total-requests"></p> <!-- <?php echo $totalRequests; ?> -->
-                </div>
-                <div class="stat-box">
-                    <h4>Pending Requests</h4>
-                    <p id="pending-requests"></p>
-                </div>
-                <div class="stat-box">
-                    <h4> Viewed Requests</h4>
-                    <p id="viewed-requests"></p>
-                </div>
-                <div class="stat-box">
-                    <h4> Completed Requests</h4>
-                    <p id="completed-requests"></p>
-                </div>
-            </div>
-            <div class="recent-requests">
-                <h3>Most Recent Requests</h3>
-                <table id="requests-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="select-all"></th>
-                            <th>Category</th>
-                            <th>Photo</th>
-                            <th>Residence</th>
-                            <th>Status</th>
-                            <th>Submission Date</th>
-                            <th>Severity</th>
-                            <th>Work Order</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                       
-                    </tbody>
-                </table>
-
-
-            </div>
-        </div>
-    </main>
     
+       
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburgerIcon = document.getElementById('hamburger-icon');
@@ -342,10 +289,10 @@
                 main.classList.toggle('sidebar-collapsed');
             });
         });
+
         function confirmLogout() {
             return confirm("Are you sure you want to log out?");
         }
     </script>
-    
 </body>
 </html>
