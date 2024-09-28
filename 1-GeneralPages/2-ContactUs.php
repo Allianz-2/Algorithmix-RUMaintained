@@ -8,7 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - RUMaintained</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="/1-GeneralPages/CSS/2-ContactUs.css">
+    <link rel="stylesheet" href="../1-GeneralPages/CSS/2-ContactUs.css">
+    <style>
+        .home-section .profile-info {
+        margin-right: 20px;
+        font-size: 1.1rem
+        }
+    </style>
 </head>
 <body>
     <header>
