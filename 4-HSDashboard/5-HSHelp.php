@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>HallSecretary Dashboard - Help and Support</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
@@ -242,15 +242,16 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-        <span class="user-welcome"><?php echo 'Welcome ' .  '!';?></span>
-            <a href="user page"><i class="fas fa-user"></i></a> 
+        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
+            <a href="..\6-UserProfileManagementPage\5-ProfileManagement.php"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>Ticket History</a></li>
-            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
-            <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li class="active"><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+         <li><a href="..\1-GeneralPages\1-Home.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="..\4-HSDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
+            <li ><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="..\4-HSDashboard\3-HSAnalytics.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li class="active"><a href="#"><i class="fas fa-info-circle"></i> Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -262,7 +263,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Student Dashboard</strong>
+                <strong>Hall Secretary Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
@@ -272,21 +273,34 @@
         
             <h2>Frequently Asked Questions</h2>
             <div class="faq-item">
-                <div class="faq-question">What is this system used for?</div>
-                <div class="faq-answer">This system is designed to help students and staff report and manage maintenance issues within university residences efficiently.</div>
+                <div class="faq-question">How do I view the maintenance requests for my Hall?</div>
+                <div class="faq-answer">After logging into the system, go to Dashboard, then go to the "Requests" section in your Dashboard. You'll see a list of all requests for Halls under your responsibility.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">How do I report a maintenance issue?</div>
-                <div class="faq-answer">You can report an issue by logging into your account, navigating to the "Report Issue" section, and filling out the necessary details about the problem.</div>
+                <div class="faq-question">How do I confirm a maintenance request from a House Warden?</div>
+                <div class="faq-answer">Once a House Warden submits a request, it will appear in your queue. You can click on the request to view details and either approve or deny or add comments.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Can I track the status of my maintenance request?</div>
-                <div class="faq-answer">Yes, once you report an issue, you can track its status from your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
+                <div class="faq-question">What do I do if a maintenance request has been submitted in error?</div>
+                <div class="faq-answer">If a request is incorrect or duplicated, you can mark it as "closed" with an appropriate comment explaining why the request was closed.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">What type of maintenance issue can I report?</div>
-                <div class="faq-answer">You can report any issue related to the upkeep and maintenance of your residence, including plumbing, electrical, or general repairs.</div>
+                <div class="faq-question">How will I know when maintenance has resolved an issue?</div>
+                <div class="faq-answer">The system will automatically notify you once the maintenance staff marks the issue as "resolved." You can then close the request after verifying the completion.</div>
             </div>
+            <div class="faq-item">
+                <div class="faq-question"> How can I track the progress of maintenance requests?</div>
+                <div class="faq-answer">You can view the status of all maintenance requests (e.g., open, requisition, resolved) on the dashboard. There’s also a report function that allows you to generate statistics on open and resolved requests.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I add comments to a maintenance request?</div>
+                <div class="faq-answer">Yes, both you and other users (e.g., students, House Wardens, maintenance staff) can add comments to any maintenance request.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What should I do if the system is not working properly?</div>
+                <div class="faq-answer">Contact the system support team through the "Help" or "Contact Us" link, or call the provided support number to report the issue.</div>
+            </div>
+
             <div class="faq-item">
                 <div class="faq-question">What should I do if I forget my password?</div>
                 <div class="faq-answer">Click on the "Forgot Password" link on the login page and follow the instructions to reset your password.</div>
