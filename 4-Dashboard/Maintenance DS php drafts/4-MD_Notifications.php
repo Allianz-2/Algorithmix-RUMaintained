@@ -48,10 +48,10 @@
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-        <li class="active"><a href="1-MD_MaintenanceRequests.php"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
+            <li><a href="1-MD_MaintenanceRequests.php"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
             <li><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li><a href="3-MD_PerformanceAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
-            <li><a href="4-MD_Notifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+         <li class="active"><a href="4-MD_Notifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -73,53 +73,13 @@
         <div class="container mt-5">
             <h1>Notifications</h1>
 
- New Tickets Section
+
 <section>
     <h2><i class="fas fa-ticket-alt"></i> New Tickets</h2>
     <?php
-    // Include the database connection file
-    include 'db_connection.php';
+                include '7-NotificationUpdate.php';
 
-    // Fetch new tickets that are not closed with a limit of 10
-    $sql_tickets = "SELECT t.TicketID, t.Description, t.Status, t.DateCreated, u.First_name, u.Lastname, r.ResName
-                    FROM ticket t
-                    JOIN user u ON t.StudentID = u.UserID
-                    JOIN residence r ON t.ResidenceID = r.ResidenceID
-                    WHERE t.Status != 'Closed'
-                    ORDER BY t.DateCreated DESC
-                    LIMIT 10";
-
-    $tickets_stmt = $conn->prepare($sql_tickets);
-    $tickets_stmt->execute();
-    $tickets_result = $tickets_stmt->get_result();
-
-    // Variable to track if there's an approved ticket
-    $approvedTicket = false;
-
-    if ($tickets_result->num_rows > 0) {
-        while ($ticket = $tickets_result->fetch_assoc()) {
-            // Check if the ticket status is "Approved"
-            if ($ticket['Status'] == 'Approved') {
-                $approvedTicket = true; // Set the flag
-            }
-            echo "<div class='notification'>";
-            echo "<p><strong>Ticket ID:</strong> " . $ticket['TicketID'] . "</p>";
-            echo "<p><strong>Description:</strong> " . $ticket['Description'] . "</p>";
-            echo "<p><strong>Status:</strong> " . $ticket['Status'] . "</p>";
-            echo "<p><strong>Reported by:</strong> " . $ticket['First_name'] . " " . $ticket['Lastname'] . "</p>";
-            echo "<p><strong>Residence:</strong> " . $ticket['ResName'] . "</p>";
-            echo "<p><strong>Date Created:</strong> " . date('F j, Y, g:i a', strtotime($ticket['DateCreated'])) . "</p>";
-            echo "</div>";
-        }
-    } else {
-        echo "<p>No new tickets available.</p>";
-    }
-
-    // If an approved ticket was found, trigger a JavaScript alert
-    if ($approvedTicket) {
-        echo "<script type='text/javascript'>alert('A ticket has been approved!');</script>";
-    }
-    ?>
+            ?>
 </section>
             <!-- Recent Comments Section -->
             <section>
@@ -194,3 +154,20 @@
  
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

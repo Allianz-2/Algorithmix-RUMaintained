@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RUMaintained</title>
-    <link rel="stylesheet" href="/1-GeneralPages/CSS/1-Home.css">
+    <link rel="stylesheet" href="../1-GeneralPages/CSS/1-Home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .home-section .profile-info {
@@ -61,8 +61,8 @@
                     </div>';
             } else {
                 echo '<div class="auth-buttons">
-                        <a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>
-                        <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button login-button">Register</a>
+                        <a href="../5-UserSignInandRegistration\6-SignInPage.php" class="cta-button">Sign in</a>
+                        <a href="../5-UserSignInandRegistration\5-RegistrationStep1.html" class="cta-button login-button">Register</a>
                     </div>';
             }
             ?>
@@ -79,7 +79,7 @@
                     <!-- <a href="/5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign In</a> -->
                     <?php 
                         if (!isset($_SESSION['userID'])) {
-                        echo '<a href="/5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign In</a>';
+                        echo '<a href=/"../5-UserSignInandRegistration/6-SignInPage.php/" class="cta-button">Sign In</a>';
                         }
                     ?>
                 </div>
