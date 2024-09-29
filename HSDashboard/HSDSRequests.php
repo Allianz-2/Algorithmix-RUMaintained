@@ -118,7 +118,7 @@
             <a href="user-page"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-            <li><a href="HSDSTicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
+            <li><a href="HSticketapproval"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
             <li><a href="HSDSAnalytics.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
             <li class="active"><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
             

@@ -71,10 +71,10 @@ $result = $conn->query($sql);
         </div>
         <ul>
             <li class="active"><a href="#"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
-            <li><a href="HSDSAnalytics.html"><i class="fas fa-chart-bar"></i>Analytics</a></li>
+            <li><a href="#"><i class="fas fa-chart-bar"></i>Analytics</a></li>
             <li><a href="Z:\Algorithmix-RUMaintained\HSDashboard\HSDSRequests.php"></a><i class="fas fa-clipboard-list"></i>Requests</a></li>
 
-            <li><a href="HSDSNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
             <li><a href="1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
         </ul>
         <div class="sidebar-footer">
