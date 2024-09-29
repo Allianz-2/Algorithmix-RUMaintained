@@ -235,7 +235,7 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+        <span class="user-welcome"><?php echo 'Welcome ' .  '!';?></span>
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
@@ -286,7 +286,7 @@
             </div>
             <div class="faq-item">
                 <div class="faq-question">Didn't find an answer?</div>
-                <div class="faq-answer"><a href="#"><button class="contactButton" type ="submit">Contact Us</button></a></div>
+                <div class="faq-answer"><a href="../1-GeneralPages\2-ContactUs.php"><button class="contactButton" type ="submit">Contact Us</button></a></div>
             </div>
        
        

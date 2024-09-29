@@ -236,6 +236,7 @@ button {
     }
 
 
+
     $sql = "SELECT * FROM ticket WHERE StudentID = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $_SESSION['userID']);
@@ -249,7 +250,7 @@ button {
 
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome"><?php echo 'Welcome ' . $_SESSION['First_name'] . '!';?></span>
+        <span class="user-welcome"><?php echo 'Welcome ' .  '!'; ?></span>
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
@@ -277,7 +278,7 @@ button {
         </header>
     <body>
     <div>
-                    <a href="#"><button class="ticketButton" type ="submit">Create New Ticket</button></a>
+                    <a href="../7-TicketCreation\1-TicketCreation.php"><button class="ticketButton" type ="submit">Create New Ticket</button></a>
             </div> 
 <div>
     <h3>My Tickets</h3>

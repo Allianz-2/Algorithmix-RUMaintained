@@ -28,30 +28,27 @@ if (mysqli_connect_errno()) {
 }
 
 
-$sql = "SELECT CategoryID, count(TicketID) AS TICKETCOUNT FROM ticket GROUP BY CategoryID";
-
+$sql = "SELECT CategoryID, COUNT(TicketID) as TicketCount FROM ticket GROUP BY CategoryID";
 $result = $conn->query($sql);
 
 echo "var data = google.visualization.arrayToDataTable([";
-        echo   "['Task', 'Hours per Day'],";
+echo   "['Category', 'Count'],";
 
-        while ($row = $result->fetch_assoc()) {
-            echo "['{$row['CategoryID']}', {$row['TICKETCOUNT']}]";
-        }
-          
-          
-       echo "]);";
+while ($row = $result->fetch_assoc()) {
+    echo    "['{$row['CategoryID']}', {$row['TicketCount']}],"; // Fixed the echo statement
+}
 
-       ?>
+echo "]);";
+?>
 
-        var options = {
-          title: 'My Daily Activities',
-          is3D: true,
-        };
+var options = {
+  title: 'Number of Tickets per Category in My Residence',
+  is3D: true,
+};
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-        chart.draw(data, options);
-      }
+var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+chart.draw(data, options);
+}
     </script>
     <style>
         :root {
@@ -254,7 +251,7 @@ echo "var data = google.visualization.arrayToDataTable([";
 
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+        <span class="user-welcome"><?php echo 'Welcome ' .  '!';?></span>
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
