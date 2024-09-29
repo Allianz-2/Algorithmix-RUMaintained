@@ -47,6 +47,7 @@
         th {
             background-color: #81589a;
             color: #fff;
+            text-align: center;
         }
 
     
@@ -126,7 +127,7 @@
         <li>
             <a href="..\1-GeneralPages\1-Home.php"><i class="fas fa-home"></i> Home</a></li>
             <li class="active"><a href="4-HSDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
-            <li><a href="4-HSDashboard\1-HSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="..\4-HSDashboard\1-HSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
             <li><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
             <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
         </ul>
@@ -183,7 +184,7 @@
                             <th>Approve</th>
                             <th>Deny</th>
                             <th>Details</th>
-                            <th>Comments</th>
+                            
                 </tr>
                         </tr>
                         </thead>";      // Add comments handling logic here and status logic????? 
@@ -199,7 +200,6 @@
                     echo "<td><a href='#'>Approve</a></td>";
                     echo "<td><a href='#'>Deny</a></td>";
                     echo "<td><a href='#'>Details</a></td>";
-                    echo "<td></td>"; // Add comments handling logic here
                     echo "</tr>";
                 }
 
