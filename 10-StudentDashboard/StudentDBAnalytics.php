@@ -1,24 +1,3 @@
-<?php
- require '../8-PHPTests/config.php';
-
-            
- $conn = mysqli_init(); 
- if (!file_exists($ca_cert_path)) {
-     die("CA file not found: " . $ca_cert_path);
- }
- mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
- mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
- if (mysqli_connect_errno()) {
-     die('Failed to connect to MySQL: ' . mysqli_connect_error());
- }
-
-$sql = "SELECT CategoryID FROM ticekt";
-
-$result = $conn->query($sql);
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +13,22 @@ $result = $conn->query($sql);
 
         <?php 
 
-$sql = "SELECT CategoryID, count(TicketID) FROM ticekt";
+require '../8-PHPTests/config.php';
+
+           
+$conn = mysqli_init(); 
+if (!file_exists($ca_cert_path)) {
+    die("CA file not found: " . $ca_cert_path);
+}
+mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+if (mysqli_connect_errno()) {
+    die('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
+
+$sql = "SELECT CategoryID, count(TicketID) AS TICKETCOUNT FROM ticket GROUP BY CategoryID";
 
 $result = $conn->query($sql);
 
@@ -42,7 +36,7 @@ echo "var data = google.visualization.arrayToDataTable([";
         echo   "['Task', 'Hours per Day'],";
 
         while ($row = $result->fetch_assoc()) {
-         echo    "['{$row['CategoryID']}, {$row['count(TicketID)']}],";
+            echo "['{$row['CategoryID']}', {$row['TICKETCOUNT']}]";
         }
           
           
@@ -264,7 +258,8 @@ echo "var data = google.visualization.arrayToDataTable([";
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>Ticket History</a></li>
             <li class="active"><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
             <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
@@ -287,7 +282,7 @@ echo "var data = google.visualization.arrayToDataTable([";
         </header>
 
         <div class="content">
-            <h2>Analytics</h2>
+            <h2>Analytics for My Residence</h2>
             <div class="filters">
                 <div class="filter-group">
                     <label for="date-filter">Date Range</label>
