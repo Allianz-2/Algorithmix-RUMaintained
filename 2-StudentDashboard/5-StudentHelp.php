@@ -243,7 +243,7 @@
     <nav id="sidebar" class="sidebar">
         <div class="logo">
         <span class="user-welcome"><?php echo 'Welcome ' .  '!';?></span>
-            <a href="user page"><i class="fas fa-user"></i></a> 
+            <a href="../6-UserProfileManagementPage\1-ProfileStudent.php"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
             <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
@@ -254,7 +254,7 @@
             <li class='active'><a href="../2-StudentDashboard\5-StudentHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="../6-UserProfileManagementPage\1-ProfileStudent.php"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
