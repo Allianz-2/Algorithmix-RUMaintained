@@ -189,7 +189,7 @@ $result = $conn->query($sql);
                 <!-- Populate recent requests here dynamically -->
             </table>
 
-            <h3>My Tickets</h3>
+            <h3>Tickets</h3>
 
             <?php
             if ($result->num_rows > 0) {
@@ -198,9 +198,11 @@ $result = $conn->query($sql);
                         <tr>
                             <th>Ticket #</th>
                             <th>Date Created</th>
-                            <th>Status</th>
+                            <th>Student Number</th>
                             <th>Fault Description</th>
                             <th>Severity</th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                         </tr>
                         </thead>";
@@ -209,9 +211,11 @@ $result = $conn->query($sql);
                     echo "<tr>";
                     echo "<td>{$row['TicketID']}</td>";
                     echo "<td>{$row['DateCreated']}</td>";
-                    echo "<td>{$row['Status']}</td>";
+                    echo "<td>{$row['StudentID']}</td>";
                     echo "<td>{$row['Description']}</td>";
                     echo "<td>{$row['Severity']}</td>";
+                    echo "<td><a href='#'>Approve</a></td>";
+                    echo "<td><a href='#'>Deny</a></td>";
                     echo "<td><a href='#'>Details</a></td>";
                     echo "</tr>";
                 }
@@ -222,9 +226,6 @@ $result = $conn->query($sql);
             }
             ?>
             
-            <div>
-                <a href="#"><button class="ticketButton" type="submit">Create New Ticket</button></a>
-            </div>
         </div>
     </main>
 
@@ -245,6 +246,6 @@ $result = $conn->query($sql);
         }
     </script>
 
-    <div id="piechart" style="width: 900px; height: 500px;"></div>
+
 </body>
 </html>
