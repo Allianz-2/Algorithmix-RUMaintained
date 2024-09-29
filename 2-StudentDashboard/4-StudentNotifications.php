@@ -1,63 +1,24 @@
-<?php
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="Dashboard.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px; }
-        h1 { text-align: left;  }
-        h2 { color: #343a40; }
-        .notification {
-            background-color: #f8f9fa;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #dee2e6;
-        }
-        .notification.high-priority {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-        .stat-box {
-            background-color: #E6E6FA; /* Light purple background */
-            color: #5c4b8a; /* Dark purple text */
-            border-radius: 10px; /* Smooth corners */
-            padding: 20px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15); /* Drop shadow */
-            text-align: center; /* Centered text */
-            flex: 1; /* Equal spacing */
-            margin: 10px; /* Margin around boxes */
-        }
-        /* Additional CSS styles can be added here */
-    </style>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="6-Notifications.css">
+
 </head>
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, <!-- Add PHP code here for user name --></span>
+            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="../7-TicketCreation\1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
-            <li><a href="../2-StudentDashboard\1-StudentRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
-            <li><a href="../2-StudentDashboard\3-StudentAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
-            <li class='active'><a href="../2-StudentDashboard\4-StudentNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="../2-StudentDashboard\5-StudentHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li> 
+            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+            <li class="active"><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -69,111 +30,148 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Maintenance Staff Dashboard</strong>
+                <strong>Student Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
             </div>
         </header>
-        
 
+        <div class="content">
             <h2>Notifications</h2>
+            <P> <strong></strong> </P> 
 
+            <div class="container">
+                <div class="notification-controls">
+                    <div class="filter-sort">
+                        <select id="filterType">
+                            <option value="">All Notifications</option>
+                            <option value="ticket">Ticket Updates</option>
+                            <option value="system">System Alerts</option>
+                        </select>
+                        <select id="sortOrder">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="markAllAsRead()">Mark All as Read</button>
+                </div>
+        
+                <div class="notification-list">
+                    <!-- PHP would be implemented here to fetch notifications dynamically from the database -->
+                    <div class="notification-item unread">
+                        <div class="notification-icon"><i class="fas fa-ticket-alt"></i></div>
+                        <div class="notification-content">
+                            <div class="notification-title">Ticket Update</div>
+                            <div class="notification-message">Ticket #76549 has been updated with a new comment.</div>
+                            <div class="notification-time">45 minutes ago</div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn btn-primary" onclick="viewTicket(76549)">View Ticket</button>
+                            <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
+                        </div>
+                    </div>
+                    <div class="notification-item unread">
+                        <div class="notification-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="notification-content">
+                            <div class="notification-title">System Alert</div>
+                            <div class="notification-message">Scheduled maintenance will occur tonight at 11 PM.</div>
+                            <div class="notification-time">1 hour ago</div>
+                        </div>
+                        <div class="notification-actions">
+                            <button class="btn btn-primary" onclick="viewAlert()">View Details</button>
+                            <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
+                        </div>
+                    </div>
+                        <div class="notification-item unread">
+                            <div class="notification-icon"><i class="fas fa-ticket-alt"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Ticket Update</div>
+                                <div class="notification-message">Ticket #23654 has been resolved.</div>
+                                <div class="notification-time">2 days ago</div>
+                            </div>
+                            <div class="notification-actions">
+                                <button class="btn btn-primary" onclick="viewTicket(23654)">View Ticket</button>
+                                <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
+                            </div>
+                    
+            
+                    </div>
+                    
+                </div>
+        
+                <div class="pagination">
+                    <a href="#" class="page-link active">1</a>
+                    <a href="#" class="page-link">2</a>
+                    <a href="#" class="page-link">Next</a>
+                </div>
+            </div>
+    
+        
+       
 
-<section>
-    <h2><i class="fas fa-ticket-alt"></i> New Tickets</h2>
-    <?php
-                include '7-NotificationUpdate.php';
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
 
-            ?>
-</section>
-            <!-- Recent Comments Section -->
-            <section>
-                <h2><i class="fas fa-comments"></i> Recent Comments on Tickets</h2>
-                <?php
-                // Fetch recent comments on tickets (within the last day)
-                $sql_comments = "SELECT tc.CommentText, tc.DatePosted, t.TicketID, u.First_name, u.Lastname
-                                 FROM ticketcomment tc
-                                 JOIN ticket t ON tc.TicketID = t.TicketID
-                                 JOIN user u ON tc.UserID = u.UserID
-                                 WHERE tc.DatePosted > DATE_SUB(NOW(), INTERVAL 1 DAY)";
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
 
-                $comments_stmt = $conn->prepare($sql_comments);
-                $comments_stmt->execute();
-                $comments_result = $comments_stmt->get_result();
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
 
-                if ($comments_result->num_rows > 0) {
-                    while ($comment = $comments_result->fetch_assoc()) {
-                        echo "<div class='notification'>";
-                        echo "<p><strong>Ticket ID:</strong> " . $comment['TicketID'] . "</p>";
-                        echo "<p><strong>Comment:</strong> " . $comment['CommentText'] . "</p>";
-                        echo "<p><strong>Posted by:</strong> " . $comment['First_name'] . " " . $comment['Lastname'] . "</p>";
-                        echo "<p><strong>Date Posted:</strong> " . date('F j, Y, g:i a', strtotime($comment['DatePosted'])) . "</p>";
-                        echo "</div>";
+                function markAllAsRead() {
+                    var items = document.getElementsByClassName('notification-item');
+                    for (var i = 0; i < items.length; i++) {
+                        items[i].classList.remove('unread');
                     }
-                } else {
-                    echo "<p>No recent comments available.</p>";
                 }
-                ?>
-            </section>
-
-            <!-- New Assignments Section -->
-            <section>
-                <h2><i class="fas fa-tasks"></i> New Assignments for Maintenance Staff</h2>
-                <?php
-                // Fetch new assignments for maintenance staff
-                $sql_assignments = "SELECT a.AssignmentID, t.TicketID, u.First_name, u.Lastname
-                                    FROM assignment a
-                                    JOIN ticket t ON a.TicketID = t.TicketID
-                                    JOIN maintenancestaff ms ON a.MaintenanceStaffID = ms.MaintenanceStaffID
-                                    JOIN user u ON ms.UserID = u.UserID";
-
-                $assignments_stmt = $conn->prepare($sql_assignments);
-                $assignments_stmt->execute();
-                $assignments_result = $assignments_stmt->get_result();
-
-                if ($assignments_result->num_rows > 0) {
-                    while ($assignment = $assignments_result->fetch_assoc()) {
-                        echo "<div class='notification'>";
-                        echo "<p><strong>Assignment ID:</strong> " . $assignment['AssignmentID'] . "</p>";
-                        echo "<p><strong>Ticket ID:</strong> " . $assignment['TicketID'] . "</p>";
-                        echo "<p><strong>Assigned to:</strong> " . $assignment['First_name'] . " " . $assignment['Lastname'] . "</p>";
-                        echo "</div>";
-                    }
-                } else {
-                    echo "<p>No new assignments available.</p>";
+        
+                function markAsRead(button) {
+                    button.closest('.notification-item').classList.remove('unread');
                 }
-                ?>
-            </section>
-
-            <script>            document.addEventListener('DOMContentLoaded', function() {
-                const hamburgerIcon = document.getElementById('hamburger-icon');
-                const sidebar = document.getElementById('sidebar');
-                const main = document.querySelector('main');
-
-                hamburgerIcon.addEventListener('click', function() {
-                    sidebar.classList.toggle('collapsed');
-                    main.classList.toggle('sidebar-collapsed');
+        
+                function viewTicket(ticketId) {
+                    alert('Viewing Ticket #' + ticketId);
+                    // In a real app, this would navigate to the ticket details page
+                }
+        
+                function viewAlert() {
+                    alert('Viewing System Alert Details');
+                    // In a real app, this would show more information about the alert
+                }
+        
+        
+                document.getElementById('filterType').addEventListener('change', function() {
+                    console.log('Filtering notifications by:', this.value);
+                    // Implement filtering logic here
                 });
-            });</script>
+        
+                document.getElementById('sortOrder').addEventListener('change', function() {
+                    console.log('Sorting notifications by:', this.value);
+                    // Implement sorting logic here
+                });     
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
 
- 
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        };
+
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
