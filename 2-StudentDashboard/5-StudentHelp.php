@@ -247,10 +247,11 @@
         </div>
         <ul>
             <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>Ticket History</a></li>
-            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
-            <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li class="active"><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+            <li><a href="../7-TicketCreation\1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
+            <li><a href="../2-StudentDashboard\1-StudentRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
+            <li><a href="../2-StudentDashboard\3-StudentAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
+            <li><a href="../2-StudentDashboard\4-StudentNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li class='active'><a href="../2-StudentDashboard\5-StudentHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -276,20 +277,20 @@
                 <div class="faq-answer">This system is designed to help students and staff report and manage maintenance issues within university residences efficiently.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">How do I report a maintenance issue?</div>
-                <div class="faq-answer">You can report an issue by logging into your account, navigating to the "Report Issue" section, and filling out the necessary details about the problem.</div>
+                <div class="faq-question">How do I report a maintenance fault?</div>
+                <div class="faq-answer">Simply click the "Create Ticket" option in your left side bar and fill out the necessary details on the "Ticket Creation Page".</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Can I track the status of my maintenance request?</div>
-                <div class="faq-answer">Yes, once you report an issue, you can track its status from your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
+                <div class="faq-question">Can I track the status of my ticket request?</div>
+                <div class="faq-answer">Yes, you can track its status from "Ticket Requests" on your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">What type of maintenance issue can I report?</div>
+                <div class="faq-question">What type of maintenance fault can I report?</div>
                 <div class="faq-answer">You can report any issue related to the upkeep and maintenance of your residence, including plumbing, electrical, or general repairs.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">What should I do if I forget my password?</div>
-                <div class="faq-answer">Click on the "Forgot Password" link on the login page and follow the instructions to reset your password.</div>
+                <div class="faq-answer">You can reset your password from your Profile page. Click on "Settings" or the profile icon to navigate there.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">Didn't find an answer?</div>
