@@ -8,7 +8,7 @@
     include '11-CheckPermission.php';
     include '7-ChangePassword.php';
     include '8-ChangeEmail.php';
-    include '9-ChangeResidence.php';
+    // include '9-ChangeResidence.php';
     include '15-ChangeSpecialisation.php';
     include '5-ProfileManagement.php';
 ?>
