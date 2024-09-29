@@ -120,6 +120,7 @@
             <a href="user-page"><i class="fas fa-user"></i></a>
         </div>
         <ul>
+        <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
             <li><a href="HSticketapproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
             <li><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
             <li class="active"><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
@@ -239,14 +240,15 @@ $totalTickets = $stmt->get_result()->fetch_assoc()['TotalTickets'];
 $stmt->close();
 
 // Pending tickets
-$stmt = $conn->prepare("SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Pending' AND HouseWardenID = ?");
+$stmt = $conn->prepare("SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Open' AND HouseWardenID = ?");
 $stmt->bind_param("s", $_SESSION['userID']);
 $stmt->execute();
 $pendingTickets = $stmt->get_result()->fetch_assoc()['PendingTickets'];
 $stmt->close();
 
 // Completed tickets
-$stmt = $conn->prepare("SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = 'Resolved' AND HouseWardenID = ?");
+$stmt = $conn->prepare("SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = '
+closed' AND HouseWardenID = ?");
 $stmt->bind_param("s", $_SESSION['userID']);
 $stmt->execute();
 $completedTickets = $stmt->get_result()->fetch_assoc()['CompletedTickets'];

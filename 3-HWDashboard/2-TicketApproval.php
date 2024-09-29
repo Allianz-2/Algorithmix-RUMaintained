@@ -1,14 +1,58 @@
 <?php
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+require_once("../5-UserSignInandRegistration/14-secure.php"); 
+require_once('../8-PHPTests/config.php');
 
+// Initialize MySQLi
+$conn = mysqli_init();
 
+// Test if the CA certificate file can be read
+if (!file_exists($ca_cert_path)) {
+    die("CA file not found: " . $ca_cert_path);
+}
 
+mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
 
+// Establish the connection
+mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+// If connection failed, show the error
+if (mysqli_connect_errno()) {
+    die('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
+// Handle form submissions for approving and denying tickets
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $ticketID = $_POST['ticketID'];
+    $action = $_POST['action'];
+
+    if ($action === 'approve') {
+        $stmt = $conn->prepare("UPDATE ticket SET Status = 'confirmed' WHERE TicketID = ? AND HouseWardenID = ?");
+        $stmt->bind_param("ss", $ticketID, $_SESSION['userID']);
+        $stmt->execute();
+        $stmt->close();
+    } elseif ($action === 'deny') {
+        $stmt = $conn->prepare("UPDATE ticket SET Status = 'closed' WHERE TicketID = ? AND HouseWardenID = ?");
+        $stmt->bind_param("ss", $ticketID, $_SESSION['userID']);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    // Redirect to the same page to avoid form resubmission
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+// Fetch tickets
+$sql = "SELECT * FROM ticket WHERE Status= 'Open' AND HouseWardenID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $_SESSION['userID']);
+$stmt->execute();
+$result = $stmt->get_result();
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,12 +66,10 @@
             margin: 0;
             padding: 20px;
         }
-
         h1 {
             text-align: center;
             color: #81589a;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -36,65 +78,42 @@
             border-radius: 5px;
             overflow: hidden;
         }
-
-        th,
-        td {
+        th, td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-
         th {
             background-color: #81589a;
             color: #fff;
         }
-
-    
     </style>
 </head>
 
-
-
-<?php
-
-require_once("config.php");
-
-// Establishing connection with error handling
-$conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DATABASE);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT * FROM ticket";
-$result = $conn->query($sql);
-
-?>
-
-
+<body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span> <!-- <?php echo $fullName; ?> I THINK -->
-           <a href="user page"><i class="fas fa-user"></i></a> 
+            <span class="user-welcome">Welcome, </span>
+            <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
+            <li><a href="../1-GeneralPages/1-Home.php"><i class="fas fa-home"></i>Home</a></li>
             <li class="active"><a href="#"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
             <li><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="HSDSRequests.php"></a><i class="fas fa-clipboard-list"></i>Requests</a></li>
-
+            <li><a href="HSDSRequests.php"><i class="fas fa-clipboard-list"></i>Requests</a></li>
             <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="1-GeneralPages/1-Home.php"><i class="fas fa-home"></i>Home</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+            <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
     <main>
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-               <strong>Hall Secretary Dashboard</strong>
+                <strong>Hall Secretary Dashboard</strong>
             </div>
             <div class="logo"><img src="..\Images\General\93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
         </header>
@@ -119,8 +138,7 @@ $result = $conn->query($sql);
                     </div>
                 </div>
             </div>
-         
-          
+
             <h3>Recent Requests</h3>
 
             <?php
@@ -128,7 +146,6 @@ $result = $conn->query($sql);
                 echo "<table class='requests-table'>
                         <thead>
                         <tr>
-                            <tr>
                             <th>Ticket #</th>
                             <th>Date Created</th>
                             <th>Student Number</th>
@@ -139,9 +156,9 @@ $result = $conn->query($sql);
                             <th>Deny</th>
                             <th>Details</th>
                             <th>Comments</th>
-                </tr>
                         </tr>
-                        </thead>";      // Add comments handling logic here and status logic????? 
+                        </thead>
+                        <tbody>";
 
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
@@ -151,20 +168,31 @@ $result = $conn->query($sql);
                     echo "<td>{$row['Status']}</td>";
                     echo "<td>{$row['Description']}</td>";
                     echo "<td>{$row['Severity']}</td>";
-                    echo "<td><a href='#'>Approve</a></td>";
-                    echo "<td><a href='#'>Deny</a></td>";
+                    echo "<td>
+                            <form method='POST'>
+                                <input type='hidden' name='ticketID' value='{$row['TicketID']}'>
+                                <input type='hidden' name='action' value='approve'>
+                                <button type='submit'>Approve</button>
+                            </form>
+                          </td>";
+                    echo "<td>
+                            <form method='POST'>
+                                <input type='hidden' name='ticketID' value='{$row['TicketID']}'>
+                                <input type='hidden' name='action' value='deny'>
+                                <button type='submit'>Deny</button>
+                            </form>
+                          </td>";
                     echo "<td><a href='#'>Details</a></td>";
-                    echo "<td></td>"; // Add comments handling logic here
+                    echo "<td></td>"; // Placeholder for comments
                     echo "</tr>";
                 }
 
-                echo "</table>";
+                echo "</tbody></table>";
             } else {
                 echo "<p>No tickets found</p>";
             }
             ?>
-            
-        
+
         </div>
     </main>
 
@@ -184,6 +212,5 @@ $result = $conn->query($sql);
             return confirm("Are you sure you want to log out?");
         }
     </script>
-
 </body>
 </html>

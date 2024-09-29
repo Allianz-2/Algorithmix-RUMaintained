@@ -244,9 +244,25 @@ button {
         </header
 
     <?php 
-    // Include database connection
-    require_once('config.php');
-    $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+        require_once('../8-PHPTests/config.php');
+   
+        // Initializes MySQLi
+        $conn = mysqli_init();
+        
+        // Test if the CA certificate file can be read
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
+        }
+        
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+        
+        // Establish the connection
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+        
+        // If connection failed, show the error
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
 
     // Include ticket processing logic
     include('5-ticketprocess.php'); // Include this file to handle ticket actions and display messages
@@ -257,7 +273,13 @@ button {
     }
 
     // Fetch tickets pending house warden approval
-    $query = "SELECT ticketid, description, DateCreated, Status FROM ticket WHERE status = 'OPEN'";
+    $sql = "SELECT * FROM ticket WHERE Status= 'Open' AND HouseWardenID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['userID']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->fetch();
+    $stmt->close();
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
