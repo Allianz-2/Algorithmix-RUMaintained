@@ -249,7 +249,7 @@ button {
     $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
 
     // Include ticket processing logic
-    include('process_ticket.php'); // Include this file to handle ticket actions and display messages
+    include('5-ticketprocess.php'); // Include this file to handle ticket actions and display messages
 
     // Display any success or error messages
     if (isset($message)) {

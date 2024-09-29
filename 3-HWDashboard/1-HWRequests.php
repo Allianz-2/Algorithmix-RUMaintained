@@ -1,17 +1,12 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained Dashboard</title>
+    <title>RU Maintained House Warden Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Dashboard.css">
     <style>
@@ -142,7 +137,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Hall Secretary Dashboard</strong>
+                <strong>House Warden Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RU Maintained Logo">
@@ -200,11 +195,67 @@
             </div>
 
         <?php 
-        require_once('config.php');
-        
-        $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
-        
-        $results = mysqli_query($conn, "SELECT * FROM ticket"); // Add this line to define $results
+   // Check if the session variable is set and user is logged in
+   //if (!isset($_SESSION['UserID'])) {
+      // die('Unauthorized access'); // Redirect or show an error
+   // 
+   
+   // Get the housewarden ID from the session
+   
+   // Include the config file to get DB credentials
+   require_once('../8-PHPTests/config.php');
+   
+   // Initializes MySQLi
+   $conn = mysqli_init();
+   
+   // Test if the CA certificate file can be read
+   if (!file_exists($ca_cert_path)) {
+       die("CA file not found: " . $ca_cert_path);
+   }
+   
+   mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+   
+   // Establish the connection
+   mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+   
+   // If connection failed, show the error
+   if (mysqli_connect_errno()) {
+       die('Failed to connect to MySQL: ' . mysqli_connect_error());
+   }
+   $sql = "SELECT * FROM ticket WHERE Status = 'Open' AND UserID = ?";
+   
+   $stmt = $conn->prepare($sql);
+   $stmt->bind_param("s", $_SESSION['userID']);
+   $stmt->execute();
+   $stmt->bind_result($);
+   $stmt->fetch();
+   $stmt->close();
+
+
+
+
+
+
+
+   // Prepare the SQL statement
+   $query = 
+   // Execute the query
+   $results = mysqli_query($conn, $query);
+   if (!$results) {
+       die('Query Error: ' . mysqli_error($conn));
+   }
+   
+   // Process results...
+   while ($row = mysqli_fetch_assoc($results)) {
+       // Handle each row of the results
+       // e.g., echo $row['column_name'];
+   }
+   
+   // Free the result set and close the connection
+   mysqli_free_result($results);
+   mysqli_close($conn);
+   ?>
+   
         
         $totalTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTickets FROM ticket"))['TotalTickets'];
         $pendingTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Pending'"))['PendingTickets'];
