@@ -1,6 +1,3 @@
-<?php
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        <?php 
+        require '../8-PHPTests/config.php';
+       
+        $conn = mysqli_init(); 
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
+        }
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+       
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
+       
+        // Corrected SQL query
+        $sql = "SELECT CategoryID, COUNT(TicketID) as TicketCount FROM ticket GROUP BY CategoryID";
+        $result = $conn->query($sql);
+
+        echo "var data = google.visualization.arrayToDataTable([";
+        echo   "['Category', 'Count'],";
+
+        while ($row = $result->fetch_assoc()) {
+            echo    "['{$row['CategoryID']}', {$row['TicketCount']}],"; // Fixed the echo statement
+        }
+
+        echo "]);";
+        ?>
+
+        var options = {
+          title: 'Ticket Categories',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+<body>
+<style> 
         :root {
             --sidebar-width: 250px;
             --sidebar-collapsed-width: 0px;
@@ -167,13 +209,13 @@
         }
 
         table {
-            text-align: center;
+            align-self: center;
             width: 100%;
             border-collapse: collapse;
         }
 
         th, td {
-            text-align: center;
+            align-items: center;
             border: 1px solid #ddd;
             padding: 12px;
             text-align: middle;
@@ -216,163 +258,83 @@ button {
     color: #ffffff;
     cursor: pointer;
 }
-    </style>
-</head>
-<body>
+</style>
 
-<?php
-    require '../8-PHPTests/config.php';
+<nav id="sidebar" class="sidebar">
+    <div class="logo">
+        <span class="user-welcome">Welcome, User</span>
+        <a href="user page"><i class="fas fa-user"></i></a> 
+    </div>
+    <ul>
+        <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+        <li class="active"><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+        <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+        <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+        <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+    </div>
+</nav>
 
-            
-    $conn = mysqli_init(); 
-    if (!file_exists($ca_cert_path)) {
-        die("CA file not found: " . $ca_cert_path);
-    }
-    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-    if (mysqli_connect_errno()) {
-        die('Failed to connect to MySQL: ' . mysqli_connect_error());
-    }
-
-
-
-    $sql = "SELECT * FROM ticket WHERE StudentID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $_SESSION['userID']);
-    $stmt->execute();
-    $result = $stmt->get_result(); // Fetch results using get_result()
-    $stmt->close(); 
-
-
-
-?>
-
-    <nav id="sidebar" class="sidebar">
+<main>
+    <header>
+        <div class="header-left">
+            <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
+            <strong>Housewarden Dashboard</strong>
+        </div>
         <div class="logo">
-        <span class="user-welcome"><?php echo 'Welcome ' .  '!'; ?></span>
-            <a href="user page"><i class="fas fa-user"></i></a> 
+            <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
         </div>
-        <ul>
-            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li class="active"><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>Ticket History</a></li>
-            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
-            <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
-        </ul>
-        <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+    </header>
+
+    <div class="content">
+        <h2>Analytics</h2>
+        <div class="filters">
+            <div class="filter-group">
+                <label for="date-filter">Date Range</label>
+                <select id="date-filter">
+                    <option>Last 7 Days</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="today">Today</option>
+                    <option value="2 weeks">Last 2 weeks</option>
+                    <option value="Month">Last Month</option>
+                    <option value="3 months">Last 3 Months</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="severity-filter">Severity</label>
+                <select id="severity-filter">
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                    <option value="Emergency">Emergency</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="category-filter">Category</label>
+                <select id="category-filter">
+                    <option>Any</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Roofing">Roofing</option>
+                    <option value="Repairs and Breakage">Repairs and Breakage</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="status-filter">Status</label>
+                <select id="status-filter">
+                    <option>Any</option>
+                    <option value="active">Active</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Closed">Closed</option>
+                </select>
+            </div>
         </div>
-    </nav>
-
-    <main>
-        <header>
-            <div class="header-left">
-                <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Student Dashboard</strong>
-            </div>
-            <div class="logo">
-                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
-            </div>
-        </header>
-    <body>
-    <div>
-                    <a href="../7-TicketCreation\1-TicketCreation.php"><button class="ticketButton" type ="submit">Create New Ticket</button></a>
-            </div> 
-<div>
-    <h3>My Tickets</h3>
-
-    <?php
-
-
     
-
-                 echo "<table class='requests-table'>
-                        <thead>
-                        <tr>
-                            <th>Ticket #</th>
-                            <th>Date Created</th>
-                            <th>Status</th>
-                            <th>Fault Description</th>
-                            <th>Severity</th>
-                            <th>View More</th>
-                        </tr>
-                        </thead>";
-                        
-                        while ($row = $result->fetch_assoc()) {
-                    
-                       
-                        echo "<tr>";
-                        echo "<td>{$row['TicketID']}</td>";
-                        echo "<td>{$row['DateCreated']}</td>";
-                        echo "<td>{$row['Status']}</td>";
-                        echo "<td>{$row['Description']}</td>";
-                        echo "<td>{$row['Severity']}</td>";
-                        echo "<td><button>Details</a></td>";       
-                        echo "</tr>";
-                    
-                        }
-                echo "</table>";
-                        ?>
-
-            </div>
-        
-            <div>
-    <h3>My Residence Tickets</h3>
-
-    <?php
-
-
-    $sqlRes = "SELECT * FROM ticket WHERE ResidenceID = ?";
-    $stmt = $conn->prepare($sqlRes);
-    $stmt->bind_param("s", $_SESSION['userID']);
-    $stmt->execute();
-    $resultRes = $stmt->get_result(); // Fetch results using get_result()
-    $stmt->close(); 
-    
-
-
-    
-
-
-
-
-                        echo "<table class='requests-table'>
-                        <thead>
-                        <tr>
-                            <th>Ticket #</th>
-                            <th>Date Created</th>
-                            <th>Status</th>
-                            <th>Fault Description</th>
-                            <th>Severity</th>
-                            <th>View More</th>
-                        </tr>
-                        </thead>";
-                        
-                        while ($row = $resultRes->fetch_assoc()) {
-                    
-                       
-                        echo "<tr>";
-                        echo "<td>{$row['TicketID']}</td>";
-                        echo "<td>{$row['DateCreated']}</td>";
-                        echo "<td>{$row['Status']}</td>";
-                        echo "<td>{$row['Description']}</td>";
-                        echo "<td>{$row['Severity']}</td>";
-                        echo "<td><button>Details</a></td>";       
-                        echo "</tr>";
-                    
-                        }
-                echo "</table>";
-                        ?>
-
-            </div>
-          
-            
-
-
-
-            </body>
+        <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -390,7 +352,5 @@ button {
             return confirm("Are you sure you want to log out?");
         }
     </script>
-
-<div id="piechart" style="width: 900px; height: 500px;"></div>
 </body>
 </html>

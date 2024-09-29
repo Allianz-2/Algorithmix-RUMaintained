@@ -1,104 +1,253 @@
+<?php
+    require_once("../5-UserSignInandRegistration/14-secure.php"); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU House Warden Dashboard</title>
+    <title>RHouseWarden Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="Dashboard.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #81589a;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
+    
+</head>
+<body>
+<style> 
+:root {
+    --sidebar-width: 220px; /* Reduced sidebar width */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    display: flex; /* Use flexbox for layout */
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #81589a;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    transition: all 0.3s;
+    left: 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar.collapsed {
+    left: calc(-1 * var(--sidebar-width));
+    display: none;
+}
+
+.sidebar .logo {
+    padding: 10px; /* Reduced padding */
+    text-align: right;
+}
+
+.sidebar .logo a {
+    color: white; /* Change user icon to white */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 8px 12px; /* Smaller padding */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sidebar li:hover, .sidebar li.active {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .badge {
+    background-color: purple;
+    color: white;
+    padding: 2px 4px; /* Smaller badge */
+    border-radius: 50%;
+    font-size: 0.7em; /* Smaller font */
+    margin-left: 5px;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px; /* Reduced padding */
+    font-size: 14px; /* Smaller footer font */
+}
+
+.sidebar li i, .sidebar-footer button i {
+    margin-right: 5px; /* Reduced margin */
+    width: 20px;
+    text-align: center;
+}
+
+main {
+    margin-left: var(--sidebar-width);
+    padding: 10px; /* Reduced padding */
+    flex-grow: 1; /* Allow main to grow */
+}
+
+h1 {
+    text-align: center;
+    color: #81589a;
+    font-size: 1.3em; /* Smaller heading */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; /* Reduced margin */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 6px 8px; /* Smaller padding */
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.8em; /* Smaller text */
+}
+
+th {
+    background-color: #81589a;
+    color: #fff;
+}
+tr:nth-child(even) {
+        background-color: #eaeaea; /* Light gray for even rows */
+    }
+
+    tr:hover {
+        background-color: #d1c4e9; /* Light purple hover effect */
+    }
+
+    th {
+        background-color: #ab8cc6; /* Light purple header */
+        color: white; /* White text for contrast */
+        font-weight: bold;
+    }
+
+    /* Add responsive design */
+    @media (max-width: 768px) {
         th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+            font-size: 14px; /* Smaller text on mobile */
         }
-        th {
-            background-color: #81589a;
-            color: #fff;
+
+        h1 {
+            font-size: 24px; /* Smaller title on mobile */
         }
-        .filters, .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-        .filter-group {
-            flex: 1;
-        }
-        .stat-box {
-            background-color: #f1eaf5;
-            color: #81589a; 
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            flex: 1;
-            margin: 10px;
-            position: relative;
-            transition: transform 0.2s;
-        }
-        .stat-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
-        }
-        .stat-box h4 {
-            margin: 10px 0;
-            font-size: 1.2em;
-            color: #81589a;
-        }
-        .stat-box p {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        .icon {
-            font-size: 40px;
-            color: #5c4b8a;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        .charts {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            max-width: 800px; 
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .stat-box i.icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-            color: #81589a;
-        }
-    </style>
+    }
+.filters {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px; /* Reduced margin */
+    flex-wrap: wrap; /* Allow items to wrap */
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between; /* Align items in one line */
+    margin-top: 10px; /* Reduced margin */
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.stat-box {
+    background-color: #f1eaf5;
+    color: #81589a; 
+    border-radius: 8px; /* Smaller border radius */
+    padding: 10px; /* Smaller padding */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15); /* Reduced shadow */
+    text-align: center;
+    flex: 1; /* Each box takes equal space */
+    min-width: 120px; /* Smaller minimum width */
+    margin: 5px; /* Reduced margin */
+    transition: transform 0.2s;
+}
+
+.stat-box:hover {
+    transform: translateY(-2px); /* Smaller hover effect */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stat-box h4 {
+    margin: 5px 0; /* Reduced margin */
+    font-size: 1em; /* Smaller heading */
+}
+
+.stat-box p {
+    font-size: 1.2em; /* Smaller text */
+    font-weight: bold;
+}
+
+.logo img {
+    max-height: 50px; /* Adjusted size */
+    width: auto;
+    object-fit: contain;
+}
+
+.user-welcome {
+    align-items: center;
+    text-align: left;
+    margin-right: 10px; /* Reduced margin */
+}
+
+.ticketButton {
+    padding: 6px 12px; /* Smaller button */
+    font-size: 0.8rem; /* Smaller font */
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #81589a;
+    color: #fff;
+    cursor: pointer;
+}
+
+button {
+    padding: 4px 8px; /* Smaller button */
+    font-size: 0.8rem; /* Smaller font */
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #81589a;
+    color: #ffffff;
+    cursor: pointer;
+}
+.charts {
+    display: flex; /* Use flexbox to align charts */
+    justify-content: space-between; /* Space between charts */
+    margin-top: 2px; /* Add some space above */
+}
+
+.charts canvas {
+    max-width: 2024px; /* Set max width for the charts */
+    width: 100%; /* Ensure it takes full width of its container */
+    height: 5px; /* Maintain aspect ratio */
+}
+
+</style>
+
+
 </head>
 <?php
+        // Database connection
         require_once('config.php');
-
+        $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+        
         // Fetch all maintenance requests
         $query = "SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, u.First_name, u.Lastname, m.StaffName 
                   FROM ticket t
                   JOIN user u ON t.StudentID = u.UserID
-                  JOIN maintenance_staff m ON t.StaffID = m.StaffID";  // Joining with maintenance_staff table
-        $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+                  JOIN maintenance_staff m ON t.StaffID = m.StaffID";
         $results = mysqli_query($conn, $query);
         
         // Fetch task statistics
@@ -106,18 +255,18 @@
         $pendingRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingRequests FROM ticket WHERE Status = 'Open'"))['PendingRequests'];
         $viewedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as ViewedRequests FROM ticket WHERE Status = 'Viewed'"))['ViewedRequests']; 
         $completedRequests = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedRequests FROM ticket WHERE Status = 'Resolved'"))['CompletedRequests'];
-?>
-<body>
+        ?>
+        
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span><!-- Add PHP code for user name -->
+        <span class="user-welcome">Welcome!</span>
             <a href="user-page"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-            <li><a href="analytics.html"><i class="fas fa-chart-pie"></i>Analytics</a></li>
-            <li><a href="ticket-progress.html"><i class="fas fa-tasks"></i>Ticket Progress</a></li>
-            <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="lodge-ticket.html"><i class="fas fa-plus-circle"></i>Lodge Ticket</a></li>
+            <li><a href="2-Ticketanalytics.php"><i class="fas fa-chart-pie"></i>Analytics</a></li>
+            <li><a href="3-TicketProgress.php"><i class="fas fa-tasks"></i>Ticket Progress</a></li>
+            <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="../7-TicketCreation/1-TicketCreation.php"><i class="fas fa-plus-circle"></i>Lodge Ticket</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -138,56 +287,6 @@
 
         <div class="content">
             <h3>Ticket Requests</h3>
-            <div class="filters">
-                <div class="filter-group">
-                    <label for="date-filter">Date Range</label>
-                    <select id="date-filter">
-                        <option>Last 7 Days</option>
-                        <option value="yesterday">Yesterday</option>
-                        <option value="today">Today</option>
-                        <option value="2 weeks">Last 2 weeks</option>
-                        <option value="month">Last Month</option>
-                        <option value="3 months">Last 3 Months</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="residence-filter">Residence</label>
-                    <select id="residence-filter">
-                        <option>All Residences</option>
-                        <option>Chris Hani House</option>
-                        <!-- Add more residences here -->
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="severity-filter">Severity</label>
-                    <select id="severity-filter">
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                        <option value="Emergency">Emergency</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="category-filter">Category</label>
-                    <select id="category-filter">
-                        <option>Any</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="Electrical">Electrical</option>
-                        <option value="Roofing">Roofing</option>
-                        <option value="Repairs">Repairs and Breakages</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="status-filter">Status</label>
-                    <select id="status-filter">
-                        <option>Any</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Open">Open</option>
-                        <option value="Closed">Closed</option>
-                    </select>
-                </div>
-            </div>
 
             <div class="charts">
                 <canvas id="maintenanceRequestChart"></canvas>

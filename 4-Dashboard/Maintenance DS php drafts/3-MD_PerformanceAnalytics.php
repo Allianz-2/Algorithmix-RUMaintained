@@ -56,9 +56,9 @@ canvas {
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-        <li class="active"><a href="1-MD_MaintenanceRequests.php"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
+            <li><a href="1-MD_MaintenanceRequests.php"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
             <li><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
-            <li><a href="3-MD_PerformanceAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+        <li class="active"><a href="3-MD_PerformanceAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li><a href="4-MD_Notifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>
         <div class="sidebar-footer">
@@ -80,22 +80,46 @@ canvas {
         
         <?php
         //Database connection parameters
-        define('SERVERNAME', 'IS3-DEV.ICT.RU.AC.ZA');
-        define('USERNAME', 'Algorithmix');
-        define('PASSWORD', 'U3fuC7P5');
-        define('DATABASE', 'Algorithmix');
+        require '../../8-PHPTests/config.php';
 
-        try {
-            // Create a new PDO instance
-            $conn = new PDO("mysql:host=" . SERVERNAME . ";dbname=" . DATABASE, USERNAME, PASSWORD);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
-            exit();
+        $conn = mysqli_init();
+        $ca_cert_path = "../../CACertificate/DigiCertGlobalRootCA.crt.pem"; // Absolute path to the CA cert
+
+        // Test if the CA certificate file can be read
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
         }
 
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+        // Establish the connection
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+        // If connection failed, show the error
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
 
         // Fetch maintenance fault stats per semester per residence
+        // function getMaintenanceFaultStatsPerSemester($conn) {
+        //     $query = "
+        //         SELECT r.ResName, 
+        //                COUNT(t.TicketID) AS FaultCount, 
+        //                YEAR(t.DateCreated) AS Year,
+        //                CASE 
+        //                    WHEN MONTH(t.DateCreated) BETWEEN 1 AND 6 THEN 'Semester 1'
+        //                    ELSE 'Semester 2'
+        //                END AS Semester
+        //         FROM ticket t
+        //         JOIN residence r ON t.ResidenceID = r.ResidenceID
+        //         WHERE t.Status = 'Resolved'
+        //         GROUP BY r.ResName, Year, Semester
+        //  ";
+        //     return $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        // }
+
+
+
         function getMaintenanceFaultStatsPerSemester($conn) {
             $query = "
                 SELECT r.ResName, 
@@ -109,13 +133,30 @@ canvas {
                 JOIN residence r ON t.ResidenceID = r.ResidenceID
                 WHERE t.Status = 'Resolved'
                 GROUP BY r.ResName, Year, Semester
-         ";
-            return $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+            ";
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
         }
+        
+    
 
 
 
         // Fetch maintenance fault progress
+
+
         function getMaintenanceFaultProgress($conn) {
             $query = "
                 SELECT COUNT(TicketID) AS TotalTickets,
@@ -123,20 +164,30 @@ canvas {
                        SUM(CASE WHEN Status = 'In Progress' THEN 1 ELSE 0 END) AS InProgressTickets
                 FROM ticket
             ";
-            return $conn->query($query)->fetch(PDO::FETCH_ASSOC);
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+            return mysqli_fetch_assoc($result);
         }
 
         // Fetch turnaround time stats
+
         function getTurnaroundTimeStats($conn) {
             $query = "
                 SELECT AVG(TIMESTAMPDIFF(HOUR, DateCreated, DateResolved)) AS AvgTurnaroundTime
                 FROM ticket
                 WHERE Status = 'Resolved'
             ";
-            return $conn->query($query)->fetch(PDO::FETCH_ASSOC);
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+            return mysqli_fetch_assoc($result);
         }
 
         // Fetch maintenance category stats
+
         function getMaintenanceCategoryStats($conn) {
             $query = "
                 SELECT fc.CategoryName, COUNT(t.TicketID) AS FaultCount
@@ -144,10 +195,24 @@ canvas {
                 JOIN faultcategory fc ON t.CategoryID = fc.CategoryID
                 GROUP BY fc.CategoryName
             ";
-            return $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
         }
 
         // Fetch history of complaint categories
+
         function getComplaintCategoryHistory($conn) {
             $query = "
                 SELECT YEAR(DateCreated) AS Year, 
@@ -158,7 +223,20 @@ canvas {
                 GROUP BY Year, fc.CategoryName
                 ORDER BY Year
             ";
-            return $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
         }
 
         // Prepare data for graphs

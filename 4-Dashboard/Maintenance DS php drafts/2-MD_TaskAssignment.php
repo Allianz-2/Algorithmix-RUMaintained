@@ -14,11 +14,60 @@
             margin: 0;
             padding: 20px;
 
+            
         }
         h1 {
             text-align: center;
             color: #81589a;
         }
+
+
+
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px; /* Rounded corners */
+        overflow: hidden; /* Clip child elements */
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #eaeaea; /* Light gray for even rows */
+    }
+
+    tr:hover {
+        background-color: #d1c4e9; /* Light purple hover effect */
+    }
+
+    th {
+        background-color: #ab8cc6; /* Light purple header */
+        color: white; /* White text for contrast */
+        font-weight: bold;
+    }
+
+    /* Add responsive design */
+    @media (max-width: 768px) {
+        th, td {
+            font-size: 14px; /* Smaller text on mobile */
+        }
+
+        h1 {
+            font-size: 24px; /* Smaller title on mobile */
+        }
+    }
+
+
+
+
+
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -116,8 +165,8 @@
             <a href="user-page"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-        <li class="active"><a href="1-MD_MaintenanceRequests.php"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
-            <li><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="1-MD_MaintenanceRequests.php"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
+        <li class="active"><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li><a href="3-MD_PerformanceAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li><a href="4-MD_Notifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>
@@ -246,7 +295,8 @@ while ($assignment = mysqli_fetch_assoc($assignments_result)) {
 <!-- Form for Update -->
 <form action="update-ticket.php" method="post" style="display:inline; margin-right: 10px;"> <!-- Added margin to right -->
     <input type="hidden" name="TicketID" value="<?php echo $row['TicketID']; ?>">
-    <button type="submit" class="btn-update" style="padding: 5px 10px; font-size: 14px;">Update</button> <!-- Smaller button -->
+    <button type="submit" class="btn-update" style="padding: 5px 10px; font-size: 14px; background-color: #81589a; color: white;">Update</button>
+
 </form>
 
 <!-- Form for Delete -->
