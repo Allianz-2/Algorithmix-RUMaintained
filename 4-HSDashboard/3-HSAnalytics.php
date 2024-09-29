@@ -65,6 +65,7 @@
             <li><a href="..\4-HSDashboard\1-HSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
             <li class="active"><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
             <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li><a href="..\4-HSDashboard\5-HSHelp.php"><i class="fas fa-info-circle"></i> Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -105,92 +106,96 @@
             </div>
         </div>
     </main>
-
     <script>
-        // Load Google Charts library
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawCharts);
+    // Load Google Charts library
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawCharts);
 
-        function drawCharts() {
-            // Sample data for Open Tickets chart
-            var openTicketsData = google.visualization.arrayToDataTable([
-                ['Day', 'Open Tickets'],
-                ['Monday',  12],
-                ['Tuesday',  5],
-                ['Wednesday',  7],
-                ['Thursday',  8],
-                ['Friday',  15],
-                ['Saturday',  6],
-                ['Sunday',  4]
-            ]);
-            var openTicketsOptions = {
-                curveType: 'function',
-                legend: { position: 'bottom' },
-                backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial'
-            };
-            var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
-            openTicketsChart.draw(openTicketsData, openTicketsOptions);
+    function drawCharts() {
+        // Sample data for Open Tickets chart
+        var openTicketsData = google.visualization.arrayToDataTable([
+            ['Day', 'Open Tickets'],
+            ['Monday',  12],
+            ['Tuesday',  5],
+            ['Wednesday',  7],
+            ['Thursday',  8],
+            ['Friday',  15],
+            ['Saturday',  6],
+            ['Sunday',  4]
+        ]);
+        var openTicketsOptions = {
+            curveType: 'function',
+            legend: { position: 'bottom' },
+            backgroundColor: '#F8F9FC',
+            chartArea: { width: '85%', height: '75%' },
+            fontName: 'Arial',
+            colors: ['#4E73DF']
+        };
+        var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
+        openTicketsChart.draw(openTicketsData, openTicketsOptions);
 
-            // Sample data for Status chart
-            var statusData = google.visualization.arrayToDataTable([
-                ['Status', 'Count'],
-                ['Active',  20],
-                ['Pending',  15],
-                ['Closed',  30]
-            ]);
-            var statusOptions = {
-                pieHole: 0.4,
-                backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial'
-            };
-            var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
-            statusChart.draw(statusData, statusOptions);
+        // Sample data for Status chart
+        var statusData = google.visualization.arrayToDataTable([
+            ['Status', 'Count'],
+            ['Active',  20],
+            ['Pending',  15],
+            ['Closed',  30]
+        ]);
+        var statusOptions = {
+            pieHole: 0.4,
+            backgroundColor: '#F8F9FC',
+            chartArea: { width: '85%', height: '75%' },
+            fontName: 'Arial',
+            colors: ['#4E73DF', '#1CC88A', '#36B9CC'] // Assuming additional colors for variety
+        };
+        var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
+        statusChart.draw(statusData, statusOptions);
 
-            // Sample data for Resolution Time chart
-            var resolutionTimeData = google.visualization.arrayToDataTable([
-                ['Category', 'Resolution Time (days)'],
-                ['Plumbing', 3],
-                ['Electrical', 2],
-                ['Roofing', 4],
-                ['Repairs', 1],
-                ['Other', 5]
-            ]);
-            var resolutionTimeOptions = {
-                hAxis: { title: 'Category' },
-                vAxis: { title: 'Resolution Time (days)' },
-                backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                legend: 'none'
-            };
-            var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
-            resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
+        // Sample data for Resolution Time chart
+        var resolutionTimeData = google.visualization.arrayToDataTable([
+            ['Category', 'Resolution Time (days)'],
+            ['Plumbing', 3],
+            ['Electrical', 2],
+            ['Roofing', 4],
+            ['Repairs', 1],
+            ['Other', 5]
+        ]);
+        var resolutionTimeOptions = {
+            hAxis: { title: 'Category' },
+            vAxis: { title: 'Resolution Time (days)' },
+            backgroundColor: '#F8F9FC',
+            chartArea: { width: '85%', height: '75%' },
+            fontName: 'Arial',
+            legend: 'none',
+            colors: ['#4E73DF']
+        };
+        var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
+        resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
 
-            // Sample data for Severity and Category chart
-            var severityCategoryData = google.visualization.arrayToDataTable([
-                ['Category', 'High', 'Medium', 'Low'],
-                ['Plumbing', 10, 5, 2],
-                ['Electrical', 8, 4, 1],
-                ['Roofing', 6, 3, 1],
-                ['Repairs', 4, 2, 0],
-                ['Other', 12, 6, 3]
-            ]);
-            var severityCategoryOptions = {
-                isStacked: true,
-                hAxis: { title: 'Category' },
-                vAxis: { title: 'Number of Tickets' },
-                backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                legend: { position: 'bottom' }
-            };
-            var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
-            severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
-        }
-    </script>
+        // Sample data for Severity and Category chart
+        var severityCategoryData = google.visualization.arrayToDataTable([
+            ['Category', 'High', 'Medium', 'Low'],
+            ['Plumbing', 10, 5, 2],
+            ['Electrical', 8, 4, 1],
+            ['Roofing', 6, 3, 1],
+            ['Repairs', 4, 2, 0],
+            ['Other', 12, 6, 3]
+        ]);
+        var severityCategoryOptions = {
+            isStacked: true,
+            hAxis: { title: 'Category' },
+            vAxis: { title: 'Number of Tickets' },
+            backgroundColor: '#F8F9FC',
+            chartArea: { width: '85%', height: '75%' },
+            fontName: 'Arial',
+            legend: { position: 'bottom' },
+            colors: ['#4E73DF', '#1CC88A', '#36B9CC'] // Assuming the same additional colors for consistency
+        };
+        var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
+        severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
+    }
+</script>
+   
       <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburgerIcon = document.getElementById('hamburger-icon');
