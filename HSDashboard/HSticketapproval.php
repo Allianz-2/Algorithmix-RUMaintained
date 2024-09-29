@@ -29,7 +29,8 @@
             overflow: hidden;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -40,99 +41,17 @@
             color: #fff;
         }
 
-        .filters, .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        .filter-group {
-            flex: 1;
-        }
-
-        .stat-box {
-            background-color: white;
-            color: #81589a;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            flex: 1;
-            margin: 10px;
-            position: relative;
-            transition: transform 0.2s;
-        }
-
-        .stat-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-box h4 {
-            margin: 10px 0;
-            font-size: 1.2em;
-            color: #333;
-        }
-
-        .stat-box p {
-            font-size: 2em;
-            font-weight: bold;
-        }
-
-        .icon {
-            font-size: 40px;
-            color: #5c4b8a;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .charts {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .chart-box {
-            background-color: white;
-            color: #81589a;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            width: 48%;
-        }
+    
     </style>
 </head>
 
-<body>
-    <nav id="sidebar" class="sidebar">
-        <div class="logo">
-            <span class="user-welcome">Welcome, <?php echo $_SESSION['user_name']; ?></span> <!-- Display the user name dynamically -->
-            <a href="user-page.php"><i class="fas fa-user"></i></a>
-        </div>
-        <ul>
-            <li><a href="HSDSTicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
-            <li><a href="HSDSAnalytics.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-            <li class="active"><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
-            <li><a href="#"><i class="fas fa-building"></i> Residences</a></li>
-            <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
-        </ul>
-        <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
-        </div>
-    </nav>
+
 
 <?php
-session_start(); // Add this line
 
 require_once("config.php");
 
-// Establish connection with error handling
+// Establishing connection with error handling
 $conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DATABASE);
 
 if ($conn->connect_error) {
@@ -141,18 +60,36 @@ if ($conn->connect_error) {
 
 $sql = "SELECT * FROM ticket";
 $result = $conn->query($sql);
+
 ?>
 
-    <main>
-        <div class="header-left">
-            <div id="hamburger-icon" class="hamburger-icon">
-                <i class="fas fa-bars"></i>
-            </div>
-            <h2>Hall Secretary Dashboard</h2>
-            <div class="logo">
-                <img src="/path/to/rumaintained-logo.jpg" alt="RUMaintained logo">
-            </div>
+
+    <nav id="sidebar" class="sidebar">
+        <div class="logo">
+            <span class="user-welcome">Welcome, </span> <!-- <?php echo $fullName; ?> I THINK -->
+           <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
+        <ul>
+            <li class="active"><a href="#"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
+            <li><a href="HSDSAnalytics.html"><i class="fas fa-chart-bar"></i>Analytics</a></li>
+            <li><a href="Z:\Algorithmix-RUMaintained\HSDashboard\HSDSRequests.php"></a><i class="fas fa-clipboard-list"></i>Requests</a></li>
+
+            <li><a href="HSDSNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+        </div>
+    </nav>
+    <main>
+        <header>
+            <div class="header-left">
+                <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
+               <strong>Hall Secretary Dashboard</strong>
+            </div>
+            <div class="logo"><img src="..\Images\General\93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
+        </header>
 
         <div class="content">
             <h2>Ticket Approval</h2>
@@ -175,48 +112,41 @@ $result = $conn->query($sql);
                 </div>
             </div>
          
+          
             <h3>Recent Requests</h3>
-            <table>
-                <tr>
-                    <th>Ticket #</th>
-                    <th>Date Created</th>
-                    <th>Student Number</th>
-                    <th>Fault Description</th>
-                    <th>Approve</th>
-                    <th>Deny</th>
-                    <th>Comments</th>
-                </tr>
-                <!-- Populate recent requests here dynamically -->
-            </table>
-
-            <h3>Tickets</h3>
 
             <?php
             if ($result->num_rows > 0) {
                 echo "<table class='requests-table'>
                         <thead>
                         <tr>
+                            <tr>
                             <th>Ticket #</th>
                             <th>Date Created</th>
                             <th>Student Number</th>
+                            <th>Status</th>                           
                             <th>Fault Description</th>
                             <th>Severity</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
+                            <th>Approve</th>
+                            <th>Deny</th>
+                            <th>Details</th>
+                            <th>Comments</th>
+                </tr>
                         </tr>
-                        </thead>";
+                        </thead>";      // Add comments handling logic here and status logic????? 
 
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>{$row['TicketID']}</td>";
                     echo "<td>{$row['DateCreated']}</td>";
                     echo "<td>{$row['StudentID']}</td>";
+                    echo "<td>{$row['Status']}</td>";
                     echo "<td>{$row['Description']}</td>";
                     echo "<td>{$row['Severity']}</td>";
                     echo "<td><a href='#'>Approve</a></td>";
                     echo "<td><a href='#'>Deny</a></td>";
                     echo "<td><a href='#'>Details</a></td>";
+                    echo "<td></td>"; // Add comments handling logic here
                     echo "</tr>";
                 }
 
@@ -226,6 +156,7 @@ $result = $conn->query($sql);
             }
             ?>
             
+        
         </div>
     </main>
 
@@ -245,7 +176,6 @@ $result = $conn->query($sql);
             return confirm("Are you sure you want to log out?");
         }
     </script>
-
 
 </body>
 </html>
