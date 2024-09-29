@@ -222,47 +222,49 @@
    if (mysqli_connect_errno()) {
        die('Failed to connect to MySQL: ' . mysqli_connect_error());
    }
-   $sql = "SELECT * FROM ticket WHERE Status = 'Open' AND UserID = ?";
-   
+
+   $sql = "SELECT * FROM ticket WHERE Status= 'Open' AND HouseWardenID = ?";
    $stmt = $conn->prepare($sql);
    $stmt->bind_param("s", $_SESSION['userID']);
    $stmt->execute();
-   $stmt->bind_result($);
+   $result = $stmt->get_result();
    $stmt->fetch();
    $stmt->close();
 
+   // Total tickets
+$stmt = $conn->prepare("SELECT COUNT(*) as TotalTickets FROM ticket WHERE HouseWardenID = ?");
+$stmt->bind_param("s", $_SESSION['userID']);
+$stmt->execute();
+$totalTickets = $stmt->get_result()->fetch_assoc()['TotalTickets'];
+$stmt->close();
 
+// Pending tickets
+$stmt = $conn->prepare("SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Pending' AND HouseWardenID = ?");
+$stmt->bind_param("s", $_SESSION['userID']);
+$stmt->execute();
+$pendingTickets = $stmt->get_result()->fetch_assoc()['PendingTickets'];
+$stmt->close();
 
+// Completed tickets
+$stmt = $conn->prepare("SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = 'Resolved' AND HouseWardenID = ?");
+$stmt->bind_param("s", $_SESSION['userID']);
+$stmt->execute();
+$completedTickets = $stmt->get_result()->fetch_assoc()['CompletedTickets'];
+$stmt->close();
 
+// Viewed tickets
+$stmt = $conn->prepare("
+    SELECT COUNT(*) as ViewedTickets FROM ticketcomment 
+    WHERE TicketID IN (SELECT TicketID FROM ticket WHERE Status IN ('Resolved', 'Closed') AND HouseWardenID = ?)
+");
+$stmt->bind_param("s", $_SESSION['userID']);
+$stmt->execute();
+$viewedTickets = $stmt->get_result()->fetch_assoc()['ViewedTickets'];
+$stmt->close();
 
-
-
-   // Prepare the SQL statement
-   $query = 
-   // Execute the query
-   $results = mysqli_query($conn, $query);
-   if (!$results) {
-       die('Query Error: ' . mysqli_error($conn));
-   }
-   
-   // Process results...
-   while ($row = mysqli_fetch_assoc($results)) {
-       // Handle each row of the results
-       // e.g., echo $row['column_name'];
-   }
-   
-   // Free the result set and close the connection
-   mysqli_free_result($results);
-   mysqli_close($conn);
-   ?>
-   
-        
-        $totalTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTickets FROM ticket"))['TotalTickets'];
-        $pendingTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Pending'"))['PendingTickets'];
-        $completedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = 'Resolved'"))['CompletedTickets'];
-        $viewedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as ViewedTickets FROM ticketcomment WHERE TicketID IN (SELECT TicketID FROM ticket WHERE Status IN ('Resolved', 'Closed'))"))['ViewedTickets'];
-        ?>
-
+// Close the connection
+mysqli_close($conn);
+ ?>
         <div class="content">
            
             <div class="charts">
@@ -304,7 +306,7 @@
                 </thead>
                 
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($results)): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['TicketID']; ?></td>
                         <td><?php echo $row['Description']; ?></td>
