@@ -3,10 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Progress Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="dashboard.css">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        <?php 
+        require '../8-PHPTests/config.php';
+       
+        $conn = mysqli_init(); 
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
+        }
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+       
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
+       
+        // Corrected SQL query
+        $sql = "SELECT CategoryID, COUNT(TicketID) as TicketCount FROM ticket GROUP BY CategoryID";
+        $result = $conn->query($sql);
+
+        echo "var data = google.visualization.arrayToDataTable([";
+        echo   "['Category', 'Count'],";
+
+        while ($row = $result->fetch_assoc()) {
+            echo    "['{$row['CategoryID']}', {$row['TicketCount']}],"; // Fixed the echo statement
+        }
+
+        echo "]);";
+        ?>
+
+        var options = {
+          title: 'Ticket Categories',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
 </head>
 <body>
 <style> 
@@ -218,45 +259,17 @@ button {
     cursor: pointer;
 }
 </style>
-<?php
-// Include database connection
-require_once('config.php');
-$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
-
-// Message variable to store feedback messages
-$message = '';
-
-// Delete ticket logic
-if (isset($_POST['delete_ticketid'])) {
-    $ticketid = $_POST['delete_ticketid'];
-    $delete_query = "DELETE FROM ticket WHERE ticketid = '$ticketid'";
-
-    if (mysqli_query($conn, $delete_query)) {
-        $message = "Ticket deleted successfully.";
-    } else {
-        $message = "Error deleting ticket: " . mysqli_error($conn);
-    }
-}
-
-// Fetch approved tickets
-$query = "SELECT ticketid, description, DateCreated, Status, Severity FROM ticket WHERE status = 'confirmed'";
-$result = mysqli_query($conn, $query);
-
-if (!$result) {
-    die("Query failed: " . mysqli_error($conn));
-}
-?>
 
 <nav id="sidebar" class="sidebar">
     <div class="logo">
-        <span class="user-welcome">Welcome, </span>
-        <a href="user-page"><i class="fas fa-user"></i></a>
+        <span class="user-welcome">Welcome, User</span>
+        <a href="user page"><i class="fas fa-user"></i></a> 
     </div>
     <ul>
-        <li><a href="2-HouseWardenAnalytics.php"><i class="fas fa-chart-pie"></i>Analytics</a></li>
-        <li><a href="4-Ticketapproval.php"><i class="fas fa-tasks"></i>Ticket Progress</a></li>
-        <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
-        <li><a href="lodge-ticket.html"><i class="fas fa-plus-circle"></i>Lodge Ticket</a></li>
+        <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+        <li class="active"><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+        <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+        <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
     </ul>
     <div class="sidebar-footer">
         <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -268,7 +281,7 @@ if (!$result) {
     <header>
         <div class="header-left">
             <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-            <strong>House Warden Dashboard</strong>
+            <strong>Housewarden Dashboard</strong>
         </div>
         <div class="logo">
             <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
@@ -276,77 +289,68 @@ if (!$result) {
     </header>
 
     <div class="content">
-        <h3>Ticket Management</h3>
-        
-        <?php if ($message): ?>
-            <div class='message'><?php echo htmlspecialchars($message); ?></div>
-        <?php endif; ?>
-
-        <h4>Approved Tickets</h4>
-        <?php if (mysqli_num_rows($result) > 0): ?>
-            <table border='1'>
-                <tr>
-                    <th>Ticket ID</th>
-                    <th>Description</th>
-                    <th>Date Created</th>
-                    <th>Status</th>
-                    <th>Severity</th>
-                    <th>Action</th>
-                </tr>
-                <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                    <tr>
-                        <td><?php echo $row['ticketid']; ?></td>
-                        <td><?php echo htmlspecialchars($row['description']); ?></td>
-                        <td><?php echo $row['DateCreated']; ?></td>
-                        <td>
-                            <form method='post' action='ticketupdate.php' style='display:inline;'>
-                                <input type='hidden' name='update_ticketid' value='<?php echo $row['ticketid']; ?>'>
-                                <select name='status'>
-                                    <option value='confirmed'<?php echo ($row['Status'] == 'confirmed' ? ' selected' : ''); ?>>Confirmed</option>
-                                    <option value='resolved'<?php echo ($row['Status'] == 'resolved' ? ' selected' : ''); ?>>Resolved</option>
-                                    <option value='closed'<?php echo ($row['Status'] == 'closed' ? ' selected' : ''); ?>>Closed</option>
-                                </select>
-                        </td>
-                        <td>
-                                <select name='severity'>
-                                    <option value='low'<?php echo ($row['Severity'] == 'low' ? ' selected' : ''); ?>>Low</option>
-                                    <option value='medium'<?php echo ($row['Severity'] == 'medium' ? ' selected' : ''); ?>>Medium</option>
-                                    <option value='high'<?php echo ($row['Severity'] == 'high' ? ' selected' : ''); ?>>High</option>
-                                </select>
-                                <button type='submit' name='action' value='update'>Update</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method='post' action='3-TicketProgress.php' style='display:inline;'>
-                                <input type='hidden' name='delete_ticketid' value='<?php echo $row['ticketid']; ?>'>
-                                <button type='submit' name='action' value='delete'>Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            </table>
-        <?php else: ?>
-            <p>No approved tickets found.</p>
-        <?php endif; ?>
+        <h2>Analytics</h2>
+        <div class="filters">
+            <div class="filter-group">
+                <label for="date-filter">Date Range</label>
+                <select id="date-filter">
+                    <option>Last 7 Days</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="today">Today</option>
+                    <option value="2 weeks">Last 2 weeks</option>
+                    <option value="Month">Last Month</option>
+                    <option value="3 months">Last 3 Months</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="severity-filter">Severity</label>
+                <select id="severity-filter">
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                    <option value="Emergency">Emergency</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="category-filter">Category</label>
+                <select id="category-filter">
+                    <option>Any</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Roofing">Roofing</option>
+                    <option value="Repairs and Breakage">Repairs and Breakage</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="status-filter">Status</label>
+                <select id="status-filter">
+                    <option>Any</option>
+                    <option value="active">Active</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Closed">Closed</option>
+                </select>
+            </div>
+        </div>
+    
+        <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
     </div>
-</main>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const hamburgerIcon = document.getElementById('hamburger-icon');
-        const sidebar = document.getElementById('sidebar');
-        const main = document.querySelector('main');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
 
-        hamburgerIcon.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            main.classList.toggle('sidebar-collapsed');
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
         });
-    });
 
-    function confirmLogout() {
-        return confirm("Are you sure you want to log out?");
-    }
-</script>
-
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+    </script>
 </body>
 </html>
