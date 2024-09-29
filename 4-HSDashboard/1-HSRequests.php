@@ -126,12 +126,13 @@
             <a href="user-page"><i class="fas fa-user"></i></a>
         </div>
         <ul>
+            <li><a href="1-Home.php"><i class="fas fa-home"></i>Home</a></li>
             <li><a href="HSticketapproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
             <li><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
             <li class="active"><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
             
             <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
-            <li><a href="1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -164,7 +165,7 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="residence-filter">Residence</label> <!-- DEPENDING ON PERSONS HALL IT WILL SHOW RELEVANT RESIDENCES USING PHP -->
+                    <label for="residence-filter">Residence</label> <!-- DEConfirmed ON PERSONS HALL IT WILL SHOW RELEVANT RESIDENCES USING PHP -->
                     <select id="residence-filter">
                         <option>Chris Hani House</option>
                     </select>
@@ -194,21 +195,37 @@
                     <select id="status-filter">
                         <option>Any</option>
                         <option value="active">Active</option>
-                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
                         <option value="closed">Closed</option>
                     </select>
                 </div>
             </div>
 
         <?php 
-        require_once('config.php');
+            require '../8-PHPTests/config.php';
+
+            // Initializes MySQLi
+            $conn = mysqli_init();
+
+            // Test if the CA certificate file can be read
+            if (!file_exists($ca_cert_path)) {
+                die("CA file not found: " . $ca_cert_path);
+            }
+
+            mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+            // Establish the connection
+            mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+            // If connection failed, show the error
+            if (mysqli_connect_errno()) {
+                die('Failed to connect to MySQL: ' . mysqli_connect_error());
+            }
         
-        $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
-        
-        $results = mysqli_query($conn, "SELECT * FROM ticket"); // Add this line to define $results
+        $results = mysqli_query($conn, "SELECT * FROM ticket WHERE Status= 'Confirmed'"); // Add this line to define $results
         
         $totalTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTickets FROM ticket"))['TotalTickets'];
-        $pendingTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Pending'"))['PendingTickets'];
+        $ConfirmedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as ConfirmedTickets FROM ticket WHERE Status = 'Confirmed'"))['ConfirmedTickets'];
         $completedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = 'Resolved'"))['CompletedTickets'];
         $viewedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as ViewedTickets FROM ticketcomment WHERE TicketID IN (SELECT TicketID FROM ticket WHERE Status IN ('Resolved', 'Closed'))"))['ViewedTickets'];
         ?>
@@ -227,8 +244,8 @@
                     <p id="total-tickets"><?php echo $totalTickets; ?></p>
                 </div>
                 <div class="stat-box">
-                    <h4>Pending Tickets</h4>
-                    <p id="pending-tickets"><?php echo $pendingTickets; ?></p>
+                    <h4>Confirmed Tickets</h4>
+                    <p id="Confirmed-tickets"><?php echo $ConfirmedTickets; ?></p>
                 </div>
                 <div class="stat-box">
                     <h4>Completed Tickets</h4>
@@ -280,7 +297,7 @@
             var requestData = google.visualization.arrayToDataTable([
                 ['Task', 'Count'],
                 ['incomplete Tickets', <?php echo $totalTickets; ?>],
-                ['Pending Tickets', <?php echo $pendingTickets; ?>],
+                ['Confirmed Tickets', <?php echo $ConfirmedTickets; ?>],
                 ['Completed Tickets', <?php echo $completedTickets; ?>],
                 ['Viewed Tickets', <?php echo $viewedTickets; ?>]
             ]);
@@ -299,7 +316,7 @@
             // Residence Column Chart
             var residenceData = google.visualization.arrayToDataTable([
                 ['Task', 'Count'],
-                ['Pending', <?php echo $pendingTickets; ?>],
+                ['Confirmed', <?php echo $ConfirmedTickets; ?>],
                 ['Completed', <?php echo $completedTickets; ?>]
             ]);
 
