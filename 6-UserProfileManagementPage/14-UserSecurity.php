@@ -1,10 +1,11 @@
 <?php
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+    include '17-DeleteUser.php';
 
     if (isset($_SESSION['alert'])) {
         echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
         unset($_SESSION['alert']); // Clear the alert message from the session
     }
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +21,7 @@
             <h1>Account</h1>
             <p>Manage your account info.</p>
             <div class="menu-item">
-                <a href="updated user profile page SysDev.html">
+                <a href="../1-GeneralPages/7-RedirectProfile.php">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -29,7 +30,7 @@
             </a>
             </div>
             <div class="menu-item">
-                <a href="residence page in user managment .html">
+                <a href="18-UserResidenceInformationpage.php">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -60,11 +61,11 @@
                     </div>
                     <button type="submit" class="save-button">Send Reset Link</button>
                 </form>
-                <div class="info-section">
+                <!-- <div class="info-section">
                     <h4>Two-Factor Authentication</h4>
                     <p>Enhance your account security by enabling two-factor authentication.</p>
                     <button class="edit-button">Enable 2FA</button>
-                </div>
+                </div> -->
             </div>
             <div class="profile-details">
                 <h3>Delete Account</h3>
@@ -76,9 +77,9 @@
                     </div>
                     <div class="form-group">
                         <label for="confirm-delete">Type "DELETE" to confirm</label>
-                        <input type="text" id="confirm-delete" name="confirm_delete" required>
+                        <input type="text" id="confirm-delete" name="confirm-delete" required>
                     </div>
-                    <button type="submit" class="save-button">Delete Account</button>
+                    <button type="submit" name="delete-account" class="save-button">Delete Account</button>
                 </form>
             </div>
         </div>

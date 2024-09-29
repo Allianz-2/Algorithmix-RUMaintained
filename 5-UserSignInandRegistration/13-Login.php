@@ -47,7 +47,7 @@
                 // A single result was returned
                 $_SESSION['userID'] = $userID; // Set session variable
                 // Retrieve role from the user table using the userID
-                $stmt2 = $conn->prepare("SELECT role, Firstname, Lastname FROM user WHERE userID = ?");
+                $stmt2 = $conn->prepare("SELECT role, Firstname, Lastname FROM user WHERE userID = ? AND Status = 'Active'");
 
                 // Check if the prepare statement failed
                 if ($stmt2 === false) {
