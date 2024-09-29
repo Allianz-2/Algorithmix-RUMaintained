@@ -239,9 +239,15 @@ button {
         die('Failed to connect to MySQL: ' . mysqli_connect_error());
     }
 
-$sql = "SELECT * FROM ticket";
 
-$result = $conn->query($sql);
+    $sql = "SELECT * FROM ticket WHERE StudentID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['userID']);
+    $stmt->execute();
+    $result = $stmt->get_result(); // Fetch results using get_result()
+    $stmt->close(); 
+
+
 
 ?>
 
