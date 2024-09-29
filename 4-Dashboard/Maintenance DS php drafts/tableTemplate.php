@@ -14,7 +14,6 @@ $results = mysqli_query($conn, $query);
 <html lang="en">
 <head>
     <title>Maintenance Requests</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Maintenance Requests</h1>
@@ -40,5 +39,57 @@ $results = mysqli_query($conn, $query);
     </table>
     <?php mysqli_close($conn); ?>
 
-<style> body { font-family: Arial, sans-serif; background-color: #f9f9f9; /* Light background for contrast */ margin: 0; padding: 20px; } h1 { text-align: center; color: #5c4b8a; /* Darker shade of light purple */ } table { width: 100%; border-collapse: collapse; margin-top: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 5px; /* Rounded corners */ overflow: hidden; /* Clip child elements */ } th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; } tr:nth-child(even) { background-color: #eaeaea; /* Light gray for even rows */ } tr:hover { background-color: #d1c4e9; /* Light purple hover effect */ } th { background-color: #ab8cc6; /* Light purple header */ color: white; /* White text for contrast */ font-weight: bold; } /* Add responsive design */ @media (max-width: 768px) { th, td { font-size: 14px; /* Smaller text on mobile */ } h1 { font-size: 24px; /* Smaller title on mobile */ } } </style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9; /* Light background for contrast */
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #5c4b8a; /* Darker shade of light purple */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px; /* Rounded corners */
+        overflow: hidden; /* Clip child elements */
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #eaeaea; /* Light gray for even rows */
+    }
+
+    tr:hover {
+        background-color: #d1c4e9; /* Light purple hover effect */
+    }
+
+    th {
+        background-color: #ab8cc6; /* Light purple header */
+        color: white; /* White text for contrast */
+        font-weight: bold;
+    }
+
+    /* Add responsive design */
+    @media (max-width: 768px) {
+        th, td {
+            font-size: 14px; /* Smaller text on mobile */
+        }
+
+        h1 {
+            font-size: 24px; /* Smaller title on mobile */
+        }
+    }
+</style>
 </html>

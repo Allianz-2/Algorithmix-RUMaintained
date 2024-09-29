@@ -8,6 +8,58 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="Dashboard.css">
     <style>
+
+           body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9; /* Light background for contrast */
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #5c4b8a; /* Darker shade of light purple */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px; /* Rounded corners */
+        overflow: hidden; /* Clip child elements */
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #eaeaea; /* Light gray for even rows */
+    }
+
+    tr:hover {
+        background-color: #d1c4e9; /* Light purple hover effect */
+    }
+
+    th {
+        background-color: #ab8cc6; /* Light purple header */
+        color: white; /* White text for contrast */
+        font-weight: bold;
+    }
+
+    /* Add responsive design */
+    @media (max-width: 768px) {
+        th, td {
+            font-size: 14px; /* Smaller text on mobile */
+        }
+
+        h1 {
+            font-size: 24px; /* Smaller title on mobile */
+        }
+    }
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -244,6 +296,32 @@ if (mysqli_connect_errno()) {
             </div>
 
             <h1>Maintenance Requests</h1>
+
+            <form action="1-MD_MaintenanceRequests.php" method="post">
+                <input type="text" name="ticketID" placeholder="Enter Ticket ID">
+                <input type="submit" value="Search">
+            </form>
+
+            <?php
+if (isset($_POST['ticketID'])) {
+    $searchedTicketID = $_POST['ticketID'];
+    $searchedTicketQuery = "SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, u.Firstname, u.Lastname 
+                            FROM ticket t
+                            JOIN user u ON t.StudentID = u.UserID
+                            WHERE t.TicketID = '$searchedTicketID'";
+    $searchedTicketResult = mysqli_query($conn, $searchedTicketQuery);
+    $searchResults = $searchedTicketResult;
+} else {
+    $searchResults = $results;
+}
+
+
+            if (isset($_POST['ticketID'])) {
+                include 'search_ticket.php';
+            } else {
+                $searchResults = $results;
+            }
+            ?>
 
             <table>
                 <tr>
