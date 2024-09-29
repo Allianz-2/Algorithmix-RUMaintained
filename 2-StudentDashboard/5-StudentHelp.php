@@ -277,20 +277,20 @@
                 <div class="faq-answer">This system is designed to help students and staff report and manage maintenance issues within university residences efficiently.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">How do I report a maintenance issue?</div>
-                <div class="faq-answer">You can report an issue by logging into your account, navigating to the "Report Issue" section, and filling out the necessary details about the problem.</div>
+                <div class="faq-question">How do I report a maintenance fault?</div>
+                <div class="faq-answer">Simply click the "Create Ticket" option in your left side bar and fill out the necessary details on the "Ticket Creation Page".</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Can I track the status of my maintenance request?</div>
-                <div class="faq-answer">Yes, once you report an issue, you can track its status from your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
+                <div class="faq-question">Can I track the status of my ticket request?</div>
+                <div class="faq-answer">Yes, you can track its status from "Ticket Requests" on your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">What type of maintenance issue can I report?</div>
+                <div class="faq-question">What type of maintenance fault can I report?</div>
                 <div class="faq-answer">You can report any issue related to the upkeep and maintenance of your residence, including plumbing, electrical, or general repairs.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">What should I do if I forget my password?</div>
-                <div class="faq-answer">Click on the "Forgot Password" link on the login page and follow the instructions to reset your password.</div>
+                <div class="faq-answer">You can reset your password from your Profile page. Click on "Settings" or the profile icon to navigate there.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">Didn't find an answer?</div>
