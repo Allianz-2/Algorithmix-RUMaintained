@@ -32,7 +32,7 @@
         $password = $_POST['password'];
         $current_url = isset($_POST['current_url']) ? urldecode($_POST['current_url']) : '../1-GeneralPages/1-Home.php';
 
-        $stmt1 = $conn->prepare("SELECT * FROM user WHERE userID = ? AND password = ?");
+        $stmt1 = $conn->prepare("SELECT * FROM user WHERE userID = ? AND password = ? AND Status = 'Active'");
 
         // Check if the prepare statement failed
         if ($stmt1 === false) {
@@ -47,7 +47,7 @@
                 // A single result was returned
                 $_SESSION['userID'] = $userID; // Set session variable
                 // Retrieve role from the user table using the userID
-                $stmt2 = $conn->prepare("SELECT role, Firstname, Lastname FROM user WHERE userID = ? AND Status = 'Active'");
+                $stmt2 = $conn->prepare("SELECT role, Firstname, Lastname FROM user WHERE userID = ? ");
 
                 // Check if the prepare statement failed
                 if ($stmt2 === false) {
