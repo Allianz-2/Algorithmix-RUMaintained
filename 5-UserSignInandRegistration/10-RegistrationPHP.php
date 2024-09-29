@@ -37,7 +37,7 @@
             $stmt->execute();
             $stmt->bind_result($resAssigned);
             $stmt->fetch();
-            
+
             $stmt2 = $conn->prepare("SELECT Status FROM user WHERE userID = ?");
             $stmt2->bind_param("s", $resAssigned);
             $stmt2->execute();
