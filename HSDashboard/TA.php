@@ -29,8 +29,7 @@
             overflow: hidden;
         }
 
-        th,
-        td {
+        th, td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -41,8 +40,7 @@
             color: #fff;
         }
 
-        .filters,
-        .stats {
+        .filters, .stats {
             display: flex;
             justify-content: space-around;
             margin-top: 20px;
@@ -107,15 +105,14 @@
             text-align: center;
             width: 48%;
         }
-    
     </style>
 </head>
 
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome,  </span><!-- Add PHP code for user name -->
-            <a href="user-page"><i class="fas fa-user"></i></a>
+            <span class="user-welcome">Welcome, <?php echo $_SESSION['user_name']; ?></span> <!-- Display the user name dynamically -->
+            <a href="user-page.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
             <li><a href="HSDSTicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
@@ -131,10 +128,11 @@
     </nav>
 
 <?php
+session_start(); // Add this line
 
 require_once("config.php");
 
-// Establishing connection with error handling
+// Establish connection with error handling
 $conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DATABASE);
 
 if ($conn->connect_error) {
@@ -143,7 +141,6 @@ if ($conn->connect_error) {
 
 $sql = "SELECT * FROM ticket";
 $result = $conn->query($sql);
-
 ?>
 
     <main>
@@ -189,6 +186,7 @@ $result = $conn->query($sql);
                     <th>Deny</th>
                     <th>Comments</th>
                 </tr>
+                <!-- Populate recent requests here dynamically -->
             </table>
 
             <h3>My Tickets</h3>
@@ -214,7 +212,6 @@ $result = $conn->query($sql);
                     echo "<td>{$row['Status']}</td>";
                     echo "<td>{$row['Description']}</td>";
                     echo "<td>{$row['Severity']}</td>";
-                    
                     echo "<td><a href='#'>Details</a></td>";
                     echo "</tr>";
                 }
