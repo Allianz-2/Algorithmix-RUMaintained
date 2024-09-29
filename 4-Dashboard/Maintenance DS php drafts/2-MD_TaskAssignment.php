@@ -116,8 +116,8 @@
             <a href="user-page"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-        <li class="active"><a href="1-MD_MaintenanceRequests.php"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
-            <li><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="1-MD_MaintenanceRequests.php"><i class="fas fa-tools"></i>Maintenance Requests</a></li>
+        <li class="active"><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li><a href="3-MD_PerformanceAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li><a href="4-MD_Notifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
         </ul>
