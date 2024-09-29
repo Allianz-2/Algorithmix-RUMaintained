@@ -1,4 +1,10 @@
 <?php
+    if (isset($_SESSION['alert'])) {
+        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
+        unset($_SESSION['alert']); // Clear the alert message from the session
+    }
+
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
     include '2-TicketCreationPagefinal.php';
 
 
@@ -10,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RU Maintained - Create Ticket</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="1-TicketCreation.css">
+    <link rel="stylesheet" href="../7-TicketCreation/7-CSS/1-TicketCreation.css">
 </head>
 <body>
     <header>
@@ -22,18 +28,32 @@
                 <a href="#"><strong>Services ▾</strong></a>
                 <div class="dropdown-content">
                     <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>
-                    <a href="#">Student Dashboard</a>
-                    <a href="#">House Warden Dashboard</a>
-                    <a href="#">Hall Secretary Dashboard</a>
-                    <a href="#">Maintenance Staff Dashboard</a>
+                    <?php
+                        if (isset($_SESSION['role'])) {
+                            echo '<a href="../6-UserProfileManagementPage\1-ProfileStudent.php">Profile</a>';
+                        } else if ($_SESSION['role'] == 'HW') {
+                            echo '<a href="../6-UserProfileManagementPage\2-ProfileHW.php">Profile</a>';
+                        } else if ($_SESSION['role'] == 'HS') {
+                            echo '<a href="../6-UserProfileManagementPage\3-ProfileHS.php">Profile</a>';
+                        } else if ($_SESSION['role'] == 'MS') {
+                            echo '<a href="../6-UserProfileManagementPage\4-ProfileMS.php">Profile</a>';
+                        }
+                    ?>
+
                 </div>
             </div>
             <a href="\\ict.ru.ac.za\DFS\UGHomes\g21s2894\My Documents\GitHub\Algorithmix-RUMaintained\1-GeneralPages\2-ContactUs.html">Contact Us</a>
         </nav>
-        <div class="auth-buttons">
-            <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button login-button">Register</a>
-            <a href="../5-UserSignInandRegistration/6-SignInPage.html" class="cta-button">Sign in</a>
-        </div>
+        <?php if (isset($_SESSION['userID'])) {
+            echo '<div class="profile-info">
+                <a href="7-RedirectProfile.php">
+                <i class="fas fa-user default-icon" id="default-icon"></i></a>
+                <span class="profile-name">
+                ' . htmlspecialchars('Welcome '. $_SESSION['Firstname'] . '!') . '
+                </span>
+            </div>';
+            }
+        ?>
     </header>
 
     <main>
@@ -72,13 +92,20 @@
                         <label for="category" class="required">Category of Fault:</label>
                         <div class="input-container">
                             <select id="category" name="category" required>
-                                <option value="CE049">Select category</option>
-                                <option value="CE049">Plumbing</option>
-                                <option value="CE049">Electrical</option>
-                                <option value="CE049">Exterior</option>
-                                <option value="CE049">Bedroom</option>
-                                <option value="CE049">Bathroom</option>
-                                <option value="CE049">Other</option>
+                                <option value="">Select category</option>
+                                <option value="CELE">Electrical Maintenance</option>
+                                <option value="CPLM">Plumbing</option>
+                                <option value="CHVC">HVAC</option>
+                                <option value="CCRP">Carpentry</option>
+                                <option value="CGNM">General Maintenance</option>
+                                <option value="CGRL">Groundskeeping and Landscaping</option>
+                                <option value="CFRS">Fire Safety Maintenance</option>
+                                <option value="CSEC">Security Systems Maintenance</option>
+                                <option value="CWST">Waste Management</option>
+                                <option value="CLFT">Lift/Elevator Maintenance</option>
+                                <option value="CRFW">Roofing and Waterproofing</option>
+                                <option value="CMSN">Masonry</option>
+                                <option value="CAPL">Appliance Repair</option>
                             </select>
                         </div>
                     </div>
@@ -88,9 +115,9 @@
                         <div class="input-container">
                             <select id="severity" name="severity" required>
                                 <option value="">Select severity</option>
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
                             </select>
                         </div>
                     </div>
@@ -121,12 +148,12 @@
                     
                     <div class="section-title">Additional Information</div>
                     
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="affected-items">Affected Items:</label>
                         <div class="input-container">
                             <input type="text" id="affected-items" name="affected-items" placeholder="e.g. damaged floor and sink">
                         </div>
-                    </div>
+                    </div> -->
                     
                     <div class="form-group">
                         <label for="comments">Comments:</label>
