@@ -1,4 +1,9 @@
 <?php
+
+    if (isset($_SESSION['alert'])) {
+        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
+        unset($_SESSION['alert']); // Clear the alert message from the session
+    }
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
 ?>
 <!DOCTYPE html>
@@ -64,7 +69,7 @@
             <div class="profile-details">
                 <h3>Delete Account</h3>
                 <p>If you wish to delete your account, please enter your email address and confirm your decision. This action is irreversible.</p>
-                <form action="delete_account.php" method="POST">
+                <form action="14-UserSecurity.php" method="POST">
                     <div class="form-group">
                         <label for="delete-email">Email Address</label>
                         <input type="email" id="delete-email" name="email" required>
