@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Progress Page</title>
+    <link rel="stylesheet" href="Dashboard.css">
+    <title>Ticket Update Page</title>
 </head>
 <body>
 <nav id="sidebar" class="sidebar">
@@ -54,11 +55,14 @@
         }
     }
 
-    // Handle ticket update
-    if (isset($_POST['update_ticketid']) && isset($_POST['description'])) {
+    // Handle ticket update (description, status, severity)
+    if (isset($_POST['update_ticketid'])) {
         $ticketid = $_POST['update_ticketid'];
         $description = mysqli_real_escape_string($conn, $_POST['description']);
-        $update_query = "UPDATE ticket SET description = '$description' WHERE ticketid = '$ticketid'";
+        $status = $_POST['status'];
+        $severity = $_POST['severity'];
+
+        $update_query = "UPDATE ticket SET description = '$description', Status = '$status', Severity = '$severity' WHERE ticketid = '$ticketid'";
 
         if (mysqli_query($conn, $update_query)) {
             $message = "Ticket updated successfully.";
@@ -67,24 +71,17 @@
         }
     }
 
-    // Check if there's a message in the URL
-    if (isset($_GET['message'])) {
-        if ($_GET['message'] === 'success') {
-            echo "<div class='message success'>Ticket processed successfully.</div>";
-        }
-    }
-
-    // Display any feedback message
-    if ($message) {
-        echo "<div class='message success'>$message</div>";
-    }
-
     // Fetch approved tickets
-    $query = "SELECT ticketid, description, DateCreated, Status FROM ticket WHERE status = 'confirmed'";
+    $query = "SELECT ticketid, description, DateCreated, Status, Severity FROM ticket WHERE status = 'confirmed'";
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
         die("Query failed: " . mysqli_error($conn));
+    }
+
+    // Display any success or error messages
+    if ($message) {
+        echo "<div class='message'>" . htmlspecialchars($message) . "</div>";
     }
 
     // Check if there are any approved tickets
@@ -95,6 +92,7 @@
                     <th>Description</th>
                     <th>Date Created</th>
                     <th>Status</th>
+                    <th>Severity</th>
                     <th>Action</th>
                 </tr>";
 
@@ -102,16 +100,35 @@
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr>
                     <td>" . $row['ticketid'] . "</td>
-                    <td>" . htmlspecialchars($row['description']) . "</td>
-                    <td>" . $row['DateCreated'] . "</td>
-                    <td>" . $row['Status'] . "</td>
                     <td>
-                        <form method='post' action='TI.php' style='display:inline;'>
+                        <form method='post' action='TICKETUPDATE.PHP' style='display:inline;'>
                             <input type='hidden' name='update_ticketid' value='" . $row['ticketid'] . "'>
-                            <textarea name='description'>" . htmlspecialchars($row['description']) . "</textarea>
+
+                            <!-- Description textarea -->
+                            <textarea name='description' required>" . htmlspecialchars($row['description']) . "</textarea>
+
+                            <!-- Status dropdown -->
+                            <select name='status'>
+                                <option value='confirmed'" . ($row['Status'] == 'confirmed' ? ' selected' : '') . ">Confirmed</option>
+                                <option value='resolved'" . ($row['Status'] == 'resolved' ? ' selected' : '') . ">Resolved</option>
+                                <option value='closed'" . ($row['Status'] == 'closed' ? ' selected' : '') . ">Closed</option>
+                            </select>
+
+                            <!-- Severity dropdown -->
+                            <select name='severity'>
+                                <option value='low'" . ($row['Severity'] == 'low' ? ' selected' : '') . ">Low</option>
+                                <option value='medium'" . ($row['Severity'] == 'medium' ? ' selected' : '') . ">Medium</option>
+                                <option value='high'" . ($row['Severity'] == 'high' ? ' selected' : '') . ">High</option>
+                            </select>
+
                             <button type='submit' name='action' value='update'>Update</button>
                         </form>
-                        <form method='post' action='ticket_progress.php' style='display:inline;'>
+                    </td>
+                    <td>" . $row['DateCreated'] . "</td>
+                    <td>" . $row['Status'] . "</td>
+                    <td>" . $row['Severity'] . "</td>
+                    <td>
+                        <form method='post' action='3-TicketProgress.php' style='display:inline;'>
                             <input type='hidden' name='delete_ticketid' value='" . $row['ticketid'] . "'>
                             <button type='submit' name='action' value='delete'>Delete</button>
                         </form>

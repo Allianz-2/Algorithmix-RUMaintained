@@ -1,132 +1,121 @@
-<?php
-session_start(); // Start the session
-require_once('config.php');
-
-// Enable error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
-
-// Check if the user is logged in
-if (!isset($_SESSION['user_id'])) {
-    die('You need to log in first.');
-}
-
-// Fetch ticket counts for different statuses
-$resolvedCount = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Resolved' AND StudentID = ".$_SESSION['user_id']))['count'];
-$pendingCount = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'Open' AND StudentID = ".$_SESSION['user_id']))['count'];
-$inProgressCount = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM ticket WHERE Status = 'In Progress' AND StudentID = ".$_SESSION['user_id']))['count'];
-
-// Fetch ticket details
-$query = "SELECT TicketID, Description, Status, DateCreated FROM ticket WHERE StudentID = ?"; 
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $_SESSION['user_id']); 
-$stmt->execute();
-$result = $stmt->get_result();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket Progress Dashboard</title>
+    <title>Ticket Progress Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #81589a;
-        }
-        .charts {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        .chart-container {
-            width: 45%;
-            margin: 0 10px; /* Add some margin for spacing */
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #81589a;
-            color: #fff;
-        }
-    </style>
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-
-<h1>Ticket Progress Dashboard</h1>
-
-<div class="charts">
-    <div class="chart-container">
-        <canvas id="ticketProgressChart"></canvas>
+<nav id="sidebar" class="sidebar">
+    <div class="logo">
+        <span class="user-welcome">Welcome, </span>
+        <a href="user-page"><i class="fas fa-user"></i></a>
     </div>
-</div>
+    <ul>
+        <li><a href="analytics.html"><i class="fas fa-chart-pie"></i>Analytics</a></li>
+        <li><a href="3-TicketProgress.php"><i class="fas fa-tasks"></i>Ticket Progress</a></li>
+        <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
+        <li><a href="lodge-ticket.html"><i class="fas fa-plus-circle"></i>Lodge Ticket</a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+        <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+    </div>
+</nav>
 
-<table>
-    <tr>
-        <th>Ticket ID</th>
-        <th>Description</th>
-        <th>Status</th>
-        <th>Date Created</th>
-    </tr>
-    <?php while ($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?php echo $row['TicketID']; ?></td>
-            <td><?php echo $row['Description']; ?></td>
-            <td><?php echo $row['Status']; ?></td>
-            <td><?php echo $row['DateCreated']; ?></td>
-        </tr>
-    <?php endwhile; ?>
-</table>
+<?php
+// Include database connection
+require_once('config.php');
+$conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
 
-<script>
-    const ctx = document.getElementById('ticketProgressChart').getContext('2d');
-    const ticketProgressChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Resolved', 'Pending', 'In Progress'],
-            datasets: [{
-                label: 'Ticket Status',
-                data: [<?php echo $resolvedCount; ?>, <?php echo $pendingCount; ?>, <?php echo $inProgressCount; ?>],
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.5)',
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(255, 206, 86, 0.5)'
-                ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 206, 86, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-        }
-    });
-</script>
+// Message variable to store feedback messages
+$message = '';
 
+// Delete ticket logic
+if (isset($_POST['delete_ticketid'])) {
+    $ticketid = $_POST['delete_ticketid'];
+    $delete_query = "DELETE FROM ticket WHERE ticketid = '$ticketid'";
+
+    if (mysqli_query($conn, $delete_query)) {
+        $message = "Ticket deleted successfully.";
+    } else {
+        $message = "Error deleting ticket: " . mysqli_error($conn);
+    }
+}
+
+// Fetch approved tickets
+$query = "SELECT ticketid, description, DateCreated, Status, Severity FROM ticket WHERE status = 'confirmed'";
+$result = mysqli_query($conn, $query);
+
+if (!$result) {
+    die("Query failed: " . mysqli_error($conn));
+}
+
+// Display any success or error messages
+if ($message) {
+    echo "<div class='message'>" . htmlspecialchars($message) . "</div>";
+}
+
+// Check if there are any approved tickets
+if (mysqli_num_rows($result) > 0) {
+    echo "<table border='1'>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Description</th>
+                <th>Date Created</th>
+                <th>Status</th>
+                <th>Severity</th>
+                <th>Action</th>
+            </tr>";
+
+    // Loop through and display each approved ticket
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<tr>
+                <td>" . $row['ticketid'] . "</td>
+                <td>
+                    <form method='post' action='ticketupdate.php' style='display:inline;'>
+                        <input type='hidden' name='update_ticketid' value='" . $row['ticketid'] . "'>
+
+                        <!-- Description textarea -->
+                        <textarea name='description' required>" . htmlspecialchars($row['description']) . "</textarea>
+
+                        <!-- Status select dropdown -->
+                        <select name='status'>
+                            <option value='confirmed'" . ($row['Status'] == 'confirmed' ? ' selected' : '') . ">Confirmed</option>
+                            <option value='resolved'" . ($row['Status'] == 'resolved' ? ' selected' : '') . ">Resolved</option>
+                            <option value='closed'" . ($row['Status'] == 'closed' ? ' selected' : '') . ">Closed</option>
+                        </select>
+
+                        <!-- Severity select dropdown -->
+                        <select name='severity'>
+                            <option value='low'" . ($row['Severity'] == 'low' ? ' selected' : '') . ">Low</option>
+                            <option value='medium'" . ($row['Severity'] == 'medium' ? ' selected' : '') . ">Medium</option>
+                            <option value='high'" . ($row['Severity'] == 'high' ? ' selected' : '') . ">High</option>
+                        </select>
+
+                        <!-- Update button -->
+                        <button type='submit' name='action' value='update'>Update</button>
+                    </form>
+                </td>
+                <td>" . $row['DateCreated'] . "</td>
+                <td>" . $row['Status'] . "</td>
+                <td>" . $row['Severity'] . "</td>
+                <td>
+                    <form method='post' action='3-TicketProgress.php' style='display:inline;'>
+                        <input type='hidden' name='delete_ticketid' value='" . $row['ticketid'] . "'>
+                        <button type='submit' name='action' value='delete'>Delete</button>
+                    </form>
+                </td>
+              </tr>";
+    }
+
+    echo "</table>";
+} else {
+    echo "No approved tickets found.";
+}
+?>
 </body>
 </html>

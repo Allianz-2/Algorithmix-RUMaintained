@@ -6,89 +6,8 @@
     <title>RU House Warden Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="Dashboard.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #81589a;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #81589a;
-            color: #fff;
-        }
-        .filters, .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-        .filter-group {
-            flex: 1;
-        }
-        .stat-box {
-            background-color: #f1eaf5;
-            color: #81589a; 
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            flex: 1;
-            margin: 10px;
-            position: relative;
-            transition: transform 0.2s;
-        }
-        .stat-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
-        }
-        .stat-box h4 {
-            margin: 10px 0;
-            font-size: 1.2em;
-            color: #81589a;
-        }
-        .stat-box p {
-            font-size: 2em;
-            font-weight: bold;
-        }
-        .icon {
-            font-size: 40px;
-            color: #5c4b8a;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        .charts {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            max-width: 800px; 
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .stat-box i.icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-            color: #81589a;
-        }
-    </style>
+    <link rel="stylesheet" href="dashboard.css">
+    
 </head>
 <?php
         require_once('config.php');
@@ -114,8 +33,8 @@
             <a href="user-page"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-            <li><a href="analytics.html"><i class="fas fa-chart-pie"></i>Analytics</a></li>
-            <li><a href="ticket-progress.html"><i class="fas fa-tasks"></i>Ticket Progress</a></li>
+            <li><a href="2-HouseWardenAnalytics .php"><i class="fas fa-chart-pie"></i>Analytics</a></li>
+            <li><a href="3-TicketProgress.php"><i class="fas fa-tasks"></i>Ticket Progress</a></li>
             <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
             <li><a href="lodge-ticket.html"><i class="fas fa-plus-circle"></i>Lodge Ticket</a></li>
         </ul>
@@ -138,56 +57,6 @@
 
         <div class="content">
             <h3>Ticket Requests</h3>
-            <div class="filters">
-                <div class="filter-group">
-                    <label for="date-filter">Date Range</label>
-                    <select id="date-filter">
-                        <option>Last 7 Days</option>
-                        <option value="yesterday">Yesterday</option>
-                        <option value="today">Today</option>
-                        <option value="2 weeks">Last 2 weeks</option>
-                        <option value="month">Last Month</option>
-                        <option value="3 months">Last 3 Months</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="residence-filter">Residence</label>
-                    <select id="residence-filter">
-                        <option>All Residences</option>
-                        <option>Chris Hani House</option>
-                        <!-- Add more residences here -->
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="severity-filter">Severity</label>
-                    <select id="severity-filter">
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                        <option value="Emergency">Emergency</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="category-filter">Category</label>
-                    <select id="category-filter">
-                        <option>Any</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="Electrical">Electrical</option>
-                        <option value="Roofing">Roofing</option>
-                        <option value="Repairs">Repairs and Breakages</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="status-filter">Status</label>
-                    <select id="status-filter">
-                        <option>Any</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Open">Open</option>
-                        <option value="Closed">Closed</option>
-                    </select>
-                </div>
-            </div>
 
             <div class="charts">
                 <canvas id="maintenanceRequestChart"></canvas>
