@@ -55,21 +55,66 @@
 
 
 
-<?php
+<?php 
+            require '../8-PHPTests/config.php';
 
-require_once("config.php");
+            // Initializes MySQLi
+            $conn = mysqli_init();
 
-// Establishing connection with error handling
-$conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DATABASE);
+            // Test if the CA certificate file can be read
+            if (!file_exists($ca_cert_path)) {
+                die("CA file not found: " . $ca_cert_path);
+            }
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+            mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
 
-$sql = "SELECT * FROM ticket";
-$result = $conn->query($sql);
+            // Establish the connection
+            mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
-?>
+            // If connection failed, show the error
+            if (mysqli_connect_errno()) {
+                die('Failed to connect to MySQL: ' . mysqli_connect_error());
+            }
+
+
+
+            $sql = "SELECT ResidenceID FROM residence WHERE HallSecretaryID = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $_SESSION['userID']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+
+            $residences = array();
+            while ($row = $result->fetch_assoc()) {
+                $residences[] = $row['ResidenceID'];
+            }
+
+            if (!empty($residences)) {
+                $firstResidence = $residences[0];
+                $hallID = substr($firstResidence, 0, 2) . '%';
+                // echo $firstTwoCharacters;
+            } else {
+                echo "No residences found";
+            }
+
+            $sql = "SELECT * FROM ticket WHERE ResidenceID LIKE ?";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                die('Failed to prepare statement: ' . $conn->error);
+            }
+            $stmt->bind_param("s", $hallID);
+            if (!$stmt->execute()) {
+                die('Failed to execute statement: ' . $stmt->error);
+            }
+            $result = $stmt->get_result();
+            $stmt->close();
+
+            ?>
+
+
+
+
 
 
     <nav id="sidebar" class="sidebar">
@@ -78,12 +123,12 @@ $result = $conn->query($sql);
            <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li class="active"><a href="#"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
-            <li><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="HSDSRequests.php"></a><i class="fas fa-clipboard-list"></i>Requests</a></li>
-
-            <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+        <li>
+            <a href="..\1-GeneralPages\1-Home.php"><i class="fas fa-home"></i> Home</a></li>
+            <li class="active"><a href="4-HSDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
+            <li><a href="4-HSDashboard\1-HSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
