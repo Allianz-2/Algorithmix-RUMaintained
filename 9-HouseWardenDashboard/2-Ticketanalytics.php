@@ -5,7 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        <?php 
+        require '../8-PHPTests/config.php';
+       
+        $conn = mysqli_init(); 
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
+        }
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+       
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
+       
+        // Corrected SQL query
+        $sql = "SELECT CategoryID, COUNT(TicketID) as TicketCount FROM ticket GROUP BY CategoryID";
+        $result = $conn->query($sql);
+
+        echo "var data = google.visualization.arrayToDataTable([";
+        echo   "['Category', 'Count'],";
+
+        while ($row = $result->fetch_assoc()) {
+            echo    "['{$row['CategoryID']}', {$row['TicketCount']}],"; // Fixed the echo statement
+        }
+
+        echo "]);";
+        ?>
+
+        var options = {
+          title: 'Ticket Categories',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+    </script>
+</head>
+<body>
+<style> 
         :root {
             --sidebar-width: 250px;
             --sidebar-collapsed-width: 0px;
@@ -164,11 +209,13 @@
         }
 
         table {
+            align-self: center;
             width: 100%;
             border-collapse: collapse;
         }
 
         th, td {
+            align-items: center;
             border: 1px solid #ddd;
             padding: 12px;
             text-align: middle;
@@ -190,37 +237,7 @@
     margin-right: 20px;
 }   
 
-.sectionfaq-section {
-    background-color: #f8f9fa;
-    padding: 2rem;
-    border-radius: 8px;
-}
-.faq-item {
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-.faq-question {
-    background-color: #fff;
-    color: #81589a;
-    padding: 15px;
-    cursor: pointer;
-    position: relative;
-}
-.faq-question::after {
-    content: '+';
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-.faq-answer {
-    display: none;
-    padding: 15px;
-    background-color: #f8f9fa;
-}
-
-.contactButton {
+.ticketButton {
     padding: 10px 20px; 
     font-size: 1rem; 
     font-weight: bold;
@@ -230,66 +247,94 @@
     color: #fff;
     cursor: pointer;
 }
-    </style>
-</head>
-<body>
-    <nav id="sidebar" class="sidebar">
+
+button {
+    padding: 5px 10px; 
+    font-size: 1rem; 
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #81589a;
+    color: #ffffff;
+    cursor: pointer;
+}
+</style>
+
+<nav id="sidebar" class="sidebar">
+    <div class="logo">
+        <span class="user-welcome">Welcome, User</span>
+        <a href="user page"><i class="fas fa-user"></i></a> 
+    </div>
+    <ul>
+        <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+        <li class="active"><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+        <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+        <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+        <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+    </div>
+</nav>
+
+<main>
+    <header>
+        <div class="header-left">
+            <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
+            <strong>Housewarden Dashboard</strong>
+        </div>
         <div class="logo">
-            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
-            <a href="user page"><i class="fas fa-user"></i></a> 
+            <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
         </div>
-        <ul>
-            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>Ticket History</a></li>
-            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
-            <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li class="active"><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
-        </ul>
-        <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+    </header>
+
+    <div class="content">
+        <h2>Analytics</h2>
+        <div class="filters">
+            <div class="filter-group">
+                <label for="date-filter">Date Range</label>
+                <select id="date-filter">
+                    <option>Last 7 Days</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="today">Today</option>
+                    <option value="2 weeks">Last 2 weeks</option>
+                    <option value="Month">Last Month</option>
+                    <option value="3 months">Last 3 Months</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="severity-filter">Severity</label>
+                <select id="severity-filter">
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                    <option value="Emergency">Emergency</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="category-filter">Category</label>
+                <select id="category-filter">
+                    <option>Any</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Roofing">Roofing</option>
+                    <option value="Repairs and Breakage">Repairs and Breakage</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="status-filter">Status</label>
+                <select id="status-filter">
+                    <option>Any</option>
+                    <option value="active">Active</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Closed">Closed</option>
+                </select>
+            </div>
         </div>
-    </nav>
-
-    <main>
-        <header>
-            <div class="header-left">
-                <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Student Dashboard</strong>
-            </div>
-            <div class="logo">
-                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
-            </div>
-        </header>
-
-        
-            <h2>Frequently Asked Questions</h2>
-            <div class="faq-item">
-                <div class="faq-question">What is this system used for?</div>
-                <div class="faq-answer">This system is designed to help students and staff report and manage maintenance issues within university residences efficiently.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">How do I report a maintenance issue?</div>
-                <div class="faq-answer">You can report an issue by logging into your account, navigating to the "Report Issue" section, and filling out the necessary details about the problem.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Can I track the status of my maintenance request?</div>
-                <div class="faq-answer">Yes, once you report an issue, you can track its status from your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">What type of maintenance issue can I report?</div>
-                <div class="faq-answer">You can report any issue related to the upkeep and maintenance of your residence, including plumbing, electrical, or general repairs.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">What should I do if I forget my password?</div>
-                <div class="faq-answer">Click on the "Forgot Password" link on the login page and follow the instructions to reset your password.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Didn't find an answer?</div>
-                <div class="faq-answer"><a href="#"><button class="contactButton" type ="submit">Contact Us</button></a></div>
-            </div>
-       
-       
+    
+        <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -306,14 +351,6 @@
         function confirmLogout() {
             return confirm("Are you sure you want to log out?");
         }
-
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
-                question.classList.toggle('active');
-            });
-        });
     </script>
 </body>
 </html>

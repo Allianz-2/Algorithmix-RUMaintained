@@ -1,9 +1,5 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -171,13 +167,13 @@
         }
 
         table {
-            align-self: center;
+            text-align: center;
             width: 100%;
             border-collapse: collapse;
         }
 
         th, td {
-            align-items: center;
+            text-align: center;
             border: 1px solid #ddd;
             padding: 12px;
             text-align: middle;
@@ -239,19 +235,26 @@ button {
         die('Failed to connect to MySQL: ' . mysqli_connect_error());
     }
 
-$sql = "SELECT * FROM ticket";
 
-$result = $conn->query($sql);
+    $sql = "SELECT * FROM ticket WHERE StudentID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $_SESSION['userID']);
+    $stmt->execute();
+    $result = $stmt->get_result(); // Fetch results using get_result()
+    $stmt->close(); 
+
+
 
 ?>
 
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome"><?php 'Welcome '. $_SESSION['Firstname'] . '!'?></span>
+            <span class="user-welcome"><?php echo 'Welcome ' . $_SESSION['First_name'] . '!';?></span>
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li class="active"><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li class="active"><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>Ticket History</a></li>
             <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
             <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
             <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
@@ -280,6 +283,10 @@ $result = $conn->query($sql);
     <h3>My Tickets</h3>
 
     <?php
+
+
+    
+
                  echo "<table class='requests-table'>
                         <thead>
                         <tr>
@@ -288,7 +295,7 @@ $result = $conn->query($sql);
                             <th>Status</th>
                             <th>Fault Description</th>
                             <th>Severity</th>
-                            <th></th>
+                            <th>View More</th>
                         </tr>
                         </thead>";
                         
@@ -310,7 +317,60 @@ $result = $conn->query($sql);
 
             </div>
         
-               
+            <div>
+    <h3>My Residence Tickets</h3>
+
+    <?php
+
+
+    $sqlRes = "SELECT * FROM ticket WHERE ResidenceID = ?";
+    $stmt = $conn->prepare($sqlRes);
+    $stmt->bind_param("s", $_SESSION['userID']);
+    $stmt->execute();
+    $resultRes = $stmt->get_result(); // Fetch results using get_result()
+    $stmt->close(); 
+    
+
+
+    
+
+
+
+
+                        echo "<table class='requests-table'>
+                        <thead>
+                        <tr>
+                            <th>Ticket #</th>
+                            <th>Date Created</th>
+                            <th>Status</th>
+                            <th>Fault Description</th>
+                            <th>Severity</th>
+                            <th>View More</th>
+                        </tr>
+                        </thead>";
+                        
+                        while ($row = $resultRes->fetch_assoc()) {
+                    
+                       
+                        echo "<tr>";
+                        echo "<td>{$row['TicketID']}</td>";
+                        echo "<td>{$row['DateCreated']}</td>";
+                        echo "<td>{$row['Status']}</td>";
+                        echo "<td>{$row['Description']}</td>";
+                        echo "<td>{$row['Severity']}</td>";
+                        echo "<td><button>Details</a></td>";       
+                        echo "</tr>";
+                    
+                        }
+                echo "</table>";
+                        ?>
+
+            </div>
+          
+            
+
+
+
             </body>
 
     <script>
