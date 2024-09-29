@@ -1,15 +1,15 @@
 <?php
-    if (isset($_SESSION['alert'])) {
-        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
-        unset($_SESSION['alert']); // Clear the alert message from the session
-    }
-
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
     include '11-CheckPermission.php';
     include '7-ChangePassword.php';
     include '8-ChangeEmail.php';
-    include '9-ChangeResidence.php';
+    include '16-ChangeHall.php';
     include '5-ProfileManagement.php';
+
+    if (isset($_SESSION['alert'])) {
+        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
+        unset($_SESSION['alert']); // Clear the alert message from the session
+    }
 ?>
 
 <!DOCTYPE html>
@@ -36,16 +36,8 @@
                 Profile
             </a>
             </div>
+
             <div class="menu-item">
-                <a href="2-UserResidenceInformationpage.php">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Residence
-            </a>
-            </div>
-            <!-- <div class="menu-item">
                 <a href="security page Sys Dev.html">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -54,7 +46,7 @@
                 </svg>
                 Security
             </a>
-            </div> -->
+            </div>
         </div>
         <div class="main-content">
             <h2><strong>Profile Details</strong></h2>
@@ -95,7 +87,7 @@
         
             <div class="info-section">
                 <h2><strong>Personal Information</strong></h2>
-                <form action="1-ProfileStudent.php" method="post" id="ChangeEmail">
+                <form action="3-ProfileHS.php" method="post" id="ChangeEmail">
                     <div class="form-group">
                         <label for="fullName">Full Name</label>
                         <input type="text" id="fullName" name="fullName" value="<?php echo $firstname . ' ' . $lastname; ?>" readonly>
@@ -117,13 +109,13 @@
             </div>
             <div class="info-section">
                 <h2><strong>Hall Details</strong></h2>
-                <form action="3-ProfileMS.php" method="post" id="ChangeResidence">
+                <form action="3-ProfileHS.php" method="post" id="ChangeHall">
                     <div class="form-group">
                         <label for="hall">Select Hall:</label>
-                        <select name="hall" id="hall">
+                        <select name="hallChange" id="hallChange" disabled required>
                             <option value=""><?php echo $hallName?></option>
                             <option value="AW">Allen Webb Hall</option>
-                            <option value="CL">Courtenay-Latimer Hall</option>
+                            <option value="CH">Courtenay-Latimer Hall</option>
                             <option value="DT">Desmond Tutu Hall</option>
                             <option value="DH">Drostdy Hall</option>
                             <option value="FH">Founders Hall</option>
@@ -137,16 +129,16 @@
                         </select>
                     </div>
                 
-                    <button type="button" id="res-cancel-button" class="save-button" name="res-cancel-button" hidden onclick="toggleCancelResidenceEdit()">Cancel</button>
-                    <button type="button" id="res-edit-button" class="save-button" name="res-edit-button" onclick="toggleResidenceEdit()">Edit</button>
-                    <button type="submit" id="res-save-button" class="save-button" name="res-save-button" hidden>Save</button>
+                    <button type="button" id="hall-cancel-button" class="save-button" name="hall-cancel-button" hidden onclick="toggleCancelHallEdit()">Cancel</button>
+                    <button type="button" id="hall-edit-button" class="save-button" name="hall-edit-button" onclick="toggleHallEdit()">Edit</button>
+                    <button type="submit" id="hall-save-button" class="save-button" name="hall-save-button" hidden>Save</button>
                 </form>
             </div>
                 
 
             <div class="info-section">
                 <h2><strong>Change Password</strong></h2>
-                <form action="1-ProfileStudent.php" method="POST">
+                <form action="3-ProfileHS.php" method="POST">
                     <div class="form-group">
                         <label for="currentPassword">Current Password</label>
                         <input type="password" id="currentPassword" name="currentPassword" required>

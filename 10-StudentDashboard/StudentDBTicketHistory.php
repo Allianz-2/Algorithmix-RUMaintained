@@ -1,15 +1,17 @@
+<?php
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   <link rel="stylesheet" href="Dashboard.css">
-        
-</head>
-<body>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --sidebar-width: 250px;
@@ -27,7 +29,7 @@
 
         .sidebar {
             width: var(--sidebar-width);
-            background-color: purple;
+            background-color: #81589a;
             color: white;
             height: 100vh;
             position: fixed;
@@ -169,11 +171,13 @@
         }
 
         table {
+            align-self: center;
             width: 100%;
             border-collapse: collapse;
         }
 
         th, td {
+            align-items: center;
             border: 1px solid #ddd;
             padding: 12px;
             text-align: middle;
@@ -183,20 +187,6 @@
             background-color: white;
         }
 
-        button {
-            background-color: #333333;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 18px;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-   
 
 .logo img {
     max-height: 60px;  /* Adjust this value as needed */
@@ -209,91 +199,120 @@
     margin-right: 20px;
 }   
 
+.ticketButton {
+    padding: 10px 20px; 
+    font-size: 1rem; 
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #81589a;
+    color: #fff;
+    cursor: pointer;
+}
+
+button {
+    padding: 5px 10px; 
+    font-size: 1rem; 
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #81589a;
+    color: #ffffff;
+    cursor: pointer;
+}
     </style>
+</head>
+<body>
+
+<?php
+    require '../8-PHPTests/config.php';
+
+            
+    $conn = mysqli_init(); 
+    if (!file_exists($ca_cert_path)) {
+        die("CA file not found: " . $ca_cert_path);
+    }
+    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+    if (mysqli_connect_errno()) {
+        die('Failed to connect to MySQL: ' . mysqli_connect_error());
+    }
+
+$sql = "SELECT * FROM ticket";
+
+$result = $conn->query($sql);
+
+?>
+
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span> <!-- <?php echo $fullName; ?> I THINK -->
-           <a href="user page"><i class="fas fa-user"></i></a> 
+            <span class="user-welcome"><?php 'Welcome '. $_SESSION['Firstname'] . '!'?></span>
+            <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="HSDSTicketApproval.html"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
-            <li class="active"><a href="#"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="HSDS.html"><i class="fas fa-clipboard-list"></i>Requests</a></li>
-            <li><a href="#"><i class="fas fa-home"></i>Residences</a></li>
-            <li><a href="HSDSNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li class="active"><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>My Ticket History</a></li>
+            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
+            <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
+
     <main>
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Hall Warden Dashboard</strong>
+                <strong>Student Dashboard</strong>
             </div>
-            <div class="logo"><img src="../Images/General//93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
+            <div class="logo">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
+            </div>
         </header>
-        
-        <div class="content">
-            <h2>Analytics</h2>
-            <div class="filters">
-                <div class="filter-group">
-                    <label for="date-filter">Date Range</label>
-                    <select id="date-filter">
-                        <option>Last 7 Days</option>
-                        <option value="yesterday">Yesterday</option>
-                        <option value="today">Today</option>
-                        <option value="2 weeks">Last 2 weeks</option>
-                        <option value="Month">Last Month</option>
-                        <option value="3 months">Last 3 Months</option>
-                    </select>
-                </div>
-           
-                <div class="filter-group">
-                    <label for="severity-filter">Severity</label>
-                    <select id="severity-filter">
-                        <option value="High">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                        <option value="emergency">Emergency</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="category-filter">Category</label>
-                    <select id="category-filter">
-                        <option>Any</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="electrical">Electrical</option>
-                        <option value="roofing">Roofing</option>
-                        <option value="broken and repairs">Repairs and breakage</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="status-filter">Status</label>
-                    <select id="status-filter">
-                        <option>Any</option>
-                        <option value="active">Active</option>
-                        <option value="Pending">Pending</option>
-                        <option value="closed">Closed</option>
-                    </select>
-                </div>
-            </div>
+    <body>
+    <div>
+                    <a href="#"><button class="ticketButton" type ="submit">Create New Ticket</button></a>
+            </div> 
+<div>
+    <h3>My Tickets</h3>
 
-            <div class="charts">
-                <!-- Charts will be added here -->
-                    <div id="open_tickets_chart" style="width: 100%; height: 400px;"></div>
-                    <div id="status_chart" style="width: 100%; height: 400px;"></div>
-                    <div id="resolution_time_chart" style="width: 100%; height: 400px;"></div>
-                    <div id="severity_category_chart" style="width: 100%; height: 400px;"></div>
-                
+    <?php
+                 echo "<table class='requests-table'>
+                        <thead>
+                        <tr>
+                            <th>Ticket #</th>
+                            <th>Date Created</th>
+                            <th>Status</th>
+                            <th>Fault Description</th>
+                            <th>Severity</th>
+                            <th></th>
+                        </tr>
+                        </thead>";
+                        
+                        while ($row = $result->fetch_assoc()) {
+                    
+                       
+                        echo "<tr>";
+                        echo "<td>{$row['TicketID']}</td>";
+                        echo "<td>{$row['DateCreated']}</td>";
+                        echo "<td>{$row['Status']}</td>";
+                        echo "<td>{$row['Description']}</td>";
+                        echo "<td>{$row['Severity']}</td>";
+                        echo "<td><button>Details</a></td>";       
+                        echo "</tr>";
+                    
+                        }
+                echo "</table>";
+                        ?>
+
             </div>
-            
-        </div>
-    </main>
-    
+        
+               
+            </body>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburgerIcon = document.getElementById('hamburger-icon');
@@ -305,9 +324,12 @@
                 main.classList.toggle('sidebar-collapsed');
             });
         });
+
         function confirmLogout() {
             return confirm("Are you sure you want to log out?");
         }
     </script>
+
+<div id="piechart" style="width: 900px; height: 500px;"></div>
 </body>
 </html>

@@ -43,25 +43,12 @@
                         echo '<div class="dropdown">
                                 <a href="">Services ▾</a>
                                 <div class="dropdown-content">
-                                    <a href="../7-TicketCreation/1-TicketCreationPage.html">Create Ticket</a>';
-                        if ($_SESSION['role'] == 'S') {
-                            echo '<a href="../6-UserProfileManagmentPage\1-ProfileStudent.php">Profile</a>';
-                        } else if ($_SESSION['role'] == 'HW') {
-                            echo '<a href="../6-UserProfileManagmentPage\2-ProfileHW.php">Profile</a>';
-                        } else if ($_SESSION['role'] == 'HS') {
-                            echo '<a href="../6-UserProfileManagmentPage\3-ProfileHS.php">Profile</a>';
-                        } else if ($_SESSION['role'] == 'MS') {
-                            echo '<a href="../6-UserProfileManagmentPage\4-ProfileMS.php">Profile</a>';
-                        }
-                        echo '</div></div>';
-                            //         <!-- <a href="#">Student Dashboard</a>
-                            //         <a href="#">House Warden Dashboard</a>
-                            //         <a href="#">Hall Secretary Dashboard</a>
-                            //         <a href="#">Maintenance Dashboard</a>
-                            //     </div> -->
-                            // </div>';
+                                    <a href="../7-TicketCreation/1-TicketCreation.php">Create Ticket</a>
+                                    <a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a></div></div>';
+
                     }
                 ?>
+                
                 <a href="2-ContactUs.php">Contact Us</a>
             </nav>
             <?php if (isset($_SESSION['userID'])) {

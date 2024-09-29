@@ -228,6 +228,11 @@ label {
     color: red;
     margin-left: 3px;
 }
+.required-read::after {
+    content: "*";
+    color: red;
+    margin-left: 3px;
+}
 
 .input-container {
     flex: 0 0 70%;

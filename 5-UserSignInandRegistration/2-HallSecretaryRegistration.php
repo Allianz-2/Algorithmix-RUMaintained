@@ -52,7 +52,7 @@
                     <select name="hall" id="hall">
                         <option value="Select Hall"></option>
                         <option value="AW">Allen Webb Hall</option>
-                        <option value="CL">Courtenay-Latimer Hall</option>
+                        <option value="CH">Courtenay-Latimer Hall</option>
                         <option value="DT">Desmond Tutu Hall</option>
                         <option value="DH">Drostdy Hall</option>
                         <option value="FH">Founders Hall</option>

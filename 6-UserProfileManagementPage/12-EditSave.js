@@ -80,3 +80,28 @@ function toggleCancelSpecialisationEdit() {
 }
 
 
+function toggleHallEdit() {
+    var hallField = document.getElementById('hallChange');
+    var saveHallButton = document.getElementById('hall-save-button');
+    var cancelHallButton = document.getElementById('hall-cancel-button');
+    var editHallButton = document.getElementById('hall-edit-button');
+    
+    if (hallField.disabled) {
+        hallField.disabled = false;
+        cancelHallButton.hidden = false;
+        saveHallButton.hidden = false;
+        editHallButton.hidden = true;
+    }
+}
+
+function toggleCancelHallEdit() {
+    var hallField = document.getElementById('hallChange');
+    var saveHallButton = document.getElementById('hall-save-button');
+    var cancelHallButton = document.getElementById('hall-cancel-button');
+    var editHallButton = document.getElementById('hall-edit-button');
+
+    hallField.disabled = true;
+    editHallButton.hidden = false;
+    cancelHallButton.hidden = true;
+    saveHallButton.hidden = true;
+}
