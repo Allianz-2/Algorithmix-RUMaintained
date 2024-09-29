@@ -231,5 +231,20 @@
             severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
         }
     </script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
+
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+    </script>
 </body>
 </html>
