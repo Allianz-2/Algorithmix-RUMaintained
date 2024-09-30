@@ -73,7 +73,7 @@ if ($_SESSION['role'] === "HS") {
     
     $sql_tickets = "SELECT TicketID, Description, Status, DateCreated
                     FROM ticket 
-                    WHERE $idField IN ($placeholders) AND $access_column = 0
+                    WHERE $idField IN ($placeholders) AND $access_column = 0 AND Status = 'Confirmed'
                     ORDER BY DateCreated DESC";
 
     // Prepare the statement
@@ -85,7 +85,7 @@ if ($_SESSION['role'] === "HS") {
     // Bind the ResidenceIDs dynamically
     $tickets_stmt->bind_param(str_repeat('s', count($residenceIDs)), ...$residenceIDs);
 
-} else {
+} else if ($_SESSION['role'] === "S" ){
     // Query for other roles
     $sql_tickets = "SELECT TicketID, Description, Status, DateCreated
                     FROM ticket 
@@ -100,6 +100,22 @@ if ($_SESSION['role'] === "HS") {
 
     // Bind a single ResidenceID (or StudentID/HouseWardenID)
     $tickets_stmt->bind_param("s", $_SESSION['userID']);
+} else if ($_SESSION['role'] === "HW") {
+    // Query for other roles
+    $sql_tickets = "SELECT TicketID, Description, Status, DateCreated
+                    FROM ticket 
+                    WHERE $idField = ? AND $access_column = 0 AND Status = 'Open'
+                    ORDER BY DateCreated DESC";
+
+    // Prepare the statement
+    $tickets_stmt = $conn->prepare($sql_tickets);
+    if ($tickets_stmt === false) {
+        die('Prepare failed: ' . htmlspecialchars($conn->error));
+    }
+
+    // Bind a single ResidenceID (or StudentID/HouseWardenID)
+    $tickets_stmt->bind_param("s", $_SESSION['userID']);
+
 }
 
 // Execute the statement
