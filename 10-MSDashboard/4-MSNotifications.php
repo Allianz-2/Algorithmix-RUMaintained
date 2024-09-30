@@ -33,7 +33,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Student Dashboard</strong>
+                <strong>Maintenance Dashboard</strong>
             </div>
             <div class="logo">
             <a href="../1-GeneralPages/1-Home.php">
@@ -116,20 +116,7 @@
        
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const hamburgerIcon = document.getElementById('hamburger-icon');
-            const sidebar = document.getElementById('sidebar');
-            const main = document.querySelector('main');
 
-            hamburgerIcon.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                main.classList.toggle('sidebar-collapsed');
-            });
-        });
-
-        function confirmLogout() {
-            return confirm("Are you sure you want to log out?");
-        }
 
                 function markAllAsRead() {
                     var items = document.getElementsByClassName('notification-item');
