@@ -104,12 +104,12 @@
                     <p>Kate Jackson-Moss</p>
                 </div>
                 <div class="team-member">
-                    <img src="../Images\General\Naledi.JPG" alt="System Analyst">
+                    <img src="../Images\General\Nelly.JPG" alt="System Analyst">
                     <p>System Analyst</p>
                     <p>Naledi Mabusela</p>
                 </div>
                 <div class="team-member">
-                    <img src="../Images\General\Thulebona.jpg" alt="System Analyst">
+                    <img src="../Images\General\Thule.jpg" alt="System Analyst">
                     <p>System Analyst</p>
                     <p>Thulebona Tsele </p>
                 </div>
