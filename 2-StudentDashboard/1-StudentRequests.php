@@ -198,8 +198,7 @@
                         <td><?php echo $row['Status']; ?></td>
                         <td><?php echo $row['Severity']; ?></td>
                         <td><?php echo $row['DateCreated']; ?></td>
-                        <td><a href = "#">View</a></td>
-                    </tr>
+                        <td><a href="../7-TicketCreation/7-TicketStatus.php?ticketID=<?php echo urlencode($row['TicketID']); ?>">View</a></td>                    </tr>
                     <?php endwhile; ?>
                 </tbody>
             </table>
