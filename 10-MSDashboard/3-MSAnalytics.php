@@ -307,8 +307,7 @@
             </div>
 
             <div>
-                <h3>Average Turnaround Time (in Hours)</h3>
-                <strong><?php echo $turnaroundTime['AvgTurnaroundTime']; ?></strong>
+                <h3>Average Turnaround Time (in Hours): <span style="color: #4E73DF;"><?php echo number_format($turnaroundTime['AvgTurnaroundTime'], 2); ?></span></h3>
             </div>
 
             <div class="charts-container">
