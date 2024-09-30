@@ -15,14 +15,7 @@
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="Dashboard.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-
+    <style> 
         h1 {
             text-align: center;
             color: #81589a;
@@ -135,7 +128,7 @@
         </ul>
         <div class="sidebar-footer">
             <p><a href="../6-UserProfileManagementPage\1-ProfileStudent.php"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+            <p><a href="..\5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
 
@@ -156,19 +149,19 @@
 
         <?php 
 
-    require '../8-PHPTests/config.php';
+        require '../8-PHPTests/config.php';
 
             
-    $conn = mysqli_init(); 
-if (!file_exists($ca_cert_path)) {
-    die("CA file not found: " . $ca_cert_path);
-}
-mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+        $conn = mysqli_init(); 
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
+        }
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
-if (mysqli_connect_errno()) {
-    die('Failed to connect to MySQL: ' . mysqli_connect_error());
-}
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
        
     // STUDENT TICKETS START
         

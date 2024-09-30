@@ -60,12 +60,7 @@ $stmt->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Dashboard.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
+
         h1 {
             text-align: center;
             color: #81589a;
@@ -113,7 +108,7 @@ $stmt->close();
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Hall Secretary Dashboard</strong>
+                <strong>House Warden Dashboard</strong>
             </div>
             <div class="logo"><img src="..\Images\General\93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
         </header>
@@ -129,11 +124,11 @@ $stmt->close();
                         <div class="step-label">Create Ticket</div>
                     </div>
                     <div class="step-wrapper">
-                        <div class="step">2</div>
+                        <div class="step active">2</div>
                         <div class="step-label">House Warden Approval</div>
                     </div>
                     <div class="step-wrapper">
-                        <div class="step active">3</div>
+                        <div class="step">3</div>
                         <div class="step-label">Hall Secretary Approval</div>
                     </div>
                 </div>
