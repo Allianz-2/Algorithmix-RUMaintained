@@ -49,7 +49,26 @@ if (isset($_GET['ticketID'])) {
         $SAccesses = $ticketInfo['SAccesses'];
         $HSAccesses = $ticketInfo['HSAccesses'];
         $HWAccesses = $ticketInfo['HWAccesses'];
+
+
+
+
+        // Retrieve the Residence name using the ResidenceID
+        $stmt = $conn->prepare('SELECT ResName FROM residence WHERE ResidenceID = ?');
+        if ($stmt === false) {
+            die('Prepare failed: ' . htmlspecialchars($conn->error));
+        }
+        $stmt->bind_param('s', $ResidenceID);
+        $stmt->execute();
+        $stmt->bind_result($ResidenceName);
+        $stmt->fetch();
+        $stmt->close();
+
+        if (empty($ResidenceName)) {
+            $ResidenceName = "Unknown Residence";
+        }
         
+
         // Retrieve the Category name using the CategoryID
         $stmt = $conn->prepare('SELECT CategoryName FROM faultcategory WHERE CategoryID = ?');
         if ($stmt === false) {

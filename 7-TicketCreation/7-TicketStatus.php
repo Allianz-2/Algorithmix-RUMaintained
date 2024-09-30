@@ -133,6 +133,13 @@
                             </select>
                         </div>
                     </div>
+                    <div class = "form-group">
+                        <label for="residence">Residence:</label>
+                        <div class="input-container">
+                            <input type="text" id="residence" name="residence" value=<?php echo $ResidenceName?> readonly>
+                        </div>
+                    </div>
+                    
                     
                     <div class="separator"></div>
                     

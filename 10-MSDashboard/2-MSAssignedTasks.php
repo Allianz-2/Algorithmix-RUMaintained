@@ -134,7 +134,9 @@ th {
                 <strong>Maintenance Staff Dashboard</strong>
             </div>
             <div class="logo">
+            <a href="../1-GeneralPages/1-Home.php">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
+            </a>
             </div>
         </header>
 
@@ -211,6 +213,7 @@ $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " .
                 <th>Severity</th>
                 <th>Date Created</th>
                 <th>Assigned to</th>
+                <th>Details</th>
             </tr>
         </thead>
         <tbody>
@@ -234,6 +237,7 @@ $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " .
                     echo $assignedTo; 
                     ?>
                 </td>
+                <td><a href='../7-TicketCreation/7-TicketStatus.php?ticketID=<?php echo urlencode($row['TicketID']); ?>'>View</a></td>
             </tr>
             <?php endif; ?>
             <?php endwhile; ?>

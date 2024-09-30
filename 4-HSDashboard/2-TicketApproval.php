@@ -109,7 +109,9 @@
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
                <strong>Hall Secretary Dashboard</strong>
             </div>
+            <a href="../1-GeneralPages/1-Home.php">
             <div class="logo"><img src="..\Images\General\93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
+            </a>
         </header>
 
         <div class="content">
@@ -148,8 +150,7 @@
                             <th>Status</th>                           
                             <th>Fault Description</th>
                             <th>Severity</th>
-                            <th>Approve</th>
-                            <th>Deny</th>
+
                             <th>Details</th>
                             
                 </tr>
@@ -164,8 +165,8 @@
                     echo "<td>{$row['Status']}</td>";
                     echo "<td>{$row['Description']}</td>";
                     echo "<td>{$row['Severity']}</td>";
-                    echo "<td><a href='#'>Approve</a></td>";
-                    echo "<td><a href='#'>Deny</a></td>";
+                    // echo "<td><a href='#'>Approve</a></td>";
+                    // echo "<td><a href='#'>Deny</a></td>";
                     echo "<td><a href='../7-TicketCreation/7-TicketStatus.php?ticketID=" . urlencode($row['TicketID']) . "'>View</a></td>";
                     echo "</tr>";
                 }
