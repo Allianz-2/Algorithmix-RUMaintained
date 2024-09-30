@@ -22,6 +22,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="13-ProfileManage.css">
     <script src="12-EditSave.js" defer></script>
+    <style>
+
+    .logout {
+    position: absolute; /* Position the logout button absolutely */
+    bottom: 20px; /* Distance from the bottom */
+    left: 20px; /* Align with left padding */  
+}
+</style>
 </head>
 <body>
     <div class="container">
@@ -30,7 +38,7 @@
             <p>Manage your account info.</p>
             <div class="menu-item">
                 <a href="../1-GeneralPages\1-Home.php">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z" fill="currentColor"/>
                     <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -47,7 +55,7 @@
             </a>
             </div>
             <div class="menu-item">
-                <a href="18-UserResidenceInformationpage.php">
+                <a href="..\6-UserProfileManagementPage\18-UserResidenceInformationPage.php">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -65,7 +73,7 @@
                 Security
             </a>
             </div>
-            <div class="menu-item">
+            <div class="menu-item logout">
             <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
         </div>
@@ -249,5 +257,13 @@
             </div>
         </div>
     </div>
+    <script>
+function confirmLogout() {
+    // Prompt the user for confirmation
+    var confirmation = confirm("Are you sure you want to log out?");
+    // If the user confirms, allow the logout action
+    return confirmation; // true if confirmed, false if canceled
+}
+</script>
 </body>
 </html>
