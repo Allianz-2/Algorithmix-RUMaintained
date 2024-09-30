@@ -31,7 +31,8 @@
                                 <a href=""><strong>Services ▾</strong></a>
                                 <div class="dropdown-content">
                                     <a href="../7-TicketCreation/1-TicketCreation.php">Create Ticket</a>
-                                    <a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a></div></div>';
+                                    <a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a>
+                                    <a href="../1-GeneralPages/6-RedirectDashboard.php">Dashboard</a></div></div>';
 
                     }
                 ?>
