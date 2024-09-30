@@ -308,6 +308,11 @@
                 </div> -->
             </div>
 
+            <div>
+                <h3>Average Turnaround Time (in Hours)</h3>
+                <strong><?php echo $turnaroundTime['AvgTurnaroundTime']; ?></strong>
+            </div>
+
             <div class="charts-container">
             <div class="chart-box">
                 <h3>Semester Maintenance Fault Stats by Res</h3>
@@ -332,10 +337,7 @@
             </div> -->
 
 
-            <div>
-                <h3>Average Turnaround Time (in Hours)</h3>
-                <strong><?php echo $turnaroundTime['AvgTurnaroundTime']; ?></strong>
-            </div>
+
 
     </main>
 
