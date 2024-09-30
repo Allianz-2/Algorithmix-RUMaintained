@@ -78,9 +78,7 @@ $result = $stmt->get_result(); // Fetch results using get_result()
 $stmt->close(); 
 
 
-?>
-
-
+if ($result && mysqli_num_rows($result) > 0): ?>
     <table>
         <thead>
             <tr>
@@ -101,12 +99,15 @@ $stmt->close();
                 <td><?php echo $row['Status']; ?></td>
                 <td><?php echo $row['Severity']; ?></td>
                 <td><?php echo $row['DateCreated']; ?></td>
-                <td><a href = "#"><button>View</button></a></td>
+                <td><a href="#"><button>View</button></a></td>
                 
             </tr>
             <?php endwhile; ?>
         </tbody>
     </table>
+    <?php else: ?>
+    <p>No tickets available.</p>
+    <?php endif; ?>
 </div>
 
 
