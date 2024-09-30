@@ -196,7 +196,7 @@
                         <td><?php echo $row['Status']; ?></td>
                         <td><?php echo $row['Severity']; ?></td>
                         <td><?php echo $row['DateCreated']; ?></td>
-                        <td><a href = "#"><button>View</button></a></td>
+                        <td><a href = "#">View</a></td>
                     </tr>
                     <?php endwhile; ?>
                 </tbody>
