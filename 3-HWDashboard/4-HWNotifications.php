@@ -60,6 +60,7 @@
                             <option value="newest">Newest First</option>
                             <option value="oldest">Oldest First</option>
                         </select>
+                        
                     </div> -->
                     <form method="POST" action="4-HWNotifications.php">
                         <button type="submit" name="mark_all_as_read" class="btn btn-primary">Mark All as Read</button>

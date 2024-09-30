@@ -61,33 +61,14 @@ $stmt->close();
     <link rel="stylesheet" href="Dashboard.css">
     <style>
 
-        h1 {
-            text-align: center;
-            color: #81589a;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #81589a;
-        }
+       
     </style>
 </head>
 
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span>
+        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span>
             <a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
@@ -167,14 +148,14 @@ $stmt->close();
                             <form method='POST'>
                                 <input type='hidden' name='ticketID' value='{$row['TicketID']}'>
                                 <input type='hidden' name='action' value='approve'>
-                                <button type='submit'>Approve</button>
+                                <button type='submit' style='background:none!important; border:none; padding:0!important; font-family:inherit; /*optional*/ font-size:inherit; /*optional*/ color:blue; cursor:pointer;'>Approve</button>
                             </form>
                           </td>";
                     echo "<td>
                             <form method='POST'>
                                 <input type='hidden' name='ticketID' value='{$row['TicketID']}'>
                                 <input type='hidden' name='action' value='deny'>
-                                <button type='submit'>Deny</button>
+                                <button type='submit' style='background:none!important; border:none; padding:0!important; font-family:inherit; /*optional*/ font-size:inherit; /*optional*/ color:blue; cursor:pointer;'>Deny</button>
                             </form>
                           </td>";
                     echo "<td><a href='#'>Details</a></td>";
