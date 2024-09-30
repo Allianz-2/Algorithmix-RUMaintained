@@ -243,7 +243,7 @@
     <nav id="sidebar" class="sidebar">
         <div class="logo">
         <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
-            <a href="..\6-UserProfileManagementPage\5-ProfileManagement.php"><i class="fas fa-user"></i></a> 
+        <a href="..\6-UserProfileManagementPage\3-ProfileHS.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
          <li><a href="..\1-GeneralPages\1-Home.php"><i class="fas fa-home"></i> Home</a></li>
