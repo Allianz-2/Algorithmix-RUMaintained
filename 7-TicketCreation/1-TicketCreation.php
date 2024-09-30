@@ -150,14 +150,27 @@
                         <!-- Container for the custom upload area -->
                         <div class="input-container">
                             <!-- Custom upload area with the file input hidden -->
-                            <div class="upload-area" id="upload-area">
+                            <div class="upload-area" id="upload-area" onclick="document.getElementById('photo').click();">
                                 <i class="fas fa-image"></i>
                                 <p>Click or drag Photo to this area to upload</p>
-                    
+
                                 <!-- Actual file input, hidden from view -->
-                                <input type="file" name="photo" id="photo" style="display: none;">
+                                <input type="file" name="photo" id="photo" style="display: none;" onchange="handleFileSelect(event)">
                             </div>
                         </div>
+                        <script>
+                            function handleFileSelect(event) {
+                                var fileInput = event.target;
+                                var uploadArea = document.getElementById('upload-area');
+                                if (fileInput.files && fileInput.files[0]) {
+                                    var reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        uploadArea.innerHTML = '<img src="' + e.target.result + '" alt="Uploaded Photo" style="max-width: 100%;">';
+                                    };
+                                    reader.readAsDataURL(fileInput.files[0]);
+                                }
+                            }
+                        </script>
                     </div>
                     <div class="button-group">
                         <input type="submit" name="submit" value="Create Ticket">
