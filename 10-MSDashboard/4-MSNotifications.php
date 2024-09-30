@@ -33,7 +33,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Maintenance Dashboard</strong>
+                <strong>Maintenance Staff Dashboard</strong>
             </div>
             <div class="logo">
             <a href="../1-GeneralPages/1-Home.php">
