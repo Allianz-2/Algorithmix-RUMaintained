@@ -6,7 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In </title>
+    <title>Sign In</title>
+    <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../5-UserSignInandRegistration/5-CSS/6-SignInPage.css">
 </head>
 <body>
