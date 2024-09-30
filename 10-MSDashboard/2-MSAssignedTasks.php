@@ -109,13 +109,13 @@ th {
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+            <span class="user-welcome">Welcome, User</span><!-- Add PHP code here for user name -->
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
             <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
             <li><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
-            <li  class="active"><a href="2-MSAssignedTasks.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li class="active"><a href="2-MSAssignedTasks.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
             <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
             <li><a href="5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>

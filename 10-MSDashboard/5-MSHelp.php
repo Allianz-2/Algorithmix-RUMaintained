@@ -242,8 +242,8 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-        <span class="user-welcome"><?php echo 'Welcome ' .  '!';?></span>
-            <a href="user page"><i class="fas fa-user"></i></a> 
+        <span class="user-welcome">Welcome, User </span>
+                    <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
             <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
