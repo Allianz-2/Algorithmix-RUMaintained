@@ -82,9 +82,16 @@
                     </div>
                 </div>
                     
-                <form action="9-UpdateTicket.php" method="post" enctype="multipart/form-data">
+                <form action="7-TicketStatus.php" method="post" enctype="multipart/form-data">
                     <!-- <input type="hidden" id="status" name="status" value="Open"> -->
-
+                    <?php
+                        if (isset($_GET['ticketID'])) {
+                            $ticketID = $_GET['ticketID'];
+                            echo '<input type="hidden" name="ticketID" value="' . htmlspecialchars($ticketID) . '">';
+                        } else {
+                            echo 'No ticket ID provided.';
+                        }
+                    ?>
                     <div class="section-title">Ticket Details</div>
                     <div class="form-group">
                         <label for="description">Description of Fault:</label>
@@ -172,13 +179,20 @@
                         </div>
                     </div> -->
                     <div class="form-group">
-                    <?php 
-                    $showButtons = !($_SESSION['role'] === 'S');                    
-                    if ($showButtons): ?>
+                    <?php
+                        $showButtons = !($_SESSION['role'] === 'S');                    
+                        if ($showButtons): ?>
                             <?php if (!($_SESSION['role'] === 'MS' || $Status === 'Resolved')): ?>
-                                <button type="button" class="btn btn-danger">Reject</button>
+                                <?php if (($Status === 'Open' && $_SESSION['role'] === 'HW') || ($Status === 'Confirmed' && $_SESSION['role'] === 'HS')): ?>
+                                    <button type="submit" name="submit-reject" class="btn-primary" onclick="return confirm('Are you sure you want to reject this ticket?');">Reject</button>
+                                <?php endif; ?>
                             <?php endif; ?>
-                                <button type="button" class="btn btn-primary">Other Action</button> <!-- Example of another button -->
+                            <?php if (($Status === 'Open' && $_SESSION['role'] === 'HW') || 
+                                    ($Status === 'Confirmed' && $_SESSION['role'] === 'HS') || 
+                                    ($Status === 'Requisitioned' && $_SESSION['role'] === 'MS') || 
+                                    ($Status === 'Resolved' && $_SESSION['role'] === 'HS')): ?>
+                                <button type="submit" name = "submit-approve" class="btn-primary">Approve</button>
+                            <?php endif; ?>
                         <?php endif; ?>
                     </div>
                 </form>
