@@ -15,7 +15,7 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
             <a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a> 
         </div>
         <ul>

@@ -213,7 +213,11 @@
                 die('Failed to connect to MySQL: ' . mysqli_connect_error());
             }
         
-        $results = mysqli_query($conn, "SELECT * FROM ticket WHERE Status= 'Confirmed'"); // Add this line to define $results
+            $results = mysqli_query($conn, "SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, t.StudentID
+                                            FROM ticket t
+                                            INNER JOIN residence r ON t.ResidenceID = r.ResidenceID
+                                            WHERE t.Status = 'Confirmed' AND r.HallSecretaryID = '".$_SESSION['userID']."'
+                                        ");
         
         $totalTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTickets FROM ticket"))['TotalTickets'];
         $ConfirmedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as ConfirmedTickets FROM ticket WHERE Status = 'Confirmed'"))['ConfirmedTickets'];
