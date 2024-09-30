@@ -1,4 +1,26 @@
 <?php
+
+    require '../8-PHPTests/config.php';
+
+    $conn = mysqli_init();
+    $ca_cert_path = "../CACertificate/DigiCertGlobalRootCA.crt.pem"; // Absolute path to the CA cert
+
+    // Test if the CA certificate file can be read
+    if (!file_exists($ca_cert_path)) {
+        die("CA file not found: " . $ca_cert_path);
+    }
+
+    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+    // Establish the connection
+    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+    // If connection failed, show the error
+    if (mysqli_connect_errno()) {
+        die('Failed to connect to MySQL: ' . mysqli_connect_error());
+    }
+
+
     if ($_SESSION['role'] == 'HW') {
         $idField = 'HouseWardenID';
         $accessField = 'HWAccesses';
@@ -19,19 +41,6 @@
                 $residenceIDs[] = $row['ResidenceID'];
             }
             $stmt->close();
-
-        if (!empty($residenceIDs)) {
-            $idField = 'ResidenceID';
-            $update_sql = "UPDATE ticket SET Accesses = 1 WHERE $idField IN (" . implode(',', array_fill(0, count($residenceIDs), '?')) . ")";
-            $update_stmt = $conn->prepare($update_sql);
-            if ($update_stmt === false) {
-                die('Prepare failed: ' . htmlspecialchars($conn->error));
-            }
-            $update_stmt->bind_param(str_repeat('s', count($residenceIDs)), ...$residenceIDs);
-        }
-
-        } else {
-            die('Execute failed: ' . htmlspecialchars($stmt->error));
         }
         
     } else {
@@ -115,7 +124,6 @@
         if (mysqli_connect_errno()) {
             die('Failed to connect to MySQL: ' . mysqli_connect_error());
         }
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         $ticketID = $_POST['ticketID'];

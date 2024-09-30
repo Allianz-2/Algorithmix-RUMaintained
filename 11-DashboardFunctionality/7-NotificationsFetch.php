@@ -28,26 +28,50 @@
     switch ($_SESSION['role']) {
         case 'S':
             $access_column = 'SAccesses';
-            $idField = 'HallSecretaryID';
+            $idField = 'StudentID';
             break;
         case 'HW':
             $access_column = 'HWAccesses';
             $idField = 'HouseWardenID';
             break;
         case 'HS':
-            $access_column = 'HSAccesses';
-            $idField = 'HallSecretaryID';
+            $idField = 'ResidenceID';
+            $accessField = 'HSAccesses';
+
+            $stmt = $conn->prepare("SELECT ResidenceID FROM residence WHERE HallSecretaryID = ?");
+            if ($stmt === false) {
+                die('Prepare failed: ' . htmlspecialchars($conn->error));
+            }
+
+            $stmt->bind_param("s", $_SESSION['userID']);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                $residenceIDs = [];
+                while ($row = $result->fetch_assoc()) {
+                    $residenceIDs[] = $row['ResidenceID'];
+                }
+                $stmt->close();
+            }
             break;
         default:
-            $access_column = 'SAccesses';
-            $idField = 'HallSecretaryID';
+            $idField = 'ResidenceID';
+            $accessField = 'HSAccesses';
     }
 
-    $sql_tickets = "SELECT TicketID, Description, Status, DateCreated
-                    FROM ticket 
-                    WHERE $idField = ? AND $access_column = 0
-                    ORDER BY DateCreated DESC";
+    $tickets_stmt = $conn->prepare($sql_tickets);
 
+    if ($_SESSION['role'] !== "HS") {
+        $sql_tickets = "SELECT TicketID, Description, Status, DateCreated
+                        FROM ticket 
+                        WHERE $idField IN (?) AND $access_column = 0
+                        ORDER BY DateCreated DESC";
+    } else {
+        $sql_tickets = "SELECT TicketID, Description, Status, DateCreated
+                        FROM ticket 
+                        WHERE $idField IN (" . implode(',', $residenceIDs) . ") AND $access_column = 0
+                        ORDER BY DateCreated DESC";
+
+    }
 
     $tickets_stmt = $conn->prepare($sql_tickets);
 
@@ -55,7 +79,7 @@
         die('Prepare failed: ' . htmlspecialchars($conn->error));
     }
 
-    $tickets_stmt->bind_param("s", $_SESSION['userID']);
+    $tickets_stmt = $conn->prepare($sql_tickets);
     $tickets_stmt->execute();
     $tickets_result = $tickets_stmt->get_result();
 
