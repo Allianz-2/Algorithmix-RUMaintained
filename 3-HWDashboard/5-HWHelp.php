@@ -278,7 +278,11 @@
             <h2>Frequently Asked Questions</h2>
             <div class="faq-item">
                 <div class="faq-question">What is this system used for?</div>
-                <div class="faq-answer">This system is designed to help students and staff report and manage maintenance issues within university residences efficiently.</div>
+                <div class="faq-answer">This system enables house wardens to efficiently track and prioritize maintenance requests, streamline communication with maintenance teams, and analyze trends to enhance resident satisfaction. By effectively managing issues, house wardens can create a safer and more comfortable living environment for students.
+
+
+
+</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">How do I report a maintenance issue?</div>
