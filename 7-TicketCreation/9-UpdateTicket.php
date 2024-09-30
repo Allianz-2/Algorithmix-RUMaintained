@@ -19,7 +19,7 @@
         if (mysqli_connect_errno()) {
             die('Failed to connect to MySQL: ' . mysqli_connect_error());
         }
-                
+        $ticketID = $_POST['ticketID'];
         $stmt = $conn->prepare('SELECT Status FROM ticket WHERE TicketID = ?');
         if ($stmt === false) {
             die('Prepare failed: ' . htmlspecialchars($conn->error));
