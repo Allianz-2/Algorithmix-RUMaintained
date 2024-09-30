@@ -48,7 +48,7 @@
                     </div>';
             } else {
                 echo '<div class="auth-buttons">
-                        <a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>
+                        <a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button signup-button">Sign in</a>
                         <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button login-button">Register</a>
                     </div>';
             }

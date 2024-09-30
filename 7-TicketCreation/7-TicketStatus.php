@@ -96,7 +96,7 @@
                     <div class="form-group">
                         <label for="description">Description of Fault:</label>
                         <div class="input-container">
-                            <input type="text" id="description" name="description" value=<?php echo $Description?> readonly>
+                            <input type="text" id="description" name="description" value="<?php echo htmlspecialchars($Description); ?>" readonly>
                         </div>
                     </div>
                     <div class="form-group">

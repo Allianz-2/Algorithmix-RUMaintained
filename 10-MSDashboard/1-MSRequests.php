@@ -1,9 +1,6 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
-
-
-
-
+    include '../11-DashboardFunctionality\1-PermissionRequests.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

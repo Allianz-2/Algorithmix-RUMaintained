@@ -1,5 +1,6 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
+    // include '11-DashboardFunctionality\3-PermissionAnalytics.php';
 
 
 
@@ -235,11 +236,11 @@
         </div>
         <ul>
             <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="..\1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
-            <li><a href="..\2-MSAssignedTasks.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="2-MSAssignedTasks.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li class="active"><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="..\4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="..\5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+            <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="..\6-UserProfileManagementPage\4-ProfileMS.php"><i class="fas fa-cog"></i> Settings</a></p>

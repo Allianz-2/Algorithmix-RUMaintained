@@ -1,3 +1,7 @@
+<?php
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
