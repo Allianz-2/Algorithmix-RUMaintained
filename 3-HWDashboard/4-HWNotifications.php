@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+<?php
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+    include '../11-DashboardFunctionality/8-NotificationUpdate.php';
+    
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -42,69 +46,8 @@
             <P> <strong></strong> </P> 
 
             <div class="container">
-                <div class="notification-controls">
-                    <div class="filter-sort">
-                        <select id="filterType">
-                            <option value="">All Notifications</option>
-                            <option value="ticket">Ticket Updates</option>
-                            <option value="system">System Alerts</option>
-                        </select>
-                        <select id="sortOrder">
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-secondary" onclick="markAllAsRead()">Mark All as Read</button>
-                </div>
-        
-                <div class="notification-list">
-                    <!-- PHP would be implemented here to fetch notifications dynamically from the database -->
-                    <div class="notification-item unread">
-                        <div class="notification-icon"><i class="fas fa-ticket-alt"></i></div>
-                        <div class="notification-content">
-                            <div class="notification-title">Ticket Update</div>
-                            <div class="notification-message">Ticket #76549 has been updated with a new comment.</div>
-                            <div class="notification-time">45 minutes ago</div>
-                        </div>
-                        <div class="notification-actions">
-                            <button class="btn btn-primary" onclick="viewTicket(76549)">View Ticket</button>
-                            <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
-                        </div>
-                    </div>
-                    <div class="notification-item unread">
-                        <div class="notification-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                        <div class="notification-content">
-                            <div class="notification-title">System Alert</div>
-                            <div class="notification-message">Scheduled maintenance will occur tonight at 11 PM.</div>
-                            <div class="notification-time">1 hour ago</div>
-                        </div>
-                        <div class="notification-actions">
-                            <button class="btn btn-primary" onclick="viewAlert()">View Details</button>
-                            <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
-                        </div>
-                    </div>
-                        <div class="notification-item unread">
-                            <div class="notification-icon"><i class="fas fa-ticket-alt"></i></div>
-                            <div class="notification-content">
-                                <div class="notification-title">Ticket Update</div>
-                                <div class="notification-message">Ticket #23654 has been resolved.</div>
-                                <div class="notification-time">2 days ago</div>
-                            </div>
-                            <div class="notification-actions">
-                                <button class="btn btn-primary" onclick="viewTicket(23654)">View Ticket</button>
-                                <button class="btn btn-secondary" onclick="markAsRead(this)">Mark as Read</button>
-                            </div>
-                    
-            
-                    </div>
-                    
-                </div>
-        
-                <div class="pagination">
-                    <a href="#" class="page-link active">1</a>
-                    <a href="#" class="page-link">2</a>
-                    <a href="#" class="page-link">Next</a>
-                </div>
+            <?php include '../11-DashboardFunctionality/7-NotificationsFetch.php'; ?>
+
             </div>
     
         
