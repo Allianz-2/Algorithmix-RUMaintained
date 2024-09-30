@@ -5,28 +5,18 @@
 
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RU Maintained Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <link rel="stylesheet" href="Dashboard.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
 
-        h1 {
-            text-align: center;
-            color: #81589a;
-        }
+    <style> 
 
         table {
             width: 100%;
@@ -42,6 +32,7 @@
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            background-color: white;
         }
 
         th {
@@ -101,7 +92,7 @@
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
-            max-width: 1200px;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -119,31 +110,203 @@
     </style>
 </head>
 
+
+       <?php
+        //Database connection parameters
+        require '../8-PHPTests/config.php';
+
+        // Initializes MySQLi
+        $conn = mysqli_init();
+
+        // Test if the CA certificate file can be read
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
+        }
+
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+        // Establish the connection
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+        // If connection failed, show the error
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
+
+        // Fetch maintenance fault stats per semester per residence
+        // function getMaintenanceFaultStatsPerSemester($conn) {
+        //     $query = "
+        //         SELECT r.ResName, 
+        //                COUNT(t.TicketID) AS FaultCount, 
+        //                YEAR(t.DateCreated) AS Year,
+        //                CASE 
+        //                    WHEN MONTH(t.DateCreated) BETWEEN 1 AND 6 THEN 'Semester 1'
+        //                    ELSE 'Semester 2'
+        //                END AS Semester
+        //         FROM ticket t
+        //         JOIN residence r ON t.ResidenceID = r.ResidenceID
+        //         WHERE t.Status = 'Resolved'
+        //         GROUP BY r.ResName, Year, Semester
+        //  ";
+        //     return $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        // }
+
+
+
+        function getMaintenanceFaultStatsPerSemester($conn) {
+            $query = "
+                SELECT r.ResName, 
+                       COUNT(t.TicketID) AS FaultCount, 
+                       YEAR(t.DateCreated) AS Year,
+                       CASE 
+                           WHEN MONTH(t.DateCreated) BETWEEN 1 AND 6 THEN 'Semester 1'
+                           ELSE 'Semester 2'
+                       END AS Semester
+                FROM ticket t
+                JOIN residence r ON t.ResidenceID = r.ResidenceID
+                WHERE t.Status = 'Resolved'
+                GROUP BY r.ResName, Year, Semester
+            ";
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
+        }
+        
+    
+
+
+
+        // Fetch maintenance fault progress
+
+
+        function getMaintenanceFaultProgress($conn) {
+            $query = "
+                SELECT COUNT(TicketID) AS TotalTickets,
+                       SUM(CASE WHEN Status = 'Resolved' THEN 1 ELSE 0 END) AS ResolvedTickets,
+                       SUM(CASE WHEN Status = 'In Progress' THEN 1 ELSE 0 END) AS InProgressTickets
+                FROM ticket
+            ";
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+            return mysqli_fetch_assoc($result);
+        }
+
+        // Fetch turnaround time stats
+
+        function getTurnaroundTimeStats($conn) {
+            $query = "
+                SELECT AVG(TIMESTAMPDIFF(HOUR, DateCreated, DateResolved)) AS AvgTurnaroundTime
+                FROM ticket
+                WHERE Status = 'Resolved'
+            ";
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+            return mysqli_fetch_assoc($result);
+        }
+
+        // Fetch maintenance category stats
+
+        function getMaintenanceCategoryStats($conn) {
+            $query = "
+                SELECT fc.CategoryName, COUNT(t.TicketID) AS FaultCount
+                FROM ticket t
+                JOIN faultcategory fc ON t.CategoryID = fc.CategoryID
+                GROUP BY fc.CategoryName
+            ";
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
+        }
+
+        // Fetch history of complaint categories
+
+        function getComplaintCategoryHistory($conn) {
+            $query = "
+                SELECT YEAR(DateCreated) AS Year, 
+                       fc.CategoryName, 
+                       COUNT(t.TicketID) AS FaultCount
+                FROM ticket t
+                JOIN faultcategory fc ON t.CategoryID = fc.CategoryID
+                GROUP BY Year, fc.CategoryName
+                ORDER BY Year
+            ";
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
+        }
+
+
+
+
+        
+        // Prepare data for graphs
+        $faultStatsPerSemester = getMaintenanceFaultStatsPerSemester($conn);
+        $faultProgress = getMaintenanceFaultProgress($conn);
+        $turnaroundTime = getTurnaroundTimeStats($conn);
+        $categoryStats = getMaintenanceCategoryStats($conn);
+        $complaintHistory = getComplaintCategoryHistory($conn);
+        ?>
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome,  </span><!-- Add PHP code for user name -->
-            <a href="user-page"><i class="fas fa-user"></i></a>
+            <span class="user-welcome">Welcome, </span>
+            <a href="Z:\Algorithmix-RUMaintained\6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-            <li><a href="HSticketapproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
-            <li><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-            <li class="active"><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
-            
-            <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
-            <li><a href="1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+        <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+            <li   class="active"><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
+            <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
-
     <main>
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Hall Secretary Dashboard</strong>
+                <strong>Maintenance Staff Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RU Maintained Logo">
@@ -164,11 +327,11 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="residence-filter">Residence</label> <!-- DEPENDING ON PERSONS HALL IT WILL SHOW RELEVANT RESIDENCES USING PHP -->
+                    <label for="residence-filter">Residence</label> 
                     <select id="residence-filter">
                         <option>Chris Hani House</option>
                     </select>
-                </div>
+                </div> 
                 <div class="filter-group">
                     <label for="severity-filter">Severity</label>
                     <select id="severity-filter">
@@ -201,42 +364,82 @@
             </div>
 
         <?php 
-        require_once('config.php');
-        
-        $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+            require '../8-PHPTests/config.php';
+
+            // Initializes MySQLi
+            $conn = mysqli_init();
+
+            // Test if the CA certificate file can be read
+            if (!file_exists($ca_cert_path)) {
+                die("CA file not found: " . $ca_cert_path);
+            }
+
+            mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+            // Establish the connection
+            mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+            // If connection failed, show the error
+            if (mysqli_connect_errno()) {
+                die('Failed to connect to MySQL: ' . mysqli_connect_error());
+            }
         
         $results = mysqli_query($conn, "SELECT * FROM ticket"); // Add this line to define $results
-        
-        $totalTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTickets FROM ticket"))['TotalTickets'];
-        $pendingTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Pending'"))['PendingTickets'];
-        $completedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = 'Resolved'"))['CompletedTickets'];
-        $viewedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as ViewedTickets FROM ticketcomment WHERE TicketID IN (SELECT TicketID FROM ticket WHERE Status IN ('Resolved', 'Closed'))"))['ViewedTickets'];
+  
+
+        $totalTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTasks FROM ticket"))['TotalTasks'];
+        $pendingTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTasks FROM ticket WHERE Status = 'Open'"))['PendingTasks'];
+        $completedTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTasks FROM ticket WHERE Status = 'Resolved'"))['CompletedTasks'];
+        $emergencyTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as EmergencyTasks FROM ticket WHERE Severity = 'high'"))['EmergencyTasks'];
         ?>
+
+
+
+
+<div class="charts">
+                <canvas id="maintenanceRequestChart"></canvas>
+                <canvas id="residenceTaskChart"></canvas>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
 
         <div class="content">
            
             <div class="charts">
                 <!-- Google Chart containers -->
-                <div id="requestChart" class="chart-box"></div>
-                <div id="residenceChart" class="chart-box"></div>
+                <!-- <div id="requestChart" class="chart-box"></div> -->
+                <!-- <div id="residenceChart" class="chart-box"></div> -->
             </div>
 
             <div class="stats">
                 <div class="stat-box">
-                    <h4>Total Tickets</h4>
-                    <p id="total-tickets"><?php echo $totalTickets; ?></p>
+                    <i class=""></i>
+                    <h4>Total Tasks</h4>
+                    <p id="total-tasks"><?php echo $totalTasks; ?></p>
                 </div>
                 <div class="stat-box">
-                    <h4>Pending Tickets</h4>
-                    <p id="pending-tickets"><?php echo $pendingTickets; ?></p>
+                    <i class=""></i>
+                    <h4>Pending Tasks</h4>
+                    <p id="pending-tasks"><?php echo $pendingTasks; ?></p>
                 </div>
                 <div class="stat-box">
-                    <h4>Completed Tickets</h4>
-                    <p id="completed-tickets"><?php echo $completedTickets; ?></p>
+                    <i class=""></i>
+                    <h4>Completed Tasks</h4>
+                    <p id="completed-tasks"><?php echo $completedTasks; ?></p>
                 </div>
                 <div class="stat-box">
-                    <h4>Viewed Tickets</h4>
-                    <p id="viewed-tickets"><?php echo $viewedTickets; ?></p>
+                    <i class=""></i>
+                    <h4>Emergency Tasks</h4>
+                    <p id="emergency-tasks"><?php echo $emergencyTasks; ?></p>
                 </div>
             </div>
 
@@ -268,65 +471,44 @@
             </table>
         </div>
     </main>
+    </main>
 
-    <!-- Load Google Charts -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart', 'bar']});
-        google.charts.setOnLoadCallback(drawCharts);
 
-        function drawCharts() {
-            // Request Pie Chart
-            var requestData = google.visualization.arrayToDataTable([
-                ['Task', 'Count'],
-                ['incomplete Tickets', <?php echo $totalTickets; ?>],
-                ['Pending Tickets', <?php echo $pendingTickets; ?>],
-                ['Completed Tickets', <?php echo $completedTickets; ?>],
-                ['Viewed Tickets', <?php echo $viewedTickets; ?>]
-            ]);
-
-            var requestOptions = {
-                title: 'Requests Overview',
-                backgroundColor: 'transparent',
-                pieHole: 0.4,
-                colors: ['#a64b89', '#5c4b8a', '#f1eaf5', '#81589a'],
-                legend: 'bottom'
-            };
-
-            var requestChart = new google.visualization.PieChart(document.getElementById('requestChart'));
-            requestChart.draw(requestData, requestOptions);
-
-            // Residence Column Chart
-            var residenceData = google.visualization.arrayToDataTable([
-                ['Task', 'Count'],
-                ['Pending', <?php echo $pendingTickets; ?>],
-                ['Completed', <?php echo $completedTickets; ?>]
-            ]);
-
-            var residenceOptions = {
-                title: 'Residence Tasks',
-                backgroundColor: 'transparent',
-                colors: ['#f4a5d2', '#c0a1f5'],
-                legend: 'none',
-                chartArea: { width: '70%' },
-                hAxis: {
-                    title: 'Task Status',
-                    minValue: 0
+    
+<script>
+    // Add chart.js scripts here for rendering charts
+        const ctx = document.getElementById('maintenanceRequestChart').getContext('2d');
+        const maintenanceRequestChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total', 'Pending', 'Completed', 'Emergency'],
+                datasets: [{
+                    label: 'Maintenance Requests',
+                    data: [<?php echo $totalTasks; ?>, <?php echo $pendingTasks; ?>, <?php echo $completedTasks; ?>, <?php echo $emergencyTasks; ?>],
+                    backgroundColor: [
+                        'rgba(92, 75, 138, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    },
                 },
-                vAxis: {
-                    title: 'Count'
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
-            };
-
-            var residenceChart = new google.visualization.ColumnChart(document.getElementById('residenceChart'));
-            residenceChart.draw(residenceData, residenceOptions);
-        }
-
-        function confirmLogout() {
-            return confirm('Are you sure you want to log out?');
-        }
+            }
+        });
     </script>
-     <script>
+      <script>
         document.addEventListener('DOMContentLoaded', function() {
             const hamburgerIcon = document.getElementById('hamburger-icon');
             const sidebar = document.getElementById('sidebar');
@@ -341,7 +523,6 @@
             return confirm("Are you sure you want to log out?");
         }
     </script>
-</body>
-</html>
 
+</body>
 </html>

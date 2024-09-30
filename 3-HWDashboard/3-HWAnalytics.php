@@ -21,7 +21,7 @@
         .charts-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 2px;
             margin: 20px 0;
         }
 
@@ -76,7 +76,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Hall Secretary Dashboard</strong>
+                <strong>House Warden Dashboard</strong>
             </div>
             <div class="logo"><img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
         </header>
