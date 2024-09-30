@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
     // Check if the user already exists and is inactive
     $stmt = $conn->prepare("SELECT status FROM user WHERE UserID = ?");
     if ($stmt === false) {
-        die('Prepare failed: ' . htmlspecialchars($conn->error));
+        die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
     }
     $stmt->bind_param("s", $userID);
     $stmt->execute();
@@ -109,11 +109,11 @@ if (isset($_POST['submit'])) {
         
     } else {
         // Prepare the SQL statement
-        $stmt1 = $conn->prepare("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt1 = $conn->prepare("INSERT INTO user (UserID, Firstname, Lastname, Password, Email_Address, Role) VALUES (?, ?, ?, ?, ?, ?)");
 
         // Check if the prepare statement failed
         if ($stmt1 === false) {
-            die('Prepare failed: ' . htmlspecialchars($conn->error));
+            die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
         }
 
         // Bind parameters
@@ -127,7 +127,7 @@ if (isset($_POST['submit'])) {
             if ($role == "S") {
                 $stmt2 = $conn->prepare("INSERT INTO student VALUES (?, ?, ?)");
                 if ($stmt2 === false) {
-                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                    die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
                 }
                 $stmt2->bind_param("sss", $userID, $userID, $resID);
                 if (!$stmt2->execute()) {
@@ -138,11 +138,11 @@ if (isset($_POST['submit'])) {
                 $stmt3 = $conn->prepare("UPDATE residence SET HouseWardenID = ? WHERE ResidenceID = ?");
 
                 if ($stmt2 === false) {
-                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                    die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
                 }
 
                 if ($stmt3 === false) {
-                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                    die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
                 }
 
                 $stmt2->bind_param("ss", $userID, $userID);
@@ -157,19 +157,19 @@ if (isset($_POST['submit'])) {
                 $stmt3 = $conn->prepare("UPDATE residence SET HallSecretaryID = ? WHERE LEFT(ResidenceID, 2) = ?");
 
                 if ($stmt2 === false || $stmt3 === false) {
-                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                    die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
                 }
 
                 $stmt2->bind_param("ss", $userID, $userID);
                 $stmt3->bind_param("ss", $userID, $hallID);
                 if (!$stmt2->execute() || !$stmt3->execute()) {
-                    die('Execute failed: ' . htmlspecialchars($stmt2->error));
+                    die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
                 }
 
             } else if ($role == "MS") {
                 $stmt2 = $conn->prepare("INSERT INTO maintenancestaff VALUES (?, ?, ?)");
                 if ($stmt2 === false) {
-                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                    die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
                 }
                 $stmt2->bind_param("sss", $userID, $userID, $specialisation);
                 if (!$stmt2->execute()) {
