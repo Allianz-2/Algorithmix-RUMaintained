@@ -1,9 +1,74 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
+    require '../8-PHPTests/config.php';
 
+    // Initializes MySQLi
+    $conn = mysqli_init();
 
+    // Test if the CA certificate file can be read
+    if (!file_exists($ca_cert_path)) {
+        die("CA file not found: " . $ca_cert_path);
+    }
 
+    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+    
+    // Establish the connection
+    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
+    // If connection failed, show the error
+    if (mysqli_connect_errno()) {
+        die('Failed to connect to MySQL: ' . mysqli_connect_error());
+    }
+
+    // Function to fetch open tickets data
+    function getOpenTicketsData($conn) {
+        $query = "SELECT COUNT(TicketID) AS Count, DATE(DateCreated) AS Day FROM Ticket WHERE Status = 'Open' GROUP BY Day ORDER BY Day;";
+        $result = mysqli_query($conn, $query);
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = [$row['Day'], (int)$row['Count']];
+        }
+        mysqli_free_result($result);
+        return $data;
+    }
+
+    // Fetching data
+    $openTicketsData = getOpenTicketsData($conn);
+
+    // Query to fetch ticket status distribution
+    $statusQuery = "SELECT Status, COUNT(TicketID) AS Count FROM Ticket GROUP BY Status;";
+    $statusData = [];
+    $result = $conn->query($statusQuery);
+    while ($row = $result->fetch_assoc()) {
+        $statusData[] = [$row['Status'], (int)$row['Count']];
+    }
+
+    // Query to fetch average resolution time by category
+    $resolutionTimeQuery = "SELECT fc.CategoryName, AVG(DATEDIFF(Ticket.DateResolved, Ticket.DateCreated)) AS ResolutionTime
+                            FROM Ticket
+                            JOIN faultcategory fc ON Ticket.CategoryID = fc.CategoryID
+                            WHERE Ticket.DateResolved IS NOT NULL
+                            GROUP BY CategoryName;";
+    $resolutionTimeData = [];
+    $result = $conn->query($resolutionTimeQuery);
+    while ($row = $result->fetch_assoc()) {
+        $resolutionTimeData[] = [$row['CategoryName'], (float)$row['ResolutionTime']];
+    }
+
+    // Query to fetch tickets by severity and category
+    $severityCategoryQuery = "SELECT fc.CategoryName, 
+        SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS High,
+        SUM(CASE WHEN Severity = 'Medium' THEN 1 ELSE 0 END) AS Medium,
+        SUM(CASE WHEN Severity = 'Low' THEN 1 ELSE 0 END) AS Low
+        FROM Ticket
+        JOIN faultcategory fc ON Ticket.CategoryID = fc.CategoryID
+        WHERE Ticket.DateResolved IS NOT NULL
+        GROUP BY fc.CategoryName;";
+    $severityCategoryData = [];
+    $result = $conn->query($severityCategoryQuery);
+    while ($row = $result->fetch_assoc()) {
+        $severityCategoryData[] = [$row['CategoryName'], (int)$row['High'], (int)$row['Medium'], (int)$row['Low']];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +107,6 @@
 
         .content {
             margin: 20px;
-            
         }
 
         /* Responsive layout for smaller screens */
@@ -51,44 +115,45 @@
                 grid-template-columns: 1fr;
             }
         }
+        
     </style>
 </head>
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
-            <a href="..\6-UserProfileManagementPage\3-ProfileHS.php"><i class="fas fa-user"></i></a>
+            <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span>
+            <a href="../6-UserProfileManagementPage/2-ProfileHW.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-            <li><a href="..\1-GeneralPages\1-Home.php"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="..\4-HSDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
-            <li><a href="..\4-HSDashboard\1-HSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
-            <li class="active"><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-            <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
-            <li><a href="..\4-HSDashboard\5-HSHelp.php"><i class="fas fa-info-circle"></i> Help and Support</a></li>
+            <li><a href="../1-GeneralPages/1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="../7-TicketCreation/1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
+            <li class="active"><a href="../3-HWDashboard/1-HWRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
+            <li><a href="../3-HWDashboard/2-TicketApproval.php"><i class="fas fa-check-circle"></i>Ticket Approvals</a></li>
+            <li><a href="../3-HWDashboard/3-HWAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
+            <li><a href="../3-HWDashboard/4-HWNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="../3-HWDashboard/5-HWHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="..\5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+            <p><a href="../6-UserProfileManagementPage/2-ProfileHW.php"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
     <main>
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>House Warden Dashboard</strong>
+                <strong>House warden Dashboard</strong>
             </div>
             <div class="logo"><img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
         </header>
-
         <div class="content">
             <h2>Analytics</h2>
-            
-
             <div class="charts-container">
-                <!-- Chart containers -->
+
+
+
                 <div class="chart-box">
-                    <h3>Open Tickets by Day</h3>
+                    <h3>Open Tickets Over Time</h3>
                     <div id="open_tickets_chart" style="width: 100%; height: 300px;"></div>
                 </div>
                 <div class="chart-box">
@@ -101,188 +166,104 @@
                 </div>
                 <div class="chart-box">
                     <h3>Tickets by Severity and Category</h3>
-                    <div id="severity_category_chart" style="width: 100%; height: 300px;"></div>
+                    <div id="severity_chart" style="width: 100%; height: 300px;"></div>
                 </div>
+                <div class="chart-box">
+                <h3>Semester Maintenance Fault Stats by Res</h3>
+                <canvas id="faultStatsPerSemesterChart" style="width: 100%; height: 300px;"></canvas>
+            </div>
             </div>
         </div>
     </main>
 
-    <?php 
-            require '../8-PHPTests/config.php';
-
-            // Initializes MySQLi
-            $conn = mysqli_init();
-
-            // Test if the CA certificate file can be read
-            if (!file_exists($ca_cert_path)) {
-                die("CA file not found: " . $ca_cert_path);
-            }
-
-            mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-
-            // Establish the connection
-            mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-            // If connection failed, show the error
-            if (mysqli_connect_errno()) {
-                die('Failed to connect to MySQL: ' . mysqli_connect_error());
-            }
-        
-        $results = mysqli_query($conn, "SELECT * FROM ticket WHERE Status= 'Confirmed'"); // Add this line to define $results
-        
-
-  // Query to fetch open tickets by day of the week
-  $openTicketsQuery = "SELECT DAYNAME(DateCreated) AS Day, COUNT(TicketID) AS OpenTickets
-  FROM Ticket
-  WHERE Status = 'Open'
-  GROUP BY Day
-  ORDER BY FIELD(Day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');";
-$openTicketsData = [];
-$result = $conn->query($openTicketsQuery);
-while ($row = $result->fetch_assoc()) {
-$openTicketsData[] = [$row['Day'], (int)$row['OpenTickets']];
-}
-
-// Query to fetch ticket status distribution
-$statusQuery = "SELECT Status, COUNT(TicketID) AS Count FROM Ticket GROUP BY Status;";
-$statusData = [];
-$result = $conn->query($statusQuery);
-while ($row = $result->fetch_assoc()) {
-$statusData[] = [$row['Status'], (int)$row['Count']];
-}
-
-// Query to fetch average resolution time by category
-$resolutionTimeQuery = "SELECT CategoryName, AVG(DATEDIFF(Ticket.DateResolved, Ticket.DateCreated)) AS ResolutionTime
-FROM Ticket
-JOIN faultcategory ON ticket.CategoryID = faultcategory.CategoryID
-WHERE Ticket.DateResolved IS NOT NULL
-GROUP BY CategoryName;";
-$resolutionTimeData = [];
-$result = $conn->query($resolutionTimeQuery);
-while ($row = $result->fetch_assoc()) {
-$resolutionTimeData[] = [$row['CategoryName'], (float)$row['ResolutionTime']];
-}
-
-// Query to fetch tickets by severity and category
-$severityCategoryQuery = "SELECT CategoryName, 
-    SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS High,
-    SUM(CASE WHEN Severity = 'Medium' THEN 1 ELSE 0 END) AS Medium,
-    SUM(CASE WHEN Severity = 'Low' THEN 1 ELSE 0 END) AS Low
-FROM Ticket
-JOIN faultcategory ON ticket.CategoryID = faultcategory.CategoryID
-WHERE Ticket.DateResolved IS NOT NULL
-GROUP BY CategoryName;";
-$severityCategoryData = [];
-$result = $conn->query($severityCategoryQuery);
-while ($row = $result->fetch_assoc()) {
-$severityCategoryData[] = [$row['CategoryName'], (int)$row['High'], (int)$row['Medium'], (int)$row['Low']];
-}
-?>
-
-
-
- 
     <script>
-        // Load Google Charts library
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawCharts);
 
-        function drawCharts() {
-            // Open Tickets chart data from PHP
-            var openTicketsData = google.visualization.arrayToDataTable([
-                ['Day', 'Open Tickets'],
-                <?php
-                    foreach ($openTicketsData as $data) {
-                        echo "['".$data[0]."', ".$data[1]."],";
-                    }
-                ?>
-            ]);
-            var openTicketsOptions = {
-                curveType: 'function',
-                legend: { position: 'bottom' },
-                backgroundColor: '#F8F9FC',
-                chartArea: { width: '100%', height: '80%' },
-                fontName: 'Arial',
-                colors: ['#4E73DF']
-            };
-            var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
-            openTicketsChart.draw(openTicketsData, openTicketsOptions);
 
-            // Ticket Status chart data from PHP
-            var statusData = google.visualization.arrayToDataTable([
-                ['Status', 'Count'],
-                <?php
-                    foreach ($statusData as $data) {
-                        echo "['".$data[0]."', ".$data[1]."],";
-                    }
-                ?>
-            ]);
-            var statusOptions = {
-                pieHole: 0.4,
-                backgroundColor: '#F8F9FC',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                colors: ['#4E73DF', '#1CC88A', '#36B9CC'] // Assuming additional colors for variety
+        
 
 
 
-            };
-            var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
-            statusChart.draw(statusData, statusOptions);
+    // Load Google Charts library
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawCharts);
 
-            // Resolution Time chart data from PHP
-            var resolutionTimeData = google.visualization.arrayToDataTable([
-                ['CategoryName', 'Resolution Time (days)'],
-                <?php
-                    foreach ($resolutionTimeData as $data) {
-                        echo "['".$data[0]."', ".$data[1]."],";
-                    }
-                ?>
-            ]);
-            var resolutionTimeOptions = {
-                backgroundColor: '#F8F9FC',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                colors: ['#36B9CC']
-            };
-            var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
-            resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
+    function drawCharts() {
+        // Open Tickets Over Time chart data
+        var openTicketsData = google.visualization.arrayToDataTable([
+            ['Day', 'Open Tickets'],
+            <?php
+                foreach ($openTicketsData as $data) {
+                    echo "['".$data[0]."', ".$data[1]."],";
+                }
+            ?>
+        ]);
+        var openTicketsOptions = {
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
+        var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
+        openTicketsChart.draw(openTicketsData, openTicketsOptions);
 
-            // Severity and Category chart data from PHP
-            var severityCategoryData = google.visualization.arrayToDataTable([
-                ['CategoryName', 'High', 'Medium', 'Low'],
-                <?php
-                    foreach ($severityCategoryData as $data) {
-                        echo "[' ".$data[0]."', ".$data[1].", ".$data[2].", ".$data[3]."],";
-                    }
-                ?>
-            ]);
-            var severityCategoryOptions = {
-                isStacked: true,
-                backgroundColor: '#F8F9FC',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                colors: ['#E74A3B', '#F6C23E', '#1CC88A']
-            };
-            var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
-            severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
-        }
-    </script>
-   
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const hamburgerIcon = document.getElementById('hamburger-icon');
-            const sidebar = document.getElementById('sidebar');
-            const main = document.querySelector('main');
+        // Ticket Status Distribution chart data
+        var statusData = google.visualization.arrayToDataTable([
+            ['Status', 'Count'],
+            <?php
+                foreach ($statusData as $data) {
+                    echo "['".$data[0]."', ".$data[1]."],";
+                }
+            ?>
+        ]);
+        var statusOptions = {
+            title: 'Ticket Status Distribution',
+            pieHole: 0.4,
+        };
+        var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
+        statusChart.draw(statusData, statusOptions);
 
-            hamburgerIcon.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                main.classList.toggle('sidebar-collapsed');
-            });
-        });
-        function confirmLogout() {
-            return confirm("Are you sure you want to log out?");
-        }
+        // Average Resolution Time by Category chart data
+        var resolutionTimeData = google.visualization.arrayToDataTable([
+            ['Category', 'Average Resolution Time'],
+            <?php
+                foreach ($resolutionTimeData as $data) {
+                    echo "['".$data[0]."', ".$data[1]."],";
+                }
+            ?>
+        ]);
+        var resolutionTimeOptions = {
+            title: 'Average Resolution Time by Category',
+            legend: { position: 'bottom' }
+        };
+        var resolutionTimeChart = new google.visualization.BarChart(document.getElementById('resolution_time_chart'));
+        resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
+
+        // Tickets by Severity and Category chart data
+        var severityData = google.visualization.arrayToDataTable([
+            ['Category', 'High', 'Medium', 'Low'],
+            <?php
+                foreach ($severityCategoryData as $data) {
+                    echo "['".$data[0]."', ".$data[1].", ".$data[2].", ".$data[3]."],";
+                }
+            ?>
+        ]);
+        var severityOptions = {
+            title: 'Tickets by Severity and Category',
+            hAxis: { title: 'Category' },
+            vAxis: { title: 'Number of Tickets' },
+            isStacked: true,
+        };
+        var severityChart = new google.visualization.ColumnChart(document.getElementById('severity_chart'));
+        severityChart.draw(severityData, severityOptions);
+    }
+
+    // Confirm logout function
+    function confirmLogout() {
+        return confirm("Are you sure you want to log out?");
+    }
+
+    // Adjust chart sizes on window resize
+    window.onresize = function() {
+        drawCharts();
+    };
     </script>
 </body>
 </html>
