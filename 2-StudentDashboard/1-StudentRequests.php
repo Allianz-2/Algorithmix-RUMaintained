@@ -122,7 +122,7 @@
         </div>
         <ul>
             <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="../7-TicketCreation\1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
+            <li><a href="../7-TicketCreation\1-TicketCreation.php"><i class="fas fa-envelope"></i>Create Ticket</a></li>
             <li class='active'><a href="../2-StudentDashboard\1-StudentRequests.php"><i class="fa fa-tools"></i>Ticket Requests</a></li>
             <!-- <li><a href="../2-StudentDashboard\3-StudentAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li> -->
             <li><a href="../2-StudentDashboard\4-StudentNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
