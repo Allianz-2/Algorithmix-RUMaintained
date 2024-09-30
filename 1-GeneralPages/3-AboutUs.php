@@ -59,7 +59,6 @@
 
     <section class="side-content">
         <h1>About Us</h1>
-        <a href="#" class="cta-button">Meet our team</a>
     </section>
 
     <section class="main-content">
