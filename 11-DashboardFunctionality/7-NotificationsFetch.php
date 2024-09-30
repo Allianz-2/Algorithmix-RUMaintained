@@ -28,20 +28,24 @@
     switch ($_SESSION['role']) {
         case 'S':
             $access_column = 'SAccesses';
+            $idField = 'HallSecretaryID';
             break;
         case 'HW':
             $access_column = 'HWAccesses';
+            $idField = 'HouseWardenID';
             break;
         case 'HS':
             $access_column = 'HSAccesses';
+            $idField = 'HallSecretaryID';
             break;
         default:
-        $access_column = 'SAccesses';
+            $access_column = 'SAccesses';
+            $idField = 'HallSecretaryID';
     }
 
     $sql_tickets = "SELECT TicketID, Description, Status, DateCreated
                     FROM ticket 
-                    WHERE StudentID = ? AND $access_column = 0
+                    WHERE $idField = ? AND $access_column = 0
                     ORDER BY DateCreated DESC";
 
 

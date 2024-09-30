@@ -39,7 +39,7 @@
         $accessField = 'SAccesses';
     }
 
-    
+
     if (isset($_POST['mark_all_as_read'])) {
         require '../8-PHPTests/config.php';
 
@@ -77,7 +77,7 @@
         if ($update_stmt->execute()) {
             // Redirect back to the notifications page with a success message
             $_SESSION['alert'] = "All tickets marked as read successfully.";
-            header("Location: 4-StudentNotifications.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         } else {
             // Handle execution error
@@ -131,7 +131,7 @@
         if ($update_stmt->execute()) {
             // Redirect back to the notifications page with a success message
             $_SESSION['alert'] = "Ticket marked as read successfully.";
-            header("Location: 4-StudentNotifications.php");
+            header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         } else {
             // Handle execution error

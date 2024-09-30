@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+    <title>House Warden Notifications</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="6-Notifications.css">
 
@@ -34,7 +34,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Student Dashboard</strong>
+                <strong>House Warden Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
@@ -46,10 +46,28 @@
             <P> <strong></strong> </P> 
 
             <div class="container">
-            <?php include '../11-DashboardFunctionality/7-NotificationsFetch.php'; ?>
-
+                <div class="notification-controls">
+                    <!-- <div class="filter-sort">
+                        <select id="filterType">
+                            <option value="">All Notifications</option>
+                            <option value="ticket">Ticket Updates</option>
+                            <option value="system">System Alerts</option>
+                        </select>
+                        <select id="sortOrder">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                        </select>
+                    </div> -->
+                    <form method="POST" action="4-HWNotifications.php">
+                        <button type="submit" name="mark_all_as_read" class="btn btn-primary">Mark All as Read</button>
+                    </form>
+                </div>
+        
+                <div class="notification-list">
+                    <?php include '../11-DashboardFunctionality/7-NotificationsFetch.php'; ?>
+                </div>
+ 
             </div>
-    
         
        
 
