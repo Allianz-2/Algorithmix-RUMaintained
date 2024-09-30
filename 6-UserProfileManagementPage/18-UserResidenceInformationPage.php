@@ -15,7 +15,7 @@
             <h1>Account</h1>
             <p>Manage your account info.</p>
             <div class="menu-item">
-            <?php
+         <?php
             $profilePage = '';
             switch ($_SESSION['role']) {
                 case 'HW':
@@ -30,7 +30,15 @@
                     break;
             }
             ?>
-
+                <a href="../1-GeneralPages\1-Home.php">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z" fill="currentColor"/>
+                    <path d="M9 22V12H15V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Home
+            </a>
+            </div>
+            <div class="menu-item">
             <a href="<?php echo $profilePage; ?>">
 
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -59,6 +67,9 @@
                 Security
             </a>
             </div>
+            <div class="menu-item">
+            <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i>Log Out</a></p>
+        </div>
         </div>
         <div class="main-content">
             <h2><strong>Residence Information</strong></h2>
