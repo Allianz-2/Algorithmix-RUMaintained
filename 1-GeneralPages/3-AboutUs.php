@@ -114,7 +114,7 @@
                     <p>Thulebona Tsele </p>
                 </div>
                 <div class="team-member">
-                    <img src="../Images\General\Banoyolo.jpg" alt="System Analyst">
+                    <img src="../Images\General\Yolo.jpg" alt="System Analyst">
                     <p>System Analyst</p>
                     <p>Banoyolo Sicwebu</p>
                 </div>
