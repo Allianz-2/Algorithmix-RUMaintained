@@ -1,75 +1,4 @@
-<?php
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
-    require '../8-PHPTests/config.php';
 
-    // Initializes MySQLi
-    $conn = mysqli_init();
-
-    // Test if the CA certificate file can be read
-    if (!file_exists($ca_cert_path)) {
-        die("CA file not found: " . $ca_cert_path);
-    }
-
-    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-    
-    // Establish the connection
-    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-    // If connection failed, show the error
-    if (mysqli_connect_errno()) {
-        die('Failed to connect to MySQL: ' . mysqli_connect_error());
-    }
-
-    // Function to fetch open tickets data
-    function getOpenTicketsData($conn) {
-        $query = "SELECT COUNT(TicketID) AS Count, DATE(DateCreated) AS Day FROM Ticket WHERE Status = 'Open' GROUP BY Day ORDER BY Day;";
-        $result = mysqli_query($conn, $query);
-        $data = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $data[] = [$row['Day'], (int)$row['Count']];
-        }
-        mysqli_free_result($result);
-        return $data;
-    }
-
-    // Fetching data
-    $openTicketsData = getOpenTicketsData($conn);
-
-    // Query to fetch ticket status distribution
-    $statusQuery = "SELECT Status, COUNT(TicketID) AS Count FROM Ticket GROUP BY Status;";
-    $statusData = [];
-    $result = $conn->query($statusQuery);
-    while ($row = $result->fetch_assoc()) {
-        $statusData[] = [$row['Status'], (int)$row['Count']];
-    }
-
-    // Query to fetch average resolution time by category
-    $resolutionTimeQuery = "SELECT fc.CategoryName, AVG(DATEDIFF(Ticket.DateResolved, Ticket.DateCreated)) AS ResolutionTime
-                            FROM Ticket
-                            JOIN faultcategory fc ON Ticket.CategoryID = fc.CategoryID
-                            WHERE Ticket.DateResolved IS NOT NULL
-                            GROUP BY CategoryName;";
-    $resolutionTimeData = [];
-    $result = $conn->query($resolutionTimeQuery);
-    while ($row = $result->fetch_assoc()) {
-        $resolutionTimeData[] = [$row['CategoryName'], (float)$row['ResolutionTime']];
-    }
-
-    // Query to fetch tickets by severity and category
-    $severityCategoryQuery = "SELECT fc.CategoryName, 
-        SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS High,
-        SUM(CASE WHEN Severity = 'Medium' THEN 1 ELSE 0 END) AS Medium,
-        SUM(CASE WHEN Severity = 'Low' THEN 1 ELSE 0 END) AS Low
-        FROM Ticket
-        JOIN faultcategory fc ON Ticket.CategoryID = fc.CategoryID
-        WHERE Ticket.DateResolved IS NOT NULL
-        GROUP BY fc.CategoryName;";
-    $severityCategoryData = [];
-    $result = $conn->query($severityCategoryQuery);
-    while ($row = $result->fetch_assoc()) {
-        $severityCategoryData[] = [$row['CategoryName'], (int)$row['High'], (int)$row['Medium'], (int)$row['Low']];
-    }
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -118,6 +47,99 @@
         
     </style>
 </head>
+
+
+
+
+<?php
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+    require '../8-PHPTests/config.php';
+
+    // Initializes MySQLi
+    $conn = mysqli_init();
+
+    // Test if the CA certificate file can be read
+    if (!file_exists($ca_cert_path)) {
+        die("CA file not found: " . $ca_cert_path);
+    }
+
+    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+    
+    // Establish the connection
+    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+    // If connection failed, show the error
+    if (mysqli_connect_errno()) {
+        die('Failed to connect to MySQL: ' . mysqli_connect_error());
+    }
+
+    // Query to fetch ticket status distribution
+    $statusQuery = "SELECT Status, COUNT(TicketID) AS Count FROM Ticket GROUP BY Status;";
+    $statusData = [];
+    $result = $conn->query($statusQuery);
+    while ($row = $result->fetch_assoc()) {
+        $statusData[] = [$row['Status'], (int)$row['Count']];
+    }
+
+    // Query to fetch average resolution time by category
+    $resolutionTimeQuery = "SELECT fc.CategoryName, AVG(DATEDIFF(Ticket.DateResolved, Ticket.DateCreated)) AS ResolutionTime
+                            FROM Ticket
+                            JOIN faultcategory fc ON Ticket.CategoryID = fc.CategoryID
+                            WHERE Ticket.DateResolved IS NOT NULL
+                            GROUP BY CategoryName;";
+    $resolutionTimeData = [];
+    $result = $conn->query($resolutionTimeQuery);
+    while ($row = $result->fetch_assoc()) {
+        $resolutionTimeData[] = [$row['CategoryName'], (float)$row['ResolutionTime']];
+    }
+
+    // Query to fetch tickets by severity and category
+    $severityCategoryQuery = "SELECT fc.CategoryName, 
+        SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS High,
+        SUM(CASE WHEN Severity = 'Medium' THEN 1 ELSE 0 END) AS Medium,
+        SUM(CASE WHEN Severity = 'Low' THEN 1 ELSE 0 END) AS Low
+        FROM Ticket
+        JOIN faultcategory fc ON Ticket.CategoryID = fc.CategoryID
+        WHERE Ticket.DateResolved IS NOT NULL
+        GROUP BY fc.CategoryName;";
+    $severityCategoryData = [];
+    $result = $conn->query($severityCategoryQuery);
+    while ($row = $result->fetch_assoc()) {
+        $severityCategoryData[] = [$row['CategoryName'], (int)$row['High'], (int)$row['Medium'], (int)$row['Low']];
+    }
+    
+    function getMaintenanceFaultStatsPerSemester($conn) {
+        $query = "
+            SELECT r.ResName, 
+                   COUNT(t.TicketID) AS FaultCount, 
+                   YEAR(t.DateCreated) AS Year,
+                   CASE 
+                       WHEN MONTH(t.DateCreated) BETWEEN 1 AND 6 THEN 'Semester 1'
+                       ELSE 'Semester 2'
+                   END AS Semester
+            FROM ticket t
+            JOIN residence r ON t.ResidenceID = r.ResidenceID
+            WHERE t.Status = 'Resolved'
+            GROUP BY r.ResName, Year, Semester
+        ";
+    
+        $result = mysqli_query($conn, $query);
+        if (!$result) {
+            die('Error executing query: ' . mysqli_error($conn));
+        }
+    
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+    
+        mysqli_free_result($result);
+    
+        return $data;
+    } // *
+
+ $faultStatsPerSemester = getMaintenanceFaultStatsPerSemester($conn); //*
+?>
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
@@ -151,12 +173,18 @@
             <div class="charts-container">
 
 
-
+            <div class="chart-box">
+                <h3>Semester Maintenance Fault Stats by Res</h3>
+                <canvas id="faultStatsPerSemesterChart" style="width: 100%; height: 300px;"></canvas>
+            </div>
                 <div class="chart-box">
+<<<<<<< Updated upstream
                     <h3>Open Tickets Over Time</h3>
                     <div id="open_tickets_chart" style="width: 100%; height: 300px;"></div>
                 </div>
                 <div class="chart-box">
+=======
+>>>>>>> Stashed changes
                     <h3>Ticket Status Distribution</h3>
                     <div id="status_chart" style="width: 100%; height: 300px;"></div>
                 </div>
@@ -168,20 +196,41 @@
                     <h3>Tickets by Severity and Category</h3>
                     <div id="severity_chart" style="width: 100%; height: 300px;"></div>
                 </div>
-                <div class="chart-box">
-                <h3>Semester Maintenance Fault Stats by Res</h3>
-                <canvas id="faultStatsPerSemesterChart" style="width: 100%; height: 300px;"></canvas>
-            </div>
+
             </div>
         </div>
     </main>
 
     <script>
-
-
         
+// Fault Stats per Semester
+const faultStatsData = <?php echo json_encode($faultStatsPerSemester); ?>;
+const faultStatsLabels = faultStatsData.map(data => `${data.ResName} - ${data.Year} ${data.Semester}`);
+const faultStatsCounts = faultStatsData.map(data => data.FaultCount);
+const customColor = '#4E73DF'; // Hex color code
 
-
+const faultStatsPerSemesterCtx = document.getElementById('faultStatsPerSemesterChart').getContext('2d');
+new Chart(faultStatsPerSemesterCtx, {
+    type: 'bar',
+    data: {
+        labels: faultStatsLabels,
+        datasets: [{
+            label: 'Fault Count',
+            data: faultStatsCounts,
+            backgroundColor: customColor,  // Set background color to #81589a
+            borderColor: customColor,      // Set border color to #81589a
+            borderWidth: 0,                // Set the border width for the bars
+            fontName: 'Arial'
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 
 
     // Load Google Charts library
@@ -189,21 +238,6 @@
     google.charts.setOnLoadCallback(drawCharts);
 
     function drawCharts() {
-        // Open Tickets Over Time chart data
-        var openTicketsData = google.visualization.arrayToDataTable([
-            ['Day', 'Open Tickets'],
-            <?php
-                foreach ($openTicketsData as $data) {
-                    echo "['".$data[0]."', ".$data[1]."],";
-                }
-            ?>
-        ]);
-        var openTicketsOptions = {
-            curveType: 'function',
-            legend: { position: 'bottom' }
-        };
-        var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
-        openTicketsChart.draw(openTicketsData, openTicketsOptions);
 
         // Ticket Status Distribution chart data
         var statusData = google.visualization.arrayToDataTable([
