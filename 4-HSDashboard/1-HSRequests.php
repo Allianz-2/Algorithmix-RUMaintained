@@ -143,7 +143,7 @@
         </header>
         <div class="content">
             <h2>Requests</h2>
-            <div class="filters">
+            <!-- <div class="filters">
                 <div class="filter-group">
                     <label for="date-filter">Date Range</label>
                     <select id="date-filter">
@@ -156,7 +156,7 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label for="residence-filter">Residence</label> <!-- DEConfirmed ON PERSONS HALL IT WILL SHOW RELEVANT RESIDENCES USING PHP -->
+                    <label for="residence-filter">Residence</label> <!-- DEConfirmed ON PERSONS HALL IT WILL SHOW RELEVANT RESIDENCES USING PHP 
                     <select id="residence-filter">
                         <option></option>
                     </select>
@@ -190,7 +190,7 @@
                         <option value="closed">Closed</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
 
         <?php 
             require '../8-PHPTests/config.php';
