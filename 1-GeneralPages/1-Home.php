@@ -22,7 +22,7 @@
     <div class="home-section">
         <header>
             <div class="logo">
-                <a href="/1-GeneralPages/1-Home.php">
+                <a href="../1-GeneralPages/1-Home.php">
                     <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RUMaintained Logo">
                 </a>
             </div>
@@ -79,10 +79,10 @@
                 <div class="hero-content">
                     <h1>Residence Maintenance System</h1>
                     <p><i>Your Maintenance Made Easy</i></p>
-                    <!-- <a href="/5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign In</a> -->
+                    <!-- <a href="/5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a> -->
                     <?php 
                         if (!isset($_SESSION['userID'])) {
-                        echo '<a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign In</a>';
+                        echo '<a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>';
                         }
                     ?>
                 </div>
