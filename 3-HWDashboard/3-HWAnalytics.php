@@ -55,7 +55,7 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span>
+        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
             <a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
@@ -83,54 +83,7 @@
 
         <div class="content">
             <h2>Analytics</h2>
-            <div class="filters">
-                <!-- Filters for date, residence, severity, etc. -->
-                <div class="filter-group">
-                    <label for="date-filter">Date Range</label>
-                    <select id="date-filter">
-                        <option>Last 7 Days</option>
-                        <option value="yesterday">Yesterday</option>
-                        <option value="today">Today</option>
-                        <option value="2 weeks">Last 2 weeks</option>
-                        <option value="Month">Last Month</option>
-                        <option value="3 months">Last 3 Months</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="residence-filter">Residence</label>
-                    <select id="residence-filter">
-                        <option>Chris Hani House</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="severity-filter">Severity</label>
-                    <select id="severity-filter">
-                        <option value="High">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                        <option value="emergency">Emergency</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="category-filter">Category</label>
-                    <select id="category-filter">
-                        <option>Any</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="electrical">Electrical</option>
-                        <option value="roofing">Roofing</option>
-                        <option value="broken and repairs">Repairs and breakage</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="status-filter">Status</label>
-                    <select id="status-filter">
-                        <option>Any</option>
-                        <option value="active">Active</option>
-                        <option value="Pending">Pending</option>
-                        <option value="closed">Closed</option>
-                    </select>
-                </div>
+           
             </div>
 
             <div class="charts-container">

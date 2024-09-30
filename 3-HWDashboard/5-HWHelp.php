@@ -242,7 +242,7 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-        <span class="user-welcome"><?php echo 'Welcome ' .  '!';?></span>
+        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
             <a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
@@ -264,7 +264,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Student Dashboard</strong>
+                <strong>House Warden Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
