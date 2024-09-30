@@ -94,27 +94,27 @@
             <h2>Our Team</h2>
             <div class="team-section">
                 <div class="team-member">
-                    <img src="../Images/General/man.svg" alt="Project Manager">
+                    <img src="../Images\General\Daniel.jpg" alt="Project Manager">
                     <p>Project Manager</p>
                     <p>Daniel Spies</p>
                 </div>
                 <div class="team-member">
-                    <img src="../Images/General/female.svg" alt="System Developer">
+                    <img src="../Images\General\Kate.jpg" alt="System Developer">
                     <p>System Analyst</p>
                     <p>Kate Jackson-Moss</p>
                 </div>
                 <div class="team-member">
-                    <img src="../Images/General/female.svg" alt="System Analyst">
+                    <img src="../Images\General\Naledi.JPG" alt="System Analyst">
                     <p>System Analyst</p>
                     <p>Naledi Mabusela</p>
                 </div>
                 <div class="team-member">
-                    <img src="../Images/General/man.svg" alt="System Analyst">
+                    <img src="../Images\General\Thulebona.jpg" alt="System Analyst">
                     <p>System Analyst</p>
                     <p>Thulebona Tsele </p>
                 </div>
                 <div class="team-member">
-                    <img src="../Images/General/man.svg" alt="System Analyst">
+                    <img src="../Images\General\Banoyolo.jpg" alt="System Analyst">
                     <p>System Analyst</p>
                     <p>Banoyolo Sicwebu</p>
                 </div>
