@@ -286,18 +286,16 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, </span>
+            <span class="user-welcome">Welcome, User</span>
             <a href="Z:\Algorithmix-RUMaintained\6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-        <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
-            <li   class="active"><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+            <li class="active"><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
             <li><a href="2-MSAssignedTasks.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
             <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
             <li><a href="5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
-
-
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -316,8 +314,8 @@
         </header>
         <div class="content">
             <h2>Requests</h2>
-            <div class="filters">
-                <div class="filter-group">
+            <!-- <div class="filters"> -->
+                <!-- <div class="filter-group">
                     <label for="date-filter">Date Range</label>
                     <select id="date-filter">
                         <option>Last 7 Days</option>
@@ -327,14 +325,14 @@
                         <option value="Month">Last Month</option>
                         <option value="3 months">Last 3 Months</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="residence-filter">Residence</label> 
                     <select id="residence-filter">
                         <option>Chris Hani House</option>
                     </select>
-                </div> 
-                <div class="filter-group">
+                </div>  -->
+                <!-- <div class="filter-group">
                     <label for="severity-filter">Severity</label>
                     <select id="severity-filter">
                         <option value="High">High</option>
@@ -342,8 +340,8 @@
                         <option value="low">Low</option>
                         <option value="emergency">Emergency</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="category-filter">Category</label>
                     <select id="category-filter">
                         <option>Any</option>
@@ -353,8 +351,8 @@
                         <option value="broken and repairs">Repairs and breakage</option>
                         <option value="other">Other</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="status-filter">Status</label>
                     <select id="status-filter">
                         <option>Any</option>
@@ -363,7 +361,7 @@
                         <option value="closed">Closed</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
 
         <?php 
             require '../8-PHPTests/config.php';
