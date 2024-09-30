@@ -81,8 +81,10 @@
                     $SQL_comment->close();
                 }
             echo "<script>
-                alert('Ticket inserted successfully');
+                  alert('Ticket insertion successful!');
+                    window.location.href = '7-TicketStatus.php?ticketID=" . urlencode($ticketID) . "';
                 </script>";
+
         } else {
             echo "<script>
             alert('Ticket creation failed!');
