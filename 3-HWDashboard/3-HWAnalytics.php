@@ -178,13 +178,6 @@
                 <canvas id="faultStatsPerSemesterChart" style="width: 100%; height: 300px;"></canvas>
             </div>
                 <div class="chart-box">
-<<<<<<< Updated upstream
-                    <h3>Open Tickets Over Time</h3>
-                    <div id="open_tickets_chart" style="width: 100%; height: 300px;"></div>
-                </div>
-                <div class="chart-box">
-=======
->>>>>>> Stashed changes
                     <h3>Ticket Status Distribution</h3>
                     <div id="status_chart" style="width: 100%; height: 300px;"></div>
                 </div>
@@ -210,17 +203,19 @@ const faultStatsCounts = faultStatsData.map(data => data.FaultCount);
 const customColor = '#4E73DF'; // Hex color code
 
 const faultStatsPerSemesterCtx = document.getElementById('faultStatsPerSemesterChart').getContext('2d');
+
 new Chart(faultStatsPerSemesterCtx, {
     type: 'bar',
+    colors: [
+        '#36B9CC', ],
     data: {
         labels: faultStatsLabels,
         datasets: [{
             label: 'Fault Count',
             data: faultStatsCounts,
-            backgroundColor: customColor,  // Set background color to #81589a
-            borderColor: customColor,      // Set border color to #81589a
-            borderWidth: 0,                // Set the border width for the bars
-            fontName: 'Arial'
+            fontName: 'Arial',
+            colors: [
+                '#36B9CC', ]
         }]
     },
     options: {
@@ -251,6 +246,13 @@ new Chart(faultStatsPerSemesterCtx, {
         var statusOptions = {
             title: 'Ticket Status Distribution',
             pieHole: 0.4,
+            colors: [
+         '#4E73DF', // Blue
+         '#1CC88A', // Green
+        '#36B9CC', // Light Blue
+        '#F6C23E', // Yellow
+        '#E74A3B'  // Red
+         ]
         };
         var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
         statusChart.draw(statusData, statusOptions);
@@ -266,7 +268,9 @@ new Chart(faultStatsPerSemesterCtx, {
         ]);
         var resolutionTimeOptions = {
             title: 'Average Resolution Time by Category',
-            legend: { position: 'bottom' }
+            legend: { position: 'bottom' },
+            colors: [
+    '#36B9CC', ]
         };
         var resolutionTimeChart = new google.visualization.BarChart(document.getElementById('resolution_time_chart'));
         resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
@@ -285,6 +289,11 @@ new Chart(faultStatsPerSemesterCtx, {
             hAxis: { title: 'Category' },
             vAxis: { title: 'Number of Tickets' },
             isStacked: true,
+            colors: [    
+           '#E74C3C', // Red
+           '#F39C12', // Orange
+           '#2ECC71'  // Green
+           ]   
         };
         var severityChart = new google.visualization.ColumnChart(document.getElementById('severity_chart'));
         severityChart.draw(severityData, severityOptions);
