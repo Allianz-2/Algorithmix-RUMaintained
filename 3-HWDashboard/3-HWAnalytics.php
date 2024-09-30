@@ -1,49 +1,9 @@
 <?php
-require_once("../5-UserSignInandRegistration/14-secure.php"); 
-require '../8-PHPTests/config.php'; // Include your database configuration
+    require_once("../5-UserSignInandRegistration/14-secure.php"); 
 
-// Database connection
-$conn = mysqli_init(); 
-if (!file_exists($ca_cert_path)) {
-    die("CA file not found: " . $ca_cert_path);
-}
 
-mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
-if (mysqli_connect_errno()) {
-    die('Failed to connect to MySQL: ' . mysqli_connect_error());
-}
 
-// Query to fetch the required data for charts
-$ticketData = [];
-
-// Example query to fetch counts of open tickets by day
-$query = "SELECT DATE(DateCreated) as Date, COUNT(*) as OpenTickets 
-          FROM ticket 
-          WHERE Status = 'Requisitioned' 
-          GROUP BY DATE(DateCreated)";
-
-$result = mysqli_query($conn, $query);
-
-// Check if the query was successful
-if ($result === false) {
-    // Log the error and display it
-    $error = mysqli_error($conn);
-    error_log("MySQL error: " . $error);
-    die("An error occurred while fetching the data: " . $error);
-}
-
-// Fetch data from result set
-while ($row = mysqli_fetch_assoc($result)) {
-    $ticketData[] = [$row['Date'], (int)$row['OpenTickets']];
-}
-
-mysqli_free_result($result); // Free the result set
-mysqli_close($conn); // Close the database connection
-
-// You can now use $ticketData as needed, e.g., for JSON output
-// echo json_encode($ticketData);
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +11,7 @@ mysqli_close($conn); // Close the database connection
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House Warden Dashboard</title>
+    <title>RU Maintained Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -61,7 +21,7 @@ mysqli_close($conn); // Close the database connection
         .charts-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2px;
+            gap: 20px;
             margin: 20px 0;
         }
 
@@ -82,6 +42,7 @@ mysqli_close($conn); // Close the database connection
 
         .content {
             margin: 20px;
+            
         }
 
         /* Responsive layout for smaller screens */
@@ -93,23 +54,22 @@ mysqli_close($conn); // Close the database connection
     </style>
 </head>
 <body>
-       <nav id="sidebar" class="sidebar">
-            <div class="logo">
-            <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span>
-                <a href="../6-UserProfileManagementPage/2-ProfileHW.php"><i class="fas fa-user"></i></a>
-            </div>
+    <nav id="sidebar" class="sidebar">
+        <div class="logo">
+            <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
+            <a href="..\6-UserProfileManagementPage\3-ProfileHS.php"><i class="fas fa-user"></i></a>
+        </div>
         <ul>
-            <li><a href="../1-GeneralPages/1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="../7-TicketCreation/1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
-            <li><a href="../3-HWDashboard/1-HWRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
-            <li><a href="../3-HWDashboard/2-TicketApproval.php"><i class="fas fa-check-circle"></i>Ticket Approvals</a></li>
-            <li class="active"><a href="../3-HWDashboard/3-HWAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
-            <li><a href="../3-HWDashboard/4-HWNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="../3-HWDashboard/5-HWHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+            <li><a href="..\1-GeneralPages\1-Home.php"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="..\4-HSDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
+            <li><a href="..\4-HSDashboard\1-HSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li class="active"><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+            <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li><a href="..\4-HSDashboard\5-HSHelp.php"><i class="fas fa-info-circle"></i> Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
-            <p><a href="../6-UserProfileManagementPage/2-ProfileHW.php"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="..\5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
     <main>
@@ -123,8 +83,7 @@ mysqli_close($conn); // Close the database connection
 
         <div class="content">
             <h2>Analytics</h2>
-           
-            </div>
+            
 
             <div class="charts-container">
                 <!-- Chart containers -->
@@ -148,79 +107,179 @@ mysqli_close($conn); // Close the database connection
         </div>
     </main>
 
+    <?php 
+            require '../8-PHPTests/config.php';
+
+            // Initializes MySQLi
+            $conn = mysqli_init();
+
+            // Test if the CA certificate file can be read
+            if (!file_exists($ca_cert_path)) {
+                die("CA file not found: " . $ca_cert_path);
+            }
+
+            mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+            // Establish the connection
+            mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+            // If connection failed, show the error
+            if (mysqli_connect_errno()) {
+                die('Failed to connect to MySQL: ' . mysqli_connect_error());
+            }
+        
+        $results = mysqli_query($conn, "SELECT * FROM ticket WHERE Status= 'Confirmed'"); // Add this line to define $results
+        
+
+  // Query to fetch open tickets by day of the week
+  $openTicketsQuery = "SELECT DAYNAME(DateCreated) AS Day, COUNT(TicketID) AS OpenTickets
+  FROM Ticket
+  WHERE Status = 'Open'
+  GROUP BY Day
+  ORDER BY FIELD(Day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');";
+$openTicketsData = [];
+$result = $conn->query($openTicketsQuery);
+while ($row = $result->fetch_assoc()) {
+$openTicketsData[] = [$row['Day'], (int)$row['OpenTickets']];
+}
+
+// Query to fetch ticket status distribution
+$statusQuery = "SELECT Status, COUNT(TicketID) AS Count FROM Ticket GROUP BY Status;";
+$statusData = [];
+$result = $conn->query($statusQuery);
+while ($row = $result->fetch_assoc()) {
+$statusData[] = [$row['Status'], (int)$row['Count']];
+}
+
+// Query to fetch average resolution time by category
+$resolutionTimeQuery = "SELECT CategoryName, AVG(DATEDIFF(Ticket.DateResolved, Ticket.DateCreated)) AS ResolutionTime
+FROM Ticket
+JOIN faultcategory ON ticket.CategoryID = faultcategory.CategoryID
+WHERE Ticket.DateResolved IS NOT NULL
+GROUP BY CategoryName;";
+$resolutionTimeData = [];
+$result = $conn->query($resolutionTimeQuery);
+while ($row = $result->fetch_assoc()) {
+$resolutionTimeData[] = [$row['CategoryName'], (float)$row['ResolutionTime']];
+}
+
+// Query to fetch tickets by severity and category
+$severityCategoryQuery = "SELECT CategoryName, 
+    SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS High,
+    SUM(CASE WHEN Severity = 'Medium' THEN 1 ELSE 0 END) AS Medium,
+    SUM(CASE WHEN Severity = 'Low' THEN 1 ELSE 0 END) AS Low
+FROM Ticket
+JOIN faultcategory ON ticket.CategoryID = faultcategory.CategoryID
+WHERE Ticket.DateResolved IS NOT NULL
+GROUP BY CategoryName;";
+$severityCategoryData = [];
+$result = $conn->query($severityCategoryQuery);
+while ($row = $result->fetch_assoc()) {
+$severityCategoryData[] = [$row['CategoryName'], (int)$row['High'], (int)$row['Medium'], (int)$row['Low']];
+}
+?>
+
+
+
+ 
     <script>
         // Load Google Charts library
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawCharts);
 
         function drawCharts() {
-            // Data for Open Tickets chart from PHP
+            // Open Tickets chart data from PHP
             var openTicketsData = google.visualization.arrayToDataTable([
                 ['Day', 'Open Tickets'],
                 <?php
-                // Output the data for the Open Tickets chart
-                echo "['Date', 'Open Tickets'],";
-                foreach ($ticketData as $data) {
-                    echo "['" . $data[0] . "', " . $data[1] . "],";
-                }
+                    foreach ($openTicketsData as $data) {
+                        echo "['".$data[0]."', ".$data[1]."],";
+                    }
                 ?>
             ]);
             var openTicketsOptions = {
                 curveType: 'function',
                 legend: { position: 'bottom' },
-                backgroundColor: '#f9f9f9',
-                colors: ['#4caf50']
+                backgroundColor: '#F8F9FC',
+                chartArea: { width: '100%', height: '80%' },
+                fontName: 'Arial',
+                colors: ['#4E73DF']
             };
             var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
             openTicketsChart.draw(openTicketsData, openTicketsOptions);
 
-            // Placeholder for other chart data
+            // Ticket Status chart data from PHP
             var statusData = google.visualization.arrayToDataTable([
                 ['Status', 'Count'],
-                ['Open', 10],
-                ['Closed', 15],
-                ['Pending', 5]
+                <?php
+                    foreach ($statusData as $data) {
+                        echo "['".$data[0]."', ".$data[1]."],";
+                    }
+                ?>
             ]);
             var statusOptions = {
-                title: 'Ticket Status Distribution',
-                backgroundColor: '#f9f9f9',
-                colors: ['#2196F3', '#FFC107', '#F44336']
+                pieHole: 0.4,
+                backgroundColor: '#F8F9FC',
+                chartArea: { width: '85%', height: '75%' },
+                fontName: 'Arial',
+                colors: ['#4E73DF', '#1CC88A', '#36B9CC'] // Assuming additional colors for variety
+
+
+
             };
             var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
             statusChart.draw(statusData, statusOptions);
 
-            // Placeholder for average resolution time data
-            var resolutionData = google.visualization.arrayToDataTable([
-                ['Category', 'Average Time (days)'],
-                ['Plumbing', 2],
-                ['Electrical', 3],
-                ['Repairs', 1]
+            // Resolution Time chart data from PHP
+            var resolutionTimeData = google.visualization.arrayToDataTable([
+                ['CategoryName', 'Resolution Time (days)'],
+                <?php
+                    foreach ($resolutionTimeData as $data) {
+                        echo "['".$data[0]."', ".$data[1]."],";
+                    }
+                ?>
             ]);
-            var resolutionOptions = {
-                title: 'Average Resolution Time by Category',
-                backgroundColor: '#f9f9f9',
-                colors: ['#4caf50', '#ff9800', '#f44336']
+            var resolutionTimeOptions = {
+                backgroundColor: '#F8F9FC',
+                chartArea: { width: '85%', height: '75%' },
+                fontName: 'Arial',
+                colors: ['#36B9CC']
             };
-            var resolutionChart = new google.visualization.BarChart(document.getElementById('resolution_time_chart'));
-            resolutionChart.draw(resolutionData, resolutionOptions);
+            var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
+            resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
 
-            // Placeholder for tickets by severity and category
-            var severityData = google.visualization.arrayToDataTable([
-                ['Category', 'High', 'Medium', 'Low'],
-                ['Plumbing', 4, 2, 1],
-                ['Electrical', 3, 1, 2],
-                ['Repairs', 5, 0, 1]
+            // Severity and Category chart data from PHP
+            var severityCategoryData = google.visualization.arrayToDataTable([
+                ['CategoryName', 'High', 'Medium', 'Low'],
+                <?php
+                    foreach ($severityCategoryData as $data) {
+                        echo "[' ".$data[0]."', ".$data[1].", ".$data[2].", ".$data[3]."],";
+                    }
+                ?>
             ]);
-            var severityOptions = {
-                title: 'Tickets by Severity and Category',
-                backgroundColor: '#f9f9f9',
-                colors: ['#f44336', '#ff9800', '#4caf50'],
-                isStacked: true
+            var severityCategoryOptions = {
+                isStacked: true,
+                backgroundColor: '#F8F9FC',
+                chartArea: { width: '85%', height: '75%' },
+                fontName: 'Arial',
+                colors: ['#E74A3B', '#F6C23E', '#1CC88A']
             };
-            var severityChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
-            severityChart.draw(severityData, severityOptions);
+            var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
+            severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
         }
+    </script>
+   
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
 
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
         function confirmLogout() {
             return confirm("Are you sure you want to log out?");
         }

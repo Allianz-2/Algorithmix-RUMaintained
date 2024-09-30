@@ -314,53 +314,25 @@
         </header>
         <div class="content">
             <h2>Requests</h2>
-            <div class="filters">
-                <div class="filter-group">
-                    <?php
-                        $dateFilter = $_POST['date-filter'];
-
-                        // Modify the SQL query based on the selected date filter
-                        switch ($dateFilter) {
-                            case 'Last 7 Days':
-                                $query = "SELECT * FROM ticket WHERE DateCreated >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
-                                break;
-                            case 'yesterday':
-                                $query = "SELECT * FROM ticket WHERE DateCreated = CURDATE() - INTERVAL 1 DAY";
-                                break;
-                            case 'today':
-                                $query = "SELECT * FROM ticket WHERE DateCreated = CURDATE()";
-                                break;
-                            case '2 weeks':
-                                $query = "SELECT * FROM ticket WHERE DateCreated >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)";
-                                break;
-                            case 'Month':
-                                $query = "SELECT * FROM ticket WHERE DateCreated >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)";
-                                break;
-                            case '3 months':
-                                $query = "SELECT * FROM ticket WHERE DateCreated >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)";
-                                break;
-                            default:
-                                $query = "SELECT * FROM ticket";
-                                break;
-                        }
-
-                        // Execute the modified query and fetch the results
-                        $results = mysqli_query($conn, $query);
-                    ?>
-                </div>
-                <div class="filter-group">
+            <!-- <div class="filters"> -->
+                <!-- <div class="filter-group">
+                    <label for="date-filter">Date Range</label>
+                    <select id="date-filter">
+                        <option>Last 7 Days</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="today">Today</option>
+                        <option value="2 weeks">Last 2 weeks</option>
+                        <option value="Month">Last Month</option>
+                        <option value="3 months">Last 3 Months</option>
+                    </select>
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="residence-filter">Residence</label> 
                     <select id="residence-filter">
-                        <?php
-                            // Fetch all residences from the database
-                            $residences = mysqli_query($conn, "SELECT DISTINCT Residence FROM ticket");
-                            while ($row = mysqli_fetch_assoc($residences)) {
-                                echo "<option>" . $row['Residence'] . "</option>";
-                            }
-                        ?>
+                        <option>Chris Hani House</option>
                     </select>
-                </div> 
-                <div class="filter-group">
+                </div>  -->
+                <!-- <div class="filter-group">
                     <label for="severity-filter">Severity</label>
                     <select id="severity-filter">
                         <option value="High">High</option>
@@ -368,8 +340,8 @@
                         <option value="low">Low</option>
                         <option value="emergency">Emergency</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="category-filter">Category</label>
                     <select id="category-filter">
                         <option>Any</option>
@@ -379,8 +351,8 @@
                         <option value="broken and repairs">Repairs and breakage</option>
                         <option value="other">Other</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="status-filter">Status</label>
                     <select id="status-filter">
                         <option>Any</option>
@@ -389,7 +361,7 @@
                         <option value="closed">Closed</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
 
         <?php 
             require '../8-PHPTests/config.php';

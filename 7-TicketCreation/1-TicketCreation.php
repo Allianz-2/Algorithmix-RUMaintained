@@ -65,16 +65,21 @@
                             <div class="step-label">Create Ticket</div>
                         </div>
                         <div class="step-wrapper">
-                            <div class="step">2</div>
+                            <div class="step ">2</div>
                             <div class="step-label">House Warden Approval</div>
                         </div>
                         <div class="step-wrapper">
-                            <div class="step">3</div>
+                            <div class="step ">3</div>
                             <div class="step-label">Hall Secretary Approval</div>
                         </div>
+                        <div class="step-wrapper">
+                            <div class="step ">4</div>
+                            <div class="step-label">Maintenance Staff</div>
+                        </div>
                     </div>
+                </div>
                     
-                <form action="1-TicketCreationPagefinal.php" method="post" enctype="multipart/form-data">
+                <form action="1-TicketCreation.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="status" name="status" value="Open">
 
                     <div class="section-title">Ticket Details</div>
@@ -89,25 +94,33 @@
                         <label for="category" class="required">Category of Fault:</label>
                         <div class="input-container">
                             <select id="category" name="category" required>
-                                <option value="CE049">Select category</option>
-                                <option value="CE049">Plumbing</option>
-                                <option value="CE049">Electrical</option>
-                                <option value="CE049">Exterior</option>
-                                <option value="CE049">Bedroom</option>
-                                <option value="CE049">Bathroom</option>
-                                <option value="CE049">Other</option>
+                                <option value="">Select category</option>
+                                <option value="CAPL">Appliance Repair</option> <!-- Faults related to home or office appliance repair -->
+                                <option value="CCRP">Carpentry Faults</option> <!-- Faults related to carpentry work, including repair and installation -->
+                                <option value="CELE">Electrical Maintenance Faults</option> <!-- Issues related to electrical systems and maintenance -->
+                                <option value="CFRS">Fire Safety Maintenance</option> <!-- Fire safety system maintenance including alarms and sprinklers -->
+                                <option value="CGNM">General Maintenance</option> <!-- General upkeep and maintenance issues -->
+                                <option value="CGRL">Groundskeeping and Landscaping</option> <!-- Issues with outdoor areas, landscaping, and grounds maintenance -->
+                                <option value="CHVC">HVAC Faults</option> <!-- Heating, ventilation, and air conditioning maintenance issues -->
+                                <option value="CLFT">Lift/Elevator Maintenance</option> <!-- Faults with lift or elevator systems -->
+                                <option value="CMSN">Masonry Faults</option> <!-- Masonry related issues such as structural damage and repairs -->
+                                <option value="CPLM">Plumbing Faults</option> <!-- Plumbing related faults such as leaks, blockages, and other issues -->
+                                <option value="CRFW">Roofing and Waterproofing</option> <!-- Issues with roofing, water leakage, and waterproofing -->
+                                <option value="CSEC">Security Systems Maintenance</option> <!-- Maintenance of security systems such as alarms and cameras -->
+                                <option value="CWST">Waste Management</option> <!-- Issues related to waste disposal and management -->
                             </select>
                         </div>
                     </div>
+
                     
                     <div class="form-group">
                         <label for="severity" class="required">Severity of Fault:</label>
                         <div class="input-container">
                             <select id="severity" name="severity" required>
                                 <option value="">Select severity</option>
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
                             </select>
                         </div>
                     </div>

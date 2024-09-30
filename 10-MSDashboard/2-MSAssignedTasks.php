@@ -187,6 +187,8 @@ JOIN maintenancestaff ms ON a.MaintenanceStaffID = ms.MaintenanceStaffID
 JOIN user u ON ms.UserID = u.UserID";
 $assignments_result = mysqli_query($conn, $sql_assignments);
 
+
+
 // Create an associative array to store assignments by TicketID
 $assignments = [];
 while ($assignment = mysqli_fetch_assoc($assignments_result)) {
@@ -212,6 +214,7 @@ $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " .
         </thead>
         <tbody>
             <?php while ($row = mysqli_fetch_assoc($results)): ?>
+            <?php if ($row['Status'] === 'Requisitioned'): ?>
             <tr>
                 <td><?php echo $row['TicketID']; ?></td>
                 <td><?php echo $row['Description']; ?></td>
@@ -231,6 +234,7 @@ $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " .
                     ?>
                 </td>
             </tr>
+            <?php endif; ?>
             <?php endwhile; ?>
         </tbody>
     </table>
