@@ -80,7 +80,6 @@ $stmt->close();
         }
         th {
             background-color: #81589a;
-            color: #fff;
         }
     </style>
 </head>
