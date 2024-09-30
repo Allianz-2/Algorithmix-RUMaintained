@@ -67,19 +67,6 @@ p {
     color: white;
     text-decoration: none;
 }
-
-.menu-itemlogout {
-    padding: 8px 12px;
-    margin-bottom: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    border-radius: 4px;
-    color: white; /* Change this based on your background */
-    text-decoration: none; /* Removes underline from link */
-}
-
 .profile-header {
     display: flex;
     align-items: center;
