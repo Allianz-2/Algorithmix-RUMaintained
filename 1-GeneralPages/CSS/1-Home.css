@@ -339,6 +339,7 @@ footer p {
     display: none;
     position: fixed;
     bottom: 20px;
+    padding-right: 50px;
     right: 20px;
     z-index: 99;
     border: none;
