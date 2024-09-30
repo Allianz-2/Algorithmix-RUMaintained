@@ -166,7 +166,7 @@
                     echo "<td>{$row['Severity']}</td>";
                     echo "<td><a href='#'>Approve</a></td>";
                     echo "<td><a href='#'>Deny</a></td>";
-                    echo "<td><a href='#'>Details</a></td>";
+                    echo "<td><a href='../7-TicketCreation/7-TicketStatus.php?ticketID=" . urlencode($row['TicketID']) . "'>View</a></td>";
                     echo "</tr>";
                 }
 

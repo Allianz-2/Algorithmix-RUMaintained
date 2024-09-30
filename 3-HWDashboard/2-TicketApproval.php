@@ -159,7 +159,7 @@ $stmt->close();
                                 <button type='submit' style='background:none!important; border:none; padding:0!important; font-family:inherit; /*optional*/ font-size:inherit; /*optional*/ color:blue; cursor:pointer;'>Deny</button>
                             </form>
                           </td>";
-                    echo "<td><a href='#'>Details</a></td>";
+                    echo "<td><a href='../7-TicketCreation/7-TicketStatus.php?ticketID=" . urlencode($row['TicketID']) . "'>View</a></td>";
                     echo "<td></td>"; // Placeholder for comments
                     echo "</tr>";
                 }
