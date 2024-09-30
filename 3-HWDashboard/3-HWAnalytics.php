@@ -1,9 +1,49 @@
 <?php
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
+require_once("../5-UserSignInandRegistration/14-secure.php"); 
+require '../8-PHPTests/config.php'; // Include your database configuration
 
+// Database connection
+$conn = mysqli_init(); 
+if (!file_exists($ca_cert_path)) {
+    die("CA file not found: " . $ca_cert_path);
+}
 
+mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
 
+if (mysqli_connect_errno()) {
+    die('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
 
+// Query to fetch the required data for charts
+$ticketData = [];
+
+// Example query to fetch counts of open tickets by day
+$query = "SELECT DATE(DateCreated) as Date, COUNT(*) as OpenTickets 
+          FROM ticket 
+          WHERE Status = 'Requisitioned' 
+          GROUP BY DATE(DateCreated)";
+
+$result = mysqli_query($conn, $query);
+
+// Check if the query was successful
+if ($result === false) {
+    // Log the error and display it
+    $error = mysqli_error($conn);
+    error_log("MySQL error: " . $error);
+    die("An error occurred while fetching the data: " . $error);
+}
+
+// Fetch data from result set
+while ($row = mysqli_fetch_assoc($result)) {
+    $ticketData[] = [$row['Date'], (int)$row['OpenTickets']];
+}
+
+mysqli_free_result($result); // Free the result set
+mysqli_close($conn); // Close the database connection
+
+// You can now use $ticketData as needed, e.g., for JSON output
+// echo json_encode($ticketData);
 ?>
 
 <!DOCTYPE html>
@@ -53,22 +93,22 @@
     </style>
 </head>
 <body>
-    <nav id="sidebar" class="sidebar">
-        <div class="logo">
-        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
-            <a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
-        </div>
+       <nav id="sidebar" class="sidebar">
+            <div class="logo">
+            <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span>
+                <a href="../6-UserProfileManagementPage/2-ProfileHW.php"><i class="fas fa-user"></i></a>
+            </div>
         <ul>
-            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="../7-TicketCreation\1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
-            <li><a href="../3-HWDashboard\1-HWRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
-            <li><a href="../3-HWDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i>Ticket Approvals</a></li>
-            <li class="active"><a href="../3-HWDashboard\3-HWAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
-            <li><a href="../3-HWDashboard\4-HWNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="../3-HWDashboard\5-HWHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+            <li><a href="../1-GeneralPages/1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="../7-TicketCreation/1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
+            <li><a href="../3-HWDashboard/1-HWRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
+            <li><a href="../3-HWDashboard/2-TicketApproval.php"><i class="fas fa-check-circle"></i>Ticket Approvals</a></li>
+            <li class="active"><a href="../3-HWDashboard/3-HWAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
+            <li><a href="../3-HWDashboard/4-HWNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="../3-HWDashboard/5-HWHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
-            <p><a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="../6-UserProfileManagementPage/2-ProfileHW.php"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
@@ -114,96 +154,73 @@
         google.charts.setOnLoadCallback(drawCharts);
 
         function drawCharts() {
-            // Sample data for Open Tickets chart
+            // Data for Open Tickets chart from PHP
             var openTicketsData = google.visualization.arrayToDataTable([
                 ['Day', 'Open Tickets'],
-                ['Monday',  12],
-                ['Tuesday',  5],
-                ['Wednesday',  7],
-                ['Thursday',  8],
-                ['Friday',  15],
-                ['Saturday',  6],
-                ['Sunday',  4]
+                <?php
+                // Output the data for the Open Tickets chart
+                echo "['Date', 'Open Tickets'],";
+                foreach ($ticketData as $data) {
+                    echo "['" . $data[0] . "', " . $data[1] . "],";
+                }
+                ?>
             ]);
             var openTicketsOptions = {
                 curveType: 'function',
                 legend: { position: 'bottom' },
                 backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial'
+                colors: ['#4caf50']
             };
             var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
             openTicketsChart.draw(openTicketsData, openTicketsOptions);
 
-            // Sample data for Status chart
+            // Placeholder for other chart data
             var statusData = google.visualization.arrayToDataTable([
                 ['Status', 'Count'],
-                ['Active',  20],
-                ['Pending',  15],
-                ['Closed',  30]
+                ['Open', 10],
+                ['Closed', 15],
+                ['Pending', 5]
             ]);
             var statusOptions = {
-                pieHole: 0.4,
+                title: 'Ticket Status Distribution',
                 backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial'
+                colors: ['#2196F3', '#FFC107', '#F44336']
             };
             var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
             statusChart.draw(statusData, statusOptions);
 
-            // Sample data for Resolution Time chart
-            var resolutionTimeData = google.visualization.arrayToDataTable([
-                ['Category', 'Resolution Time (days)'],
-                ['Plumbing', 3],
-                ['Electrical', 2],
-                ['Roofing', 4],
-                ['Repairs', 1],
-                ['Other', 5]
+            // Placeholder for average resolution time data
+            var resolutionData = google.visualization.arrayToDataTable([
+                ['Category', 'Average Time (days)'],
+                ['Plumbing', 2],
+                ['Electrical', 3],
+                ['Repairs', 1]
             ]);
-            var resolutionTimeOptions = {
-                hAxis: { title: 'Category' },
-                vAxis: { title: 'Resolution Time (days)' },
+            var resolutionOptions = {
+                title: 'Average Resolution Time by Category',
                 backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                legend: 'none'
+                colors: ['#4caf50', '#ff9800', '#f44336']
             };
-            var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
-            resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
+            var resolutionChart = new google.visualization.BarChart(document.getElementById('resolution_time_chart'));
+            resolutionChart.draw(resolutionData, resolutionOptions);
 
-            // Sample data for Severity and Category chart
-            var severityCategoryData = google.visualization.arrayToDataTable([
+            // Placeholder for tickets by severity and category
+            var severityData = google.visualization.arrayToDataTable([
                 ['Category', 'High', 'Medium', 'Low'],
-                ['Plumbing', 10, 5, 2],
-                ['Electrical', 8, 4, 1],
-                ['Roofing', 6, 3, 1],
-                ['Repairs', 4, 2, 0],
-                ['Other', 12, 6, 3]
+                ['Plumbing', 4, 2, 1],
+                ['Electrical', 3, 1, 2],
+                ['Repairs', 5, 0, 1]
             ]);
-            var severityCategoryOptions = {
-                isStacked: true,
-                hAxis: { title: 'Category' },
-                vAxis: { title: 'Number of Tickets' },
+            var severityOptions = {
+                title: 'Tickets by Severity and Category',
                 backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                legend: { position: 'bottom' }
+                colors: ['#f44336', '#ff9800', '#4caf50'],
+                isStacked: true
             };
-            var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
-            severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
+            var severityChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
+            severityChart.draw(severityData, severityOptions);
         }
-    </script>
-      <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const hamburgerIcon = document.getElementById('hamburger-icon');
-            const sidebar = document.getElementById('sidebar');
-            const main = document.querySelector('main');
 
-            hamburgerIcon.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
-                main.classList.toggle('sidebar-collapsed');
-            });
-        });
         function confirmLogout() {
             return confirm("Are you sure you want to log out?");
         }
