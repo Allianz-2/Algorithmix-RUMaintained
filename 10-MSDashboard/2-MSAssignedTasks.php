@@ -211,6 +211,7 @@ $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " .
                 <th>Severity</th>
                 <th>Date Created</th>
                 <th>Assigned to</th>
+                <th>Details</th>
             </tr>
         </thead>
         <tbody>
@@ -234,6 +235,7 @@ $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " .
                     echo $assignedTo; 
                     ?>
                 </td>
+                <td><a href='../7-TicketCreation/7-TicketStatus.php?ticketID=<?php echo urlencode($row['TicketID']); ?>'>View</a></td>
             </tr>
             <?php endif; ?>
             <?php endwhile; ?>
