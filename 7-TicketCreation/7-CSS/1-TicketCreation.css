@@ -4,10 +4,9 @@ body, html {
     padding: 0;
     height: 100vh;
     font-size: 14px;
-    background-color: #ddd;
-    display: flex;
+        display: flex;
     flex-direction: column;
-    background-image: url('Images\General\background.jpeg');
+    /* background-color: white; */
     background-size: cover;
     background-position: center;
 }
@@ -110,10 +109,11 @@ main {
 }
 
 .container {
+    background-image: url("../../Images/General/purple\ gradient\ background.jpeg");
+
     width: 100%;
     height: auto;
     padding: 20px;
-   background-image: url('/Users/naledimabusela/Documents/GitHub/Algorithmix-RUMaintained/Images/General/purple gradient background.jpeg');
     color: white;
     margin-top: 0;
     display: flex;
