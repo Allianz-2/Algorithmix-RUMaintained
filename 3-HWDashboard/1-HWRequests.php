@@ -89,7 +89,7 @@ $stmt->close();
                 <th>Status</th>
                 <th>Severity</th>
                 <th>Date Created</th>
-                <th>Student Number</th>
+                <th>Details</th>
             </tr>
         </thead>
         
@@ -101,7 +101,8 @@ $stmt->close();
                 <td><?php echo $row['Status']; ?></td>
                 <td><?php echo $row['Severity']; ?></td>
                 <td><?php echo $row['DateCreated']; ?></td>
-                <td><?php echo $row['StudentID']; ?></td>
+                <td><a href = "#"><button>View</button></a></td>
+                
             </tr>
             <?php endwhile; ?>
         </tbody>
@@ -116,78 +117,64 @@ $stmt->close();
             </div>
 
 
-        <?php 
-   // Check if the session variable is set and user is logged in
-   //if (!isset($_SESSION['UserID'])) {
-      // die('Unauthorized access'); // Redirect or show an error
-   // 
-   
-   // Get the housewarden ID from the session
-   
-   // Include the config file to get DB credentials
-   require_once('../8-PHPTests/config.php');
-   
-   // Initializes MySQLi
-   $conn = mysqli_init();
-   
-   // Test if the CA certificate file can be read
-   if (!file_exists($ca_cert_path)) {
-       die("CA file not found: " . $ca_cert_path);
-   }
-   
-   mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-   
-   // Establish the connection
-   mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-   
-   // If connection failed, show the error
-   if (mysqli_connect_errno()) {
-       die('Failed to connect to MySQL: ' . mysqli_connect_error());
-   }
+            <?php
 
-   $sql = "SELECT * FROM ticket WHERE Status= 'Open' AND HouseWardenID = ?";
-   $stmt = $conn->prepare($sql);
-   $stmt->bind_param("s", $_SESSION['userID']);
-   $stmt->execute();
-   $result = $stmt->get_result();
-   $stmt->fetch();
-   $stmt->close();
 
-   // Total tickets
-$stmt = $conn->prepare("SELECT COUNT(*) as TotalTickets FROM ticket WHERE HouseWardenID = ?");
-$stmt->bind_param("s", $_SESSION['userID']);
-$stmt->execute();
-$totalTickets = $stmt->get_result()->fetch_assoc()['TotalTickets'];
-$stmt->close();
+        $sql = "SELECT ResidenceID FROM residence WHERE HouseWardenID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $_SESSION['userID']);
+        $stmt->execute();
+        $stmt->bind_result($resID);
+        $stmt->fetch();
+        $stmt->close(); 
 
-// Pending tickets
-$stmt = $conn->prepare("SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Open' AND HouseWardenID = ?");
-$stmt->bind_param("s", $_SESSION['userID']);
-$stmt->execute();
-$pendingTickets = $stmt->get_result()->fetch_assoc()['PendingTickets'];
-$stmt->close();
+        $sql = "SELECT * FROM ticket WHERE ResidenceID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $resID);
+        $stmt->execute();
+        $resultRes = $stmt->get_result(); // Fetch results using get_result()
+        $stmt->close(); 
 
-// Completed tickets
-$stmt = $conn->prepare("SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = '
-closed' AND HouseWardenID = ?");
-$stmt->bind_param("s", $_SESSION['userID']);
-$stmt->execute();
-$completedTickets = $stmt->get_result()->fetch_assoc()['CompletedTickets'];
-$stmt->close();
 
-// Viewed tickets
-$stmt = $conn->prepare("
-    SELECT COUNT(*) as ViewedTickets FROM ticketcomment 
-    WHERE TicketID IN (SELECT TicketID FROM ticket WHERE Status IN ('Resolved', 'Closed') AND HouseWardenID = ?)
-");
-$stmt->bind_param("s", $_SESSION['userID']);
-$stmt->execute();
-$viewedTickets = $stmt->get_result()->fetch_assoc()['ViewedTickets'];
-$stmt->close();
+        $stmt = $conn->prepare("SELECT COUNT(*) as TotalTickets FROM ticket WHERE ResidenceID = ?");
+        $stmt->bind_param("s", $resID); 
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $totalTickets = $result->fetch_assoc()['TotalTickets'];
+        $stmt->close();
+        
+        
+        $stmt = $conn->prepare("SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status NOT IN (?, ?) AND ResidenceID = ?");
+        $status1 = 'Rejected';
+        $status2 = 'Closed';
+        $stmt->bind_param("sss", $status1, $status2, $resID); 
+        $stmt->execute();
+        $result = $stmt->get_result(); // Get the result set from the statement
+        $pendingTickets = $result->fetch_assoc()['PendingTickets']; // Fetch the count
+        $stmt->close();
 
-// Close the connection
-mysqli_close($conn);
- ?>
+
+        $stmt = $conn->prepare("SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = ? AND ResidenceID = ?");
+        $status = 'Closed';
+        $stmt->bind_param("ss", $status, $resID); 
+        $stmt->execute();
+        $result = $stmt->get_result(); // Get the result set from the statement
+        $completedTickets = $result->fetch_assoc()['CompletedTickets']; // Fetch the count
+        $stmt->close();
+
+        $stmt = $conn->prepare("SELECT COUNT(*) as ViewedTickets FROM ticket WHERE Status IN (?,?) AND ResidenceID = ?");
+        $status3 = 'Closed';
+        $status4 = 'Resolved';
+        $stmt->bind_param("sss", $status3, $status4, $resID); 
+        $stmt->execute();
+        $result = $stmt->get_result(); // Get the result set from the statement
+        $viewedTickets = $result->fetch_assoc()['ViewedTickets']; // Fetch the count
+        $stmt->close();
+
+            
+        ?>
+
+        
         <div class="content">
            
             <div class="charts">
@@ -228,7 +215,7 @@ mysqli_close($conn);
                 </thead>
                 
                 <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php while ($row = $resultRes->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['TicketID']; ?></td>
                         <td><?php echo $row['Description']; ?></td>
