@@ -106,95 +106,168 @@
             </div>
         </div>
     </main>
+
+    <?php 
+            require '../8-PHPTests/config.php';
+
+            // Initializes MySQLi
+            $conn = mysqli_init();
+
+            // Test if the CA certificate file can be read
+            if (!file_exists($ca_cert_path)) {
+                die("CA file not found: " . $ca_cert_path);
+            }
+
+            mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+            // Establish the connection
+            mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+            // If connection failed, show the error
+            if (mysqli_connect_errno()) {
+                die('Failed to connect to MySQL: ' . mysqli_connect_error());
+            }
+        
+        $results = mysqli_query($conn, "SELECT * FROM ticket WHERE Status= 'Confirmed'"); // Add this line to define $results
+        
+
+  // Query to fetch open tickets by day of the week
+  $openTicketsQuery = "SELECT DAYNAME(DateCreated) AS Day, COUNT(TicketID) AS OpenTickets
+  FROM Ticket
+  WHERE Status = 'Open'
+  GROUP BY Day
+  ORDER BY FIELD(Day, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');";
+$openTicketsData = [];
+$result = $conn->query($openTicketsQuery);
+while ($row = $result->fetch_assoc()) {
+$openTicketsData[] = [$row['Day'], (int)$row['OpenTickets']];
+}
+
+// Query to fetch ticket status distribution
+$statusQuery = "SELECT Status, COUNT(TicketID) AS Count FROM Ticket GROUP BY Status;";
+$statusData = [];
+$result = $conn->query($statusQuery);
+while ($row = $result->fetch_assoc()) {
+$statusData[] = [$row['Status'], (int)$row['Count']];
+}
+
+// Query to fetch average resolution time by category
+$resolutionTimeQuery = "SELECT CategoryName, AVG(DATEDIFF(Ticket.DateResolved, Ticket.DateCreated)) AS ResolutionTime
+FROM Ticket
+JOIN faultcategory ON ticket.CategoryID = faultcategory.CategoryID
+WHERE Ticket.DateResolved IS NOT NULL
+GROUP BY CategoryName;";
+$resolutionTimeData = [];
+$result = $conn->query($resolutionTimeQuery);
+while ($row = $result->fetch_assoc()) {
+$resolutionTimeData[] = [$row['CategoryName'], (float)$row['ResolutionTime']];
+}
+
+// Query to fetch tickets by severity and category
+$severityCategoryQuery = "SELECT CategoryName, 
+    SUM(CASE WHEN Severity = 'High' THEN 1 ELSE 0 END) AS High,
+    SUM(CASE WHEN Severity = 'Medium' THEN 1 ELSE 0 END) AS Medium,
+    SUM(CASE WHEN Severity = 'Low' THEN 1 ELSE 0 END) AS Low
+FROM Ticket
+JOIN faultcategory ON ticket.CategoryID = faultcategory.CategoryID
+WHERE Ticket.DateResolved IS NOT NULL
+GROUP BY CategoryName;";
+$severityCategoryData = [];
+$result = $conn->query($severityCategoryQuery);
+while ($row = $result->fetch_assoc()) {
+$severityCategoryData[] = [$row['CategoryName'], (int)$row['High'], (int)$row['Medium'], (int)$row['Low']];
+}
+?>
+
+
+
+ 
     <script>
-    // Load Google Charts library
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawCharts);
+        // Load Google Charts library
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawCharts);
 
-    function drawCharts() {
-        // Sample data for Open Tickets chart
-        var openTicketsData = google.visualization.arrayToDataTable([
-            ['Day', 'Open Tickets'],
-            ['Monday',  12],
-            ['Tuesday',  5],
-            ['Wednesday',  7],
-            ['Thursday',  8],
-            ['Friday',  15],
-            ['Saturday',  6],
-            ['Sunday',  4]
-        ]);
-        var openTicketsOptions = {
-            curveType: 'function',
-            legend: { position: 'bottom' },
-            backgroundColor: '#F8F9FC',
-            chartArea: { width: '85%', height: '75%' },
-            fontName: 'Arial',
-            colors: ['#4E73DF']
-        };
-        var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
-        openTicketsChart.draw(openTicketsData, openTicketsOptions);
+        function drawCharts() {
+            // Open Tickets chart data from PHP
+            var openTicketsData = google.visualization.arrayToDataTable([
+                ['Day', 'Open Tickets'],
+                <?php
+                    foreach ($openTicketsData as $data) {
+                        echo "['".$data[0]."', ".$data[1]."],";
+                    }
+                ?>
+            ]);
+            var openTicketsOptions = {
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                backgroundColor: '#F8F9FC',
+                chartArea: { width: '85%', height: '75%' },
+                fontName: 'Arial',
+                colors: ['#4E73DF']
+            };
+            var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
+            openTicketsChart.draw(openTicketsData, openTicketsOptions);
 
-        // Sample data for Status chart
-        var statusData = google.visualization.arrayToDataTable([
-            ['Status', 'Count'],
-            ['Active',  20],
-            ['Pending',  15],
-            ['Closed',  30]
-        ]);
-        var statusOptions = {
-            pieHole: 0.4,
-            backgroundColor: '#F8F9FC',
-            chartArea: { width: '85%', height: '75%' },
-            fontName: 'Arial',
-            colors: ['#4E73DF', '#1CC88A', '#36B9CC'] // Assuming additional colors for variety
-        };
-        var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
-        statusChart.draw(statusData, statusOptions);
+            // Ticket Status chart data from PHP
+            var statusData = google.visualization.arrayToDataTable([
+                ['Status', 'Count'],
+                <?php
+                    foreach ($statusData as $data) {
+                        echo "['".$data[0]."', ".$data[1]."],";
+                    }
+                ?>
+            ]);
+            var statusOptions = {
+                pieHole: 0.4,
+                backgroundColor: '#F8F9FC',
+                chartArea: { width: '85%', height: '75%' },
+                fontName: 'Arial',
+                colors: ['#4E73DF', '#1CC88A', '#36B9CC'] // Assuming additional colors for variety
 
-        // Sample data for Resolution Time chart
-        var resolutionTimeData = google.visualization.arrayToDataTable([
-            ['Category', 'Resolution Time (days)'],
-            ['Plumbing', 3],
-            ['Electrical', 2],
-            ['Roofing', 4],
-            ['Repairs', 1],
-            ['Other', 5]
-        ]);
-        var resolutionTimeOptions = {
-            hAxis: { title: 'Category' },
-            vAxis: { title: 'Resolution Time (days)' },
-            backgroundColor: '#F8F9FC',
-            chartArea: { width: '85%', height: '75%' },
-            fontName: 'Arial',
-            legend: 'none',
-            colors: ['#4E73DF']
-        };
-        var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
-        resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
 
-        // Sample data for Severity and Category chart
-        var severityCategoryData = google.visualization.arrayToDataTable([
-            ['Category', 'High', 'Medium', 'Low'],
-            ['Plumbing', 10, 5, 2],
-            ['Electrical', 8, 4, 1],
-            ['Roofing', 6, 3, 1],
-            ['Repairs', 4, 2, 0],
-            ['Other', 12, 6, 3]
-        ]);
-        var severityCategoryOptions = {
-            isStacked: true,
-            hAxis: { title: 'Category' },
-            vAxis: { title: 'Number of Tickets' },
-            backgroundColor: '#F8F9FC',
-            chartArea: { width: '85%', height: '75%' },
-            fontName: 'Arial',
-            legend: { position: 'bottom' },
-            colors: ['#4E73DF', '#1CC88A', '#36B9CC'] // Assuming the same additional colors for consistency
-        };
-        var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
-        severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
-    }
-</script>
+
+            };
+            var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
+            statusChart.draw(statusData, statusOptions);
+
+            // Resolution Time chart data from PHP
+            var resolutionTimeData = google.visualization.arrayToDataTable([
+                ['CategoryName', 'Resolution Time (days)'],
+                <?php
+                    foreach ($resolutionTimeData as $data) {
+                        echo "['".$data[0]."', ".$data[1]."],";
+                    }
+                ?>
+            ]);
+            var resolutionTimeOptions = {
+                backgroundColor: '#F8F9FC',
+                chartArea: { width: '85%', height: '75%' },
+                fontName: 'Arial',
+                colors: ['#36B9CC']
+            };
+            var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
+            resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
+
+            // Severity and Category chart data from PHP
+            var severityCategoryData = google.visualization.arrayToDataTable([
+                ['CategoryName', 'High', 'Medium', 'Low'],
+                <?php
+                    foreach ($severityCategoryData as $data) {
+                        echo "[' ".$data[0]."', ".$data[1].", ".$data[2].", ".$data[3]."],";
+                    }
+                ?>
+            ]);
+            var severityCategoryOptions = {
+                isStacked: true,
+                backgroundColor: '#F8F9FC',
+                chartArea: { width: '85%', height: '75%' },
+                fontName: 'Arial',
+                colors: ['#E74A3B', '#F6C23E', '#1CC88A']
+            };
+            var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
+            severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
+        }
+    </script>
    
       <script>
         document.addEventListener('DOMContentLoaded', function() {
