@@ -8,7 +8,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained - Create Ticket</title>
+    <title>Create Ticket</title>
+    <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../7-TicketCreation\7-CSS\1-TicketCreation.css">
     <script src="4-TicketCreation.js"></script>

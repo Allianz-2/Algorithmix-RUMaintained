@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Residence Information</title>
+    <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="6-ResInfo.css">
     <style>
 .logout {

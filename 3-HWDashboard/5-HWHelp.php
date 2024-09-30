@@ -11,6 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>House Warden Dashboard</title>
+    <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
@@ -279,14 +280,14 @@
             </div>
             <div class="faq-item">
                 <div class="faq-question">How do I report a maintenance issue?</div>
-                <div class="faq-answer">You can report an issue by logging into your account, navigating to the "Report Issue" section, and filling out the necessary details about the problem.</div>
+                <div class="faq-answer">You can report a fault by simply clicking on "Create Ticket" in the menu on the left side of the screen which will take you to a page where you can fill in the necessary details.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">Can I track the status of my maintenance request?</div>
                 <div class="faq-answer">Yes, once you report an issue, you can track its status from your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">What type of maintenance issue can I report?</div>
+                <div class="faq-question">What type of maintenance fault can I report?</div>
                 <div class="faq-answer">You can report any issue related to the upkeep and maintenance of your residence, including plumbing, electrical, or general repairs.</div>
             </div>
             <div class="faq-item">
