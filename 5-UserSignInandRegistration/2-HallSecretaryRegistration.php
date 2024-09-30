@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hall Secretary Registration - RUMaintained</title>
-    <link rel="stylesheet" href="11-Registration.css">
+    <link rel="stylesheet" href="../5-UserSignInandRegistration\5-CSS\11-Registration.css">
     <script src="12-RegistrationJavacript.js" defer></script>
 </head>
 <body>
