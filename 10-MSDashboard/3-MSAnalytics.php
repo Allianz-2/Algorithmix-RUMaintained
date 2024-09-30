@@ -238,6 +238,8 @@
             <li><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li  class="active"><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
             <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+
 
         </ul>
         <div class="sidebar-footer">

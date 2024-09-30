@@ -246,11 +246,12 @@
             <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="StudentDBTicketHistory.php"><i class="fas fa-tools"></i>Ticket History</a></li>
-            <li><a href="StudentDBAnalytics.php"><i class="fas fa-chart-line"></i>Performance Analytics</a></li>
-            <li><a href="StudentDBNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li class="active"><a href="StudentDBHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+            <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
+            <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li   class="active"><a href="5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -262,7 +263,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Student Dashboard</strong>
+                <strong>Maintenance Staff Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
@@ -272,24 +273,25 @@
         
             <h2>Frequently Asked Questions</h2>
             <div class="faq-item">
-                <div class="faq-question">What is this system used for?</div>
-                <div class="faq-answer">This system is designed to help students and staff report and manage maintenance issues within university residences efficiently.</div>
+                <div class="faq-question">What is the Maintenance Dashboard used for?</div>
+                <div class="faq-answer">The Maintenance Dashboard is designed to help maintenance staff efficiently manage and resolve maintenance issues within university residences.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">How do I report a maintenance issue?</div>
-                <div class="faq-answer">You can report an issue by logging into your account, navigating to the "Report Issue" section, and filling out the necessary details about the problem.</div>
+                <div class="faq-question">How do I view and manage maintenance tickets?</div>
+                <div class="faq-answer">You can view and manage maintenance tickets by logging into your account and accessing the "Requests" section. In the "Requests" section, you will find a list of all the maintenance tickets assigned to you. From there, you can view the details of each ticket and take appropriate actions to resolve them.</div>
+            </div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Can I track the status of my maintenance request?</div>
-                <div class="faq-answer">Yes, once you report an issue, you can track its status from your dashboard to see if it's been acknowledged, scheduled, or resolved.</div>
+                <div class="faq-question">Can I prioritize maintenance tickets?</div>
+                <div class="faq-answer">Yes, you can prioritize maintenance tickets based on their urgency and severity. This helps ensure that critical issues are addressed promptly.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">What type of maintenance issue can I report?</div>
-                <div class="faq-answer">You can report any issue related to the upkeep and maintenance of your residence, including plumbing, electrical, or general repairs.</div>
+                <div class="faq-question">What should I do if I encounter a complex maintenance issue?</div>
+                <div class="faq-answer">If you encounter a complex maintenance issue that requires specialized expertise, you can escalate the ticket to a higher level of support or consult with other team members for assistance.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">What should I do if I forget my password?</div>
-                <div class="faq-answer">Click on the "Forgot Password" link on the login page and follow the instructions to reset your password.</div>
+                <div class="faq-question">How can I track the progress of maintenance tasks?</div>
+                <div class="faq-answer">You can track the progress of maintenance tasks by regularly checking the "Task Assignment" section in the Maintenance Dashboard. It provides updates on the status of assigned tasks and allows you to communicate with other team members.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">Didn't find an answer?</div>
