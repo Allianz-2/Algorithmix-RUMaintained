@@ -348,7 +348,7 @@
 const faultStatsData = <?php echo json_encode($faultStatsPerSemester); ?>;
 const faultStatsLabels = faultStatsData.map(data => `${data.ResName} - ${data.Year} ${data.Semester}`);
 const faultStatsCounts = faultStatsData.map(data => data.FaultCount);
-const customColor = '#4E73DF'; // Hex color code
+const customColor = '#36B9CC'; // Hex color code
 
 const faultStatsPerSemesterCtx = document.getElementById('faultStatsPerSemesterChart').getContext('2d');
 new Chart(faultStatsPerSemesterCtx, {
@@ -380,7 +380,7 @@ new Chart(faultStatsPerSemesterCtx, {
 const faultProgressData = <?php echo json_encode($faultProgress); ?>;
 const faultProgressLabels = ['Total Tickets', 'Resolved Tickets', 'In Progress Tickets'];
 const faultProgressCounts = [faultProgressData.TotalTickets, faultProgressData.ResolvedTickets, faultProgressData.InProgressTickets];
-const customColors = ['#4E73DF', '#8a9dd7', '#b3c6f0'];  // Light shades of purple
+const customColors = ['#4E73DF', '#1CC88A', '#36B9CC'];  // Light shades of purple
 
 const faultProgressCtx = document.getElementById('faultProgressChart').getContext('2d');
 new Chart(faultProgressCtx, {
