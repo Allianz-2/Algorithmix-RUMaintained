@@ -18,6 +18,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
+    <link rel="icon" href="../Images\General\icon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="13-ProfileManage.css">
     <script src="12-EditSave.js" defer></script>
@@ -27,7 +28,6 @@
         <div class="sidebar">
             <h1>Account</h1>
             <p>Manage your account info.</p>
-        
             <div class="menu-item">
                 <a href="../1-GeneralPages\1-Home.php">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
