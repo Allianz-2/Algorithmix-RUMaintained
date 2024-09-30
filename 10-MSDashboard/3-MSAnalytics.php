@@ -49,8 +49,183 @@
                 grid-template-columns: 1fr;
             }
         }
+        
     </style>
 </head>
+
+
+       <?php
+        //Database connection parameters
+        require '../8-PHPTests/config.php';
+
+        // Initializes MySQLi
+        $conn = mysqli_init();
+
+        // Test if the CA certificate file can be read
+        if (!file_exists($ca_cert_path)) {
+            die("CA file not found: " . $ca_cert_path);
+        }
+
+        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+
+        // Establish the connection
+        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+        // If connection failed, show the error
+        if (mysqli_connect_errno()) {
+            die('Failed to connect to MySQL: ' . mysqli_connect_error());
+        }
+
+        // Fetch maintenance fault stats per semester per residence
+        // function getMaintenanceFaultStatsPerSemester($conn) {
+        //     $query = "
+        //         SELECT r.ResName, 
+        //                COUNT(t.TicketID) AS FaultCount, 
+        //                YEAR(t.DateCreated) AS Year,
+        //                CASE 
+        //                    WHEN MONTH(t.DateCreated) BETWEEN 1 AND 6 THEN 'Semester 1'
+        //                    ELSE 'Semester 2'
+        //                END AS Semester
+        //         FROM ticket t
+        //         JOIN residence r ON t.ResidenceID = r.ResidenceID
+        //         WHERE t.Status = 'Resolved'
+        //         GROUP BY r.ResName, Year, Semester
+        //  ";
+        //     return $conn->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        // }
+
+
+
+        function getMaintenanceFaultStatsPerSemester($conn) {
+            $query = "
+                SELECT r.ResName, 
+                       COUNT(t.TicketID) AS FaultCount, 
+                       YEAR(t.DateCreated) AS Year,
+                       CASE 
+                           WHEN MONTH(t.DateCreated) BETWEEN 1 AND 6 THEN 'Semester 1'
+                           ELSE 'Semester 2'
+                       END AS Semester
+                FROM ticket t
+                JOIN residence r ON t.ResidenceID = r.ResidenceID
+                WHERE t.Status = 'Resolved'
+                GROUP BY r.ResName, Year, Semester
+            ";
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
+        }
+        
+    
+
+
+
+        // Fetch maintenance fault progress
+
+
+        function getMaintenanceFaultProgress($conn) {
+            $query = "
+                SELECT COUNT(TicketID) AS TotalTickets,
+                       SUM(CASE WHEN Status = 'Resolved' THEN 1 ELSE 0 END) AS ResolvedTickets,
+                       SUM(CASE WHEN Status = 'In Progress' THEN 1 ELSE 0 END) AS InProgressTickets
+                FROM ticket
+            ";
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+            return mysqli_fetch_assoc($result);
+        }
+
+        // Fetch turnaround time stats
+
+        function getTurnaroundTimeStats($conn) {
+            $query = "
+                SELECT AVG(TIMESTAMPDIFF(HOUR, DateCreated, DateResolved)) AS AvgTurnaroundTime
+                FROM ticket
+                WHERE Status = 'Resolved'
+            ";
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+            return mysqli_fetch_assoc($result);
+        }
+
+        // Fetch maintenance category stats
+
+        function getMaintenanceCategoryStats($conn) {
+            $query = "
+                SELECT fc.CategoryName, COUNT(t.TicketID) AS FaultCount
+                FROM ticket t
+                JOIN faultcategory fc ON t.CategoryID = fc.CategoryID
+                GROUP BY fc.CategoryName
+            ";
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
+        }
+
+        // Fetch history of complaint categories
+
+        function getComplaintCategoryHistory($conn) {
+            $query = "
+                SELECT YEAR(DateCreated) AS Year, 
+                       fc.CategoryName, 
+                       COUNT(t.TicketID) AS FaultCount
+                FROM ticket t
+                JOIN faultcategory fc ON t.CategoryID = fc.CategoryID
+                GROUP BY Year, fc.CategoryName
+                ORDER BY Year
+            ";
+        
+            $result = mysqli_query($conn, $query);
+            if (!$result) {
+                die('Error executing query: ' . mysqli_error($conn));
+            }
+        
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        
+            mysqli_free_result($result);
+        
+            return $data;
+        }
+
+
+
+
+        
+        // Prepare data for graphs
+        $faultStatsPerSemester = getMaintenanceFaultStatsPerSemester($conn);
+        $faultProgress = getMaintenanceFaultProgress($conn);
+        $turnaroundTime = getTurnaroundTimeStats($conn);
+        $categoryStats = getMaintenanceCategoryStats($conn);
+        $complaintHistory = getComplaintCategoryHistory($conn);
+        ?>
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
@@ -58,12 +233,12 @@
             <a href="Z:\Algorithmix-RUMaintained\6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-            <li><a href="HSticketapproval.php"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
-            <li class="active"><a href="#"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="HSDSRequests.php"><i class="fas fa-clipboard-list"></i>Requests</a></li>
-            
-            <li><a href="HSDSNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+        <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>    
+        <li><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="2-MD_TaskAssignment.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li  class="active"><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
+            <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+
         </ul>
         <div class="sidebar-footer">
             <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
@@ -74,7 +249,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>Hall Secretary Dashboard</strong>
+                <strong>Maintenance Staff Dashboard</strong>
             </div>
             <div class="logo"><img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
         </header>
@@ -83,7 +258,7 @@
             <h2>Analytics</h2>
             <div class="filters">
                 <!-- Filters for date, residence, severity, etc. -->
-                <div class="filter-group">
+                <!-- <div class="filter-group">
                     <label for="date-filter">Date Range</label>
                     <select id="date-filter">
                         <option>Last 7 Days</option>
@@ -93,14 +268,14 @@
                         <option value="Month">Last Month</option>
                         <option value="3 months">Last 3 Months</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="residence-filter">Residence</label>
                     <select id="residence-filter">
                         <option>Chris Hani House</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="severity-filter">Severity</label>
                     <select id="severity-filter">
                         <option value="High">High</option>
@@ -108,8 +283,8 @@
                         <option value="low">Low</option>
                         <option value="emergency">Emergency</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="category-filter">Category</label>
                     <select id="category-filter">
                         <option>Any</option>
@@ -119,8 +294,8 @@
                         <option value="broken and repairs">Repairs and breakage</option>
                         <option value="other">Other</option>
                     </select>
-                </div>
-                <div class="filter-group">
+                </div> -->
+                <!-- <div class="filter-group">
                     <label for="status-filter">Status</label>
                     <select id="status-filter">
                         <option>Any</option>
@@ -128,115 +303,176 @@
                         <option value="Pending">Pending</option>
                         <option value="closed">Closed</option>
                     </select>
-                </div>
+                </div> -->
             </div>
 
             <div class="charts-container">
-                <!-- Chart containers -->
-                <div class="chart-box">
-                    <h3>Open Tickets by Day</h3>
-                    <div id="open_tickets_chart" style="width: 100%; height: 300px;"></div>
-                </div>
-                <div class="chart-box">
-                    <h3>Ticket Status Distribution</h3>
-                    <div id="status_chart" style="width: 100%; height: 300px;"></div>
-                </div>
-                <div class="chart-box">
-                    <h3>Average Resolution Time by Category</h3>
-                    <div id="resolution_time_chart" style="width: 100%; height: 300px;"></div>
-                </div>
-                <div class="chart-box">
-                    <h3>Tickets by Severity and Category</h3>
-                    <div id="severity_category_chart" style="width: 100%; height: 300px;"></div>
-                </div>
+            <div class="chart-box">
+                <h3>Semester Maintenance Fault Stats by Res</h3>
+                <canvas id="faultStatsPerSemesterChart" style="width: 100%; height: 300px;"></canvas>
             </div>
-        </div>
+            <div class="chart-box">
+                <h3>Maintenance Fault Progress</h3>
+                <canvas id="faultProgressChart" style="width: 100%; height: 300px;"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>Maintenance Fault Stats by Category</h3>
+                <canvas id="categoryStatsChart" style="width: 100%; height: 300px;"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>History of Complaint Categories</h3>
+                <canvas id="complaintHistoryChart" style="width: 100%; height: 300px;"></canvas>
+            </div>
+
+            <!-- <div class="chart-box">
+                <h3>Average Turnaround Time (in Hours)</h3>
+                <canvas id="turnaroundTimeChart" style="width: 100%; height: 300px;"></canvas>
+            </div> -->
+
+
+            <div>
+                <h3>Average Turnaround Time (in Hours)</h3>
+                <strong><?php echo $turnaroundTime['AvgTurnaroundTime']; ?></strong>
+            </div>
+
     </main>
 
     <script>
-        // Load Google Charts library
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawCharts);
 
-        function drawCharts() {
-            // Sample data for Open Tickets chart
-            var openTicketsData = google.visualization.arrayToDataTable([
-                ['Day', 'Open Tickets'],
-                ['Monday',  12],
-                ['Tuesday',  5],
-                ['Wednesday',  7],
-                ['Thursday',  8],
-                ['Friday',  15],
-                ['Saturday',  6],
-                ['Sunday',  4]
-            ]);
-            var openTicketsOptions = {
-                curveType: 'function',
-                legend: { position: 'bottom' },
-                backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial'
-            };
-            var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
-            openTicketsChart.draw(openTicketsData, openTicketsOptions);
 
-            // Sample data for Status chart
-            var statusData = google.visualization.arrayToDataTable([
-                ['Status', 'Count'],
-                ['Active',  20],
-                ['Pending',  15],
-                ['Closed',  30]
-            ]);
-            var statusOptions = {
-                pieHole: 0.4,
-                backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial'
-            };
-            var statusChart = new google.visualization.PieChart(document.getElementById('status_chart'));
-            statusChart.draw(statusData, statusOptions);
 
-            // Sample data for Resolution Time chart
-            var resolutionTimeData = google.visualization.arrayToDataTable([
-                ['Category', 'Resolution Time (days)'],
-                ['Plumbing', 3],
-                ['Electrical', 2],
-                ['Roofing', 4],
-                ['Repairs', 1],
-                ['Other', 5]
-            ]);
-            var resolutionTimeOptions = {
-                hAxis: { title: 'Category' },
-                vAxis: { title: 'Resolution Time (days)' },
-                backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                legend: 'none'
-            };
-            var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
-            resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
+// Fault Stats per Semester
+const faultStatsData = <?php echo json_encode($faultStatsPerSemester); ?>;
+const faultStatsLabels = faultStatsData.map(data => `${data.ResName} - ${data.Year} ${data.Semester}`);
+const faultStatsCounts = faultStatsData.map(data => data.FaultCount);
+const customColor = '#4E73DF'; // Hex color code
 
-            // Sample data for Severity and Category chart
-            var severityCategoryData = google.visualization.arrayToDataTable([
-                ['Category', 'High', 'Medium', 'Low'],
-                ['Plumbing', 10, 5, 2],
-                ['Electrical', 8, 4, 1],
-                ['Roofing', 6, 3, 1],
-                ['Repairs', 4, 2, 0],
-                ['Other', 12, 6, 3]
-            ]);
-            var severityCategoryOptions = {
-                isStacked: true,
-                hAxis: { title: 'Category' },
-                vAxis: { title: 'Number of Tickets' },
-                backgroundColor: '#f9f9f9',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                legend: { position: 'bottom' }
-            };
-            var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
-            severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
+const faultStatsPerSemesterCtx = document.getElementById('faultStatsPerSemesterChart').getContext('2d');
+new Chart(faultStatsPerSemesterCtx, {
+    type: 'bar',
+    data: {
+        labels: faultStatsLabels,
+        datasets: [{
+            label: 'Fault Count',
+            data: faultStatsCounts,
+            backgroundColor: customColor,  // Set background color to #81589a
+            borderColor: customColor,      // Set border color to #81589a
+            borderWidth: 0,                // Set the border width for the bars
+            fontName: 'Arial'
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
         }
+    }
+});
+
+
+
+
+// Fault Progress
+const faultProgressData = <?php echo json_encode($faultProgress); ?>;
+const faultProgressLabels = ['Total Tickets', 'Resolved Tickets', 'In Progress Tickets'];
+const faultProgressCounts = [faultProgressData.TotalTickets, faultProgressData.ResolvedTickets, faultProgressData.InProgressTickets];
+const customColors = ['#4E73DF', '#8a9dd7', '#b3c6f0'];  // Light shades of purple
+
+const faultProgressCtx = document.getElementById('faultProgressChart').getContext('2d');
+new Chart(faultProgressCtx, {
+    type: 'doughnut',
+    data: {
+        labels: faultProgressLabels,
+        datasets: [{
+            label: 'Fault Progress',
+            data: faultProgressCounts,
+            backgroundColor: customColors,  // Set background colors using light shades of purple
+            borderColor: customColors,      // Set border colors to match the background
+            borderWidth: 0,                 // Set border width
+            fontName: 'Arial'
+        }]
+    },
+    options: {
+        responsive: false,
+    }
+});
+
+
+
+
+
+
+
+// Maintenance Fault Stats by Category
+const categoryStatsData = <?php echo json_encode($categoryStats); ?>;
+const categoryStatsLabels = categoryStatsData.map(data => data.CategoryName);
+const categoryStatsCounts = categoryStatsData.map(data => data.FaultCount);
+
+const categoryStatsCtx = document.getElementById('categoryStatsChart').getContext('2d');
+new Chart(categoryStatsCtx, {
+    type: 'bar',
+    data: {
+        labels: categoryStatsLabels,
+        datasets: [{
+            label: 'Fault Count',
+            data: categoryStatsCounts,
+            backgroundColor: customColor,  // Apply background color for bars
+            borderColor: customColor,      // Apply border color for bars
+            borderWidth: 0,                // Set bar border width
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+
+
+
+        // History of Complaint Categories
+            const complaintHistoryData = <?php echo json_encode($complaintHistory); ?>;
+            const complaintHistoryLabels = complaintHistoryData.map(data => `${data.Year} - ${data.CategoryName}`);
+            const complaintHistoryCounts = complaintHistoryData.map(data => data.FaultCount);
+
+
+            const complaintHistoryCtx = document.getElementById('complaintHistoryChart').getContext('2d');
+            new Chart(complaintHistoryCtx, {
+                type: 'line',
+                data: {
+                    labels: complaintHistoryLabels,
+                    datasets: [{
+                        label: 'Complaint Count',
+                        data: complaintHistoryCounts,
+                        borderColor: customColor,      // Set line color
+                        backgroundColor: customColor,  // Set background color (for points)
+                        pointBackgroundColor: customColor,  // Set point color
+                        fill: false,                   // No area fill below the line
+                        tension: 0.1,                  // Smooth curve
+                        borderWidth: 2                 // Line thickness
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        // Logout confirmation
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+
+
     </script>
       <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -253,5 +489,6 @@
             return confirm("Are you sure you want to log out?");
         }
     </script>
+
 </body>
 </html>
