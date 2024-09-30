@@ -113,10 +113,12 @@ th {
 
 <body>
     <nav id="sidebar" class="sidebar">
+   
         <div class="logo">
-            <span class="user-welcome">Welcome, User</span><!-- Add PHP code here for user name -->
-            <a href="user page"><i class="fas fa-user"></i></a> 
+        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
+        <a href="..\6-UserProfileManagementPage\4-ProfileMS.php"><i class="fas fa-user"></i></a>
         </div>
+
         <ul>
             <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
             <li><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
