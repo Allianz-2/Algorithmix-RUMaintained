@@ -310,6 +310,12 @@ new Chart(faultStatsPerSemesterCtx, {
     window.onresize = function() {
         drawCharts();
     };
+    document.getElementById('hamburger-icon').addEventListener('click', function() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('collapsed');
+    document.querySelector('main').classList.toggle('sidebar-collapsed');
+});
+
     </script>
 </body>
 </html>
