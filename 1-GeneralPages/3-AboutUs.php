@@ -59,7 +59,10 @@
 
     <section class="side-content">
         <h1>About Us</h1>
-        <a href="#" class="cta-button">Meet our team</a>
+<<<<<<< Updated upstream
+=======
+        <!-- <a href="#" class="cta-button">Meet our team</a> -->
+>>>>>>> Stashed changes
     </section>
 
     <section class="main-content">
