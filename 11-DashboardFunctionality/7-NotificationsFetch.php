@@ -58,7 +58,6 @@
             $accessField = 'HSAccesses';
     }
 
-    $tickets_stmt = $conn->prepare($sql_tickets);
 
     if ($_SESSION['role'] !== "HS") {
         $sql_tickets = "SELECT TicketID, Description, Status, DateCreated
@@ -82,6 +81,20 @@
     $tickets_stmt = $conn->prepare($sql_tickets);
     $tickets_stmt->execute();
     $tickets_result = $tickets_stmt->get_result();
+
+    if ($tickets_stmt === false) {
+        die('Prepare failed: ' . htmlspecialchars($conn->error));
+    }
+    
+    $tickets_stmt->bind_param("s", $_SESSION['userID']);
+    if (!$tickets_stmt->execute()) {
+        die('Execute failed: ' . htmlspecialchars($tickets_stmt->error));
+    }
+    
+    $tickets_result = $tickets_stmt->get_result();
+    if ($tickets_result === false) {
+        die('Get result failed: ' . htmlspecialchars($tickets_stmt->error));
+    }
 
     // Variable to track if there's an approved ticket
 
