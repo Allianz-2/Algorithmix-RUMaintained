@@ -230,19 +230,19 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-            <span class="user-welcome">Welcome, User </span>
-            <a href="Z:\Algorithmix-RUMaintained\6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
+        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
+        <a href="..\6-UserProfileManagementPage\4-ProfileMS.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
             <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
-            <li><a href="2-MSAssignedTasks.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="..\1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li><a href="..\2-MSAssignedTasks.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
             <li class="active"><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+            <li><a href="..\4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="..\5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="..\6-UserProfileManagementPage\4-ProfileMS.php"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="..\5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
