@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained Dashboard</title>
+    <title>House Warden Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -56,19 +56,20 @@
     <nav id="sidebar" class="sidebar">
         <div class="logo">
             <span class="user-welcome">Welcome, </span>
-            <a href="Z:\Algorithmix-RUMaintained\6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
+            <a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-            <li><a href="HSticketapproval.php"><i class="fas fa-tasks"></i>Ticket Approvals</a></li>
-            <li class="active"><a href="#"><i class="fas fa-chart-bar"></i>Analytics</a></li>
-            <li><a href="HSDSRequests.php"><i class="fas fa-clipboard-list"></i>Requests</a></li>
-            
-            <li><a href="HSDSNotifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="../7-TicketCreation\1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
+            <li><a href="../3-HWDashboard\1-HWRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
+            <li><a href="../3-HWDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i>Ticket Approvals</a></li>
+            <li class="active"><a href="../3-HWDashboard\3-HWAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
+            <li><a href="../3-HWDashboard\4-HWNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="../3-HWDashboard\5-HWHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+            <p><a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
     <main>

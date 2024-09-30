@@ -4,25 +4,25 @@
     $current_page = basename($_SERVER['PHP_SELF']);
 
     // Role-based access control using if statements
-    if ($current_page === '1-StudentRequests.php') {
+    if ($current_page === '4-StudentNotifications.php') {
         if ($_SESSION['role'] !== 'S' && $_SESSION['role'] !== 'Super') {
             // Redirect to the error page if the user's role is not appropriate
                     header("Location: ../6-UserProfileManagementPage/10-ErrorPage.html");
             exit();
         }
-    } else if ($current_page === '1-HWRequests.php') {
+    } else if ($current_page === '4-HWNotifications.php') {
         if ($_SESSION['role'] !== 'HW' && $_SESSION['role'] !== 'Super') {
             // Redirect to the error page if the user's role is not appropriate
                     header("Location: ../6-UserProfileManagementPage/10-ErrorPage.html");
             exit();
         }
-    } else if ($current_page === '1-HSRequests.php') {
+    } else if ($current_page === '4-HSNotifications.php') {
         if ($_SESSION['role'] !== 'HS' && $_SESSION['role'] !== 'Super') {
             // Redirect to the error page if the user's role is not appropriate
                     header("Location: ../6-UserProfileManagementPage/10-ErrorPage.html");
             exit();
         }
-    } else if ($current_page === '1-MSRequests.php') {
+    } else if ($current_page === '4-MSNotifications.php') {
         if ($_SESSION['role'] !== 'MS' && $_SESSION['role'] !== 'Super') {
             // Redirect to the error page if the user's role is not appropriate
                     header("Location: ../6-UserProfileManagementPage/10-ErrorPage.html");
