@@ -1,13 +1,9 @@
-<?php
-    require_once("../5-UserSignInandRegistration/14-secure.php"); 
-    include '../11-DashboardFunctionality/8-NotificationUpdate.php';
-    
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House Warden Notifications</title>
+    <title>Student Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="6-Notifications.css">
 
@@ -15,21 +11,20 @@
 <body>
     <nav id="sidebar" class="sidebar">
         <div class="logo">
-        <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
-            <a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a> 
+            <span class="user-welcome">Welcome, User </span><!-- Add PHP code here for user name -->
+            <a href="user page"><i class="fas fa-user"></i></a> 
         </div>
         <ul>
-            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="../7-TicketCreation\1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
-            <li><a href="../3-HWDashboard\1-HWRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
-            <li><a href="../3-HWDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i>Ticket Approvals</a></li>
-            <li><a href="../3-HWDashboard\3-HWAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
-            <li class="active"><a href="../3-HWDashboard\4-HWNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li><a href="../3-HWDashboard\5-HWHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+            <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="1-MSRequests.php"><i class="fas fa-tasks"></i> Requests</a></li>
+            <li  class="active"><a href="2-MSAssignedTasks.php"><i class="fas fa-clipboard-list"></i>Task Assignment</a></li>
+            <li><a href="3-MSAnalytics.php"><i class="fas fa-chart-bar"></i>Analytics</a></li>
+            <li><a href="4-MSNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="5-MSHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
-            <p><a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-cog"></i> Settings</a></p>
-            <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
 
@@ -37,7 +32,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>House Warden Dashboard</strong>
+                <strong>Maintenance Staff Dashboard</strong>
             </div>
             <div class="logo">
                 <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo">
@@ -45,33 +40,10 @@
         </header>
 
         <div class="content">
-            <h2>Notifications</h2>
-            <P> <strong></strong> </P> 
+            <h2>Task Assignments</h2>
+           
 
-            <div class="container">
-                <div class="notification-controls">
-                    <!-- <div class="filter-sort">
-                        <select id="filterType">
-                            <option value="">All Notifications</option>
-                            <option value="ticket">Ticket Updates</option>
-                            <option value="system">System Alerts</option>
-                        </select>
-                        <select id="sortOrder">
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                        </select>
-                        
-                    </div> -->
-                    <form method="POST" action="4-HWNotifications.php">
-                        <button type="submit" name="mark_all_as_read" class="btn btn-primary">Mark All as Read</button>
-                    </form>
-                </div>
-        
-                <div class="notification-list">
-                    <?php include '../11-DashboardFunctionality/7-NotificationsFetch.php'; ?>
-                </div>
- 
-            </div>
+  
         
        
 
