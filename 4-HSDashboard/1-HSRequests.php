@@ -114,14 +114,14 @@
     <nav id="sidebar" class="sidebar">
         <div class="logo">
         <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span> <!--  I THINK -->
-            <a href="user-page"><i class="fas fa-user"></i></a>
+            <a href="..\6-UserProfileManagementPage\3-ProfileHS.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
             <li><a href="..\1-GeneralPages\1-Home.php"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="..\4-HSDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
             <li class="active"><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
             <li><a href="..\4-HSDashboard\3-HSAnalytics.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-            <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li><a href="..\4-HSDashboard\4-HSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
             <li><a href="..\4-HSDashboard\5-HSHelp.php"><i class="fas fa-info-circle"></i> Help and Support</a></li>
             
         </ul>
@@ -158,7 +158,7 @@
                 <div class="filter-group">
                     <label for="residence-filter">Residence</label> <!-- DEConfirmed ON PERSONS HALL IT WILL SHOW RELEVANT RESIDENCES USING PHP -->
                     <select id="residence-filter">
-                        <option>Chris Hani House</option>
+                        <option></option>
                     </select>
                 </div>
                 <div class="filter-group">

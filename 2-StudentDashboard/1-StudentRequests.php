@@ -184,7 +184,7 @@
                         <th>Status</th>
                         <th>Severity</th>
                         <th>Date Created</th>
-                        <th>Student Number</th>
+                        <th>Details</th>
                     </tr>
                 </thead>
                 
@@ -196,7 +196,7 @@
                         <td><?php echo $row['Status']; ?></td>
                         <td><?php echo $row['Severity']; ?></td>
                         <td><?php echo $row['DateCreated']; ?></td>
-                        <td><?php echo $row['StudentID']; ?></td>
+                        <td><a href = "#"><button>View</button></a></td>
                     </tr>
                     <?php endwhile; ?>
                 </tbody>
