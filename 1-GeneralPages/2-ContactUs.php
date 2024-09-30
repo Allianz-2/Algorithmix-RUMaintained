@@ -117,6 +117,10 @@
                 <a href="https://www.youtube.com" title="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
         </section>
+        <div>
+        <?php     include '../8-PHPTests/OtherTests/chatbot.php';
+        ?>
+    </div>
     </main>
 
     <footer>
