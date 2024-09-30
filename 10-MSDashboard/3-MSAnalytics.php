@@ -345,7 +345,7 @@
 const faultStatsData = <?php echo json_encode($faultStatsPerSemester); ?>;
 const faultStatsLabels = faultStatsData.map(data => `${data.ResName} - ${data.Year} ${data.Semester}`);
 const faultStatsCounts = faultStatsData.map(data => data.FaultCount);
-const customColor = '#81589a'; // Hex color code
+const customColor = '#4E73DF'; // Hex color code
 
 const faultStatsPerSemesterCtx = document.getElementById('faultStatsPerSemesterChart').getContext('2d');
 new Chart(faultStatsPerSemesterCtx, {
@@ -357,7 +357,7 @@ new Chart(faultStatsPerSemesterCtx, {
             data: faultStatsCounts,
             backgroundColor: customColor,  // Set background color to #81589a
             borderColor: customColor,      // Set border color to #81589a
-            borderWidth: 1,                // Set the border width for the bars
+            borderWidth: 0,                // Set the border width for the bars
             fontName: 'Arial'
         }]
     },
@@ -377,7 +377,7 @@ new Chart(faultStatsPerSemesterCtx, {
 const faultProgressData = <?php echo json_encode($faultProgress); ?>;
 const faultProgressLabels = ['Total Tickets', 'Resolved Tickets', 'In Progress Tickets'];
 const faultProgressCounts = [faultProgressData.TotalTickets, faultProgressData.ResolvedTickets, faultProgressData.InProgressTickets];
-const customColors = ['#81589a', '#9b73b3', '#b58dcb'];  // Different shades of purple
+const customColors = ['#4E73DF', '#8a9dd7', '#b3c6f0'];  // Light shades of purple
 
 const faultProgressCtx = document.getElementById('faultProgressChart').getContext('2d');
 new Chart(faultProgressCtx, {
@@ -387,9 +387,9 @@ new Chart(faultProgressCtx, {
         datasets: [{
             label: 'Fault Progress',
             data: faultProgressCounts,
-            backgroundColor: customColors,  // Set background colors using shades of purple
+            backgroundColor: customColors,  // Set background colors using light shades of purple
             borderColor: customColors,      // Set border colors to match the background
-            borderWidth: 1,                 // Set border width
+            borderWidth: 0,                 // Set border width
             fontName: 'Arial'
         }]
     },
@@ -419,7 +419,7 @@ new Chart(categoryStatsCtx, {
             data: categoryStatsCounts,
             backgroundColor: customColor,  // Apply background color for bars
             borderColor: customColor,      // Apply border color for bars
-            borderWidth: 1,                // Set bar border width
+            borderWidth: 0,                // Set bar border width
         }]
     },
     options: {
