@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RU Maintained House Warden Dashboard</title>
+    <title>House Warden Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Dashboard.css">
     <style>
@@ -18,19 +18,22 @@
     <nav id="sidebar" class="sidebar">
         <div class="logo">
             <span class="user-welcome">Welcome,  </span><!-- Add PHP code for user name -->
-            <a href="user-page"><i class="fas fa-user"></i></a>
+            <a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-user"></i></a>
         </div>
         <ul>
-        <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
-            <li><a href="HSticketapproval.php"><i class="fas fa-check-circle"></i> Ticket Approvals</a></li>
-            <li><a href="HSAnalyticsFinal.php"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-            <li class="active"><a href="#"><i class="fas fa-tasks"></i> Requests</a></li>
-            
-            <li><a href="HSDSNotifications.php"><i class="fas fa-bell"></i> Notifications</a></li>
-            <li><a href="1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="../7-TicketCreation\1-TicketCreation.php"><i class="fas fa-ticket"></i>Create Ticket</a></li>
+            <li class="active"><a href="../3-HWDashboard\1-HWRequests.php"><i class="fas fa-tools"></i>Ticket Requests</a></li>
+            <li><a href="../3-HWDashboard\2-TicketApproval.php"><i class="fas fa-check-circle"></i>Ticket Approvals</a></li>
+            <li><a href="../3-HWDashboard\3-HWAnalytics.php"><i class="fas fa-chart-line"></i>Analytics</a></li>
+            <li><a href="../3-HWDashboard\4-HWNotifications.php"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="../3-HWDashboard\5-HWHelp.php"><i class="fas fa-info-circle"></i>Help and Support</a></li>
         </ul>
+
+
+
         <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="../6-UserProfileManagementPage\2-ProfileHW.php"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="#" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>
@@ -46,128 +49,132 @@
             </div>
         </header>
         <div class="content">
-            <h2>Requests</h2>
-            <div class="filters">
-                <div class="filter-group">
-                    <label for="date-filter">Date Range</label>
-                    <select id="date-filter">
-                        <option>Last 7 Days</option>
-                        <option value="yesterday">Yesterday</option>
-                        <option value="today">Today</option>
-                        <option value="2 weeks">Last 2 weeks</option>
-                        <option value="Month">Last Month</option>
-                        <option value="3 months">Last 3 Months</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="residence-filter">Residence</label> <!-- DEPENDING ON PERSONS HALL IT WILL SHOW RELEVANT RESIDENCES USING PHP -->
-                    <select id="residence-filter">
-                        <option>Chris Hani House</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="severity-filter">Severity</label>
-                    <select id="severity-filter">
-                        <option value="High">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                        <option value="emergency">Emergency</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="category-filter">Category</label>
-                    <select id="category-filter">
-                        <option>Any</option>
-                        <option value="Plumbing">Plumbing</option>
-                        <option value="electrical">Electrical</option>
-                        <option value="roofing">Roofing</option>
-                        <option value="broken and repairs">Repairs and breakage</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="status-filter">Status</label>
-                    <select id="status-filter">
-                        <option>Any</option>
-                        <option value="active">Active</option>
-                        <option value="Pending">Pending</option>
-                        <option value="closed">Closed</option>
-                    </select>
-                </div>
+            <h2>My Ticket Requests</h2>
             </div>
 
-        <?php 
-   // Check if the session variable is set and user is logged in
-   //if (!isset($_SESSION['UserID'])) {
-      // die('Unauthorized access'); // Redirect or show an error
-   // 
-   
-   // Get the housewarden ID from the session
-   
-   // Include the config file to get DB credentials
-   require_once('../8-PHPTests/config.php');
-   
-   // Initializes MySQLi
-   $conn = mysqli_init();
-   
-   // Test if the CA certificate file can be read
-   if (!file_exists($ca_cert_path)) {
-       die("CA file not found: " . $ca_cert_path);
-   }
-   
-   mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-   
-   // Establish the connection
-   mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-   
-   // If connection failed, show the error
-   if (mysqli_connect_errno()) {
-       die('Failed to connect to MySQL: ' . mysqli_connect_error());
-   }
+            <?php 
 
-   $sql = "SELECT * FROM ticket WHERE Status= 'Open' AND HouseWardenID = ?";
-   $stmt = $conn->prepare($sql);
-   $stmt->bind_param("s", $_SESSION['userID']);
-   $stmt->execute();
-   $result = $stmt->get_result();
-   $stmt->fetch();
-   $stmt->close();
+require '../8-PHPTests/config.php';
 
-   // Total tickets
-$stmt = $conn->prepare("SELECT COUNT(*) as TotalTickets FROM ticket WHERE HouseWardenID = ?");
+    
+$conn = mysqli_init(); 
+if (!file_exists($ca_cert_path)) {
+    die("CA file not found: " . $ca_cert_path);
+}
+mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
+
+if (mysqli_connect_errno()) {
+    die('Failed to connect to MySQL: ' . mysqli_connect_error());
+}
+
+// HOUSE WARDEN TICKETS START
+
+$sql = "SELECT * FROM ticket WHERE HouseWardenID = ? AND StudentID = NULL";
+$stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $_SESSION['userID']);
 $stmt->execute();
-$totalTickets = $stmt->get_result()->fetch_assoc()['TotalTickets'];
-$stmt->close();
+$result = $stmt->get_result(); // Fetch results using get_result()
+$stmt->close(); 
 
-// Pending tickets
-$stmt = $conn->prepare("SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status = 'Open' AND HouseWardenID = ?");
-$stmt->bind_param("s", $_SESSION['userID']);
-$stmt->execute();
-$pendingTickets = $stmt->get_result()->fetch_assoc()['PendingTickets'];
-$stmt->close();
 
-// Completed tickets
-$stmt = $conn->prepare("SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = '
-closed' AND HouseWardenID = ?");
-$stmt->bind_param("s", $_SESSION['userID']);
-$stmt->execute();
-$completedTickets = $stmt->get_result()->fetch_assoc()['CompletedTickets'];
-$stmt->close();
+?>
 
-// Viewed tickets
-$stmt = $conn->prepare("
-    SELECT COUNT(*) as ViewedTickets FROM ticketcomment 
-    WHERE TicketID IN (SELECT TicketID FROM ticket WHERE Status IN ('Resolved', 'Closed') AND HouseWardenID = ?)
-");
-$stmt->bind_param("s", $_SESSION['userID']);
-$stmt->execute();
-$viewedTickets = $stmt->get_result()->fetch_assoc()['ViewedTickets'];
-$stmt->close();
 
-// Close the connection
-mysqli_close($conn);
- ?>
+    <table>
+        <thead>
+            <tr>
+                <th>Ticket ID</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Severity</th>
+                <th>Date Created</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <tr>
+                <td><?php echo $row['TicketID']; ?></td>
+                <td><?php echo $row['Description']; ?></td>
+                <td><?php echo $row['Status']; ?></td>
+                <td><?php echo $row['Severity']; ?></td>
+                <td><?php echo $row['DateCreated']; ?></td>
+                <td><a href = "#"><button>View</button></a></td>
+                
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+            <div class="content">
+            <h2>My Residence Ticket Requests</h2>
+            </div>
+
+
+            <?php
+
+
+        $sql = "SELECT ResidenceID FROM residence WHERE HouseWardenID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $_SESSION['userID']);
+        $stmt->execute();
+        $stmt->bind_result($resID);
+        $stmt->fetch();
+        $stmt->close(); 
+
+        $sql = "SELECT * FROM ticket WHERE ResidenceID = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $resID);
+        $stmt->execute();
+        $resultRes = $stmt->get_result(); // Fetch results using get_result()
+        $stmt->close(); 
+
+
+        $stmt = $conn->prepare("SELECT COUNT(*) as TotalTickets FROM ticket WHERE ResidenceID = ?");
+        $stmt->bind_param("s", $resID); 
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $totalTickets = $result->fetch_assoc()['TotalTickets'];
+        $stmt->close();
+        
+        
+        $stmt = $conn->prepare("SELECT COUNT(*) as PendingTickets FROM ticket WHERE Status NOT IN (?, ?) AND ResidenceID = ?");
+        $status1 = 'Rejected';
+        $status2 = 'Closed';
+        $stmt->bind_param("sss", $status1, $status2, $resID); 
+        $stmt->execute();
+        $result = $stmt->get_result(); // Get the result set from the statement
+        $pendingTickets = $result->fetch_assoc()['PendingTickets']; // Fetch the count
+        $stmt->close();
+
+
+        $stmt = $conn->prepare("SELECT COUNT(*) as CompletedTickets FROM ticket WHERE Status = ? AND ResidenceID = ?");
+        $status = 'Closed';
+        $stmt->bind_param("ss", $status, $resID); 
+        $stmt->execute();
+        $result = $stmt->get_result(); // Get the result set from the statement
+        $completedTickets = $result->fetch_assoc()['CompletedTickets']; // Fetch the count
+        $stmt->close();
+
+        $stmt = $conn->prepare("SELECT COUNT(*) as ViewedTickets FROM ticket WHERE Status IN (?,?) AND ResidenceID = ?");
+        $status3 = 'Closed';
+        $status4 = 'Resolved';
+        $stmt->bind_param("sss", $status3, $status4, $resID); 
+        $stmt->execute();
+        $result = $stmt->get_result(); // Get the result set from the statement
+        $viewedTickets = $result->fetch_assoc()['ViewedTickets']; // Fetch the count
+        $stmt->close();
+
+            
+        ?>
+
+        
         <div class="content">
            
             <div class="charts">
@@ -197,7 +204,6 @@ mysqli_close($conn);
 
             <table>
                 <thead>
-                    <h3>Maintenance Requests:</h3>
                     <tr>
                         <th>Ticket ID</th>
                         <th>Description</th>
@@ -209,7 +215,7 @@ mysqli_close($conn);
                 </thead>
                 
                 <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php while ($row = $resultRes->fetch_assoc()): ?>
                     <tr>
                         <td><?php echo $row['TicketID']; ?></td>
                         <td><?php echo $row['Description']; ?></td>
