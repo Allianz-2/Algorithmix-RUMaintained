@@ -80,8 +80,8 @@
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
                 <strong>Hall Secretary Dashboard</strong>
             </div>
-            <a href="../1-GeneralPages/1-Home.php">
-            <div class="logo"><img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="rumaintained logo"></div>
+            <p><a href="..\6-UserProfileManagementPage\3-ProfileHS.php"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="..\5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
             </a>
         </header>
 
