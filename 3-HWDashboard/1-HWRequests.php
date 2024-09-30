@@ -10,8 +10,96 @@
     <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Dashboard.css">
-    <style>
- 
+
+   <style> table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            background-color: white;
+        }
+
+        th {
+            background-color: #81589a;
+            color: #fff;
+        }
+
+        .filters,
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .filter-group {
+            flex: 1;
+        }
+
+        .stat-box {
+            background-color: white;
+            color: #81589a;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            flex: 1;
+            margin: 10px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-box h4 {
+            margin: 10px 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .stat-box p {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 40px;
+            color: #5c4b8a;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .charts {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .chart-box {
+            background-color: white;
+            color: #81589a;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 48%;
+        }
+    
     </style>
 </head>
 

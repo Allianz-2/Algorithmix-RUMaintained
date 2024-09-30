@@ -157,10 +157,10 @@
                     <h3>Open Tickets Over Time</h3>
                     <div id="open_tickets_chart" style="width: 100%; height: 300px;"></div>
                 </div>
-                <div class="chart-box">
+                <!-- <div class="chart-box">
                     <h3>Ticket Status Distribution</h3>
                     <div id="status_chart" style="width: 100%; height: 300px;"></div>
-                </div>
+                </div> -->
                 <div class="chart-box">
                     <h3>Average Resolution Time by Category</h3>
                     <div id="resolution_time_chart" style="width: 100%; height: 300px;"></div>
