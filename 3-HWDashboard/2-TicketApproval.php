@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch tickets
-$sql = "SELECT * FROM ticket WHERE Status= 'Open' AND HouseWardenID = ?";
+$sql = "SELECT * FROM ticket WHERE HouseWardenID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $_SESSION['userID']);
 $stmt->execute();
@@ -129,10 +129,8 @@ $stmt->close();
                             <th>Status</th>                           
                             <th>Fault Description</th>
                             <th>Severity</th>
-                            <th>Approve</th>
-                            <th>Deny</th>
+
                             <th>Details</th>
-                            <th>Comments</th>
                         </tr>
                         </thead>
                         <tbody>";
@@ -145,22 +143,8 @@ $stmt->close();
                     echo "<td>{$row['Status']}</td>";
                     echo "<td>{$row['Description']}</td>";
                     echo "<td>{$row['Severity']}</td>";
-                    echo "<td>
-                            <form method='POST'>
-                                <input type='hidden' name='ticketID' value='{$row['TicketID']}'>
-                                <input type='hidden' name='action' value='approve'>
-                                <button type='submit' style='background:none!important; border:none; padding:0!important; font-family:inherit; /*optional*/ font-size:inherit; /*optional*/ color:blue; cursor:pointer;'>Approve</button>
-                            </form>
-                          </td>";
-                    echo "<td>
-                            <form method='POST'>
-                                <input type='hidden' name='ticketID' value='{$row['TicketID']}'>
-                                <input type='hidden' name='action' value='deny'>
-                                <button type='submit' style='background:none!important; border:none; padding:0!important; font-family:inherit; /*optional*/ font-size:inherit; /*optional*/ color:blue; cursor:pointer;'>Deny</button>
-                            </form>
-                          </td>";
+
                     echo "<td><a href='../7-TicketCreation/7-TicketStatus.php?ticketID=" . urlencode($row['TicketID']) . "'>View</a></td>";
-                    echo "<td></td>"; // Placeholder for comments
                     echo "</tr>";
                 }
 
