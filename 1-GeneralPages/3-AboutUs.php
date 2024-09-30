@@ -95,27 +95,27 @@
             <div class="team-section">
                 <div class="team-member">
                     <img src="../Images\General\Daniel.jpg" alt="Project Manager">
-                    <p>Project Manager</p>
+                    <p><strong>Project Manager</strong></p>
                     <p>Daniel Spies</p>
                 </div>
                 <div class="team-member">
                     <img src="../Images\General\Kate.jpg" alt="System Developer">
-                    <p>System Analyst</p>
+                    <p><strong>System Analyst</strong></p>
                     <p>Kate Jackson-Moss</p>
                 </div>
                 <div class="team-member">
                     <img src="../Images\General\Nelly.JPG" alt="System Analyst">
-                    <p>System Analyst</p>
+                    <p><strong>System Analyst</strong></p>
                     <p>Naledi Mabusela</p>
                 </div>
                 <div class="team-member">
                     <img src="../Images\General\Thule.jpg" alt="System Analyst">
-                    <p>System Analyst</p>
+                    <p><strong>System Analyst</strong></p>
                     <p>Thulebona Tsele </p>
                 </div>
                 <div class="team-member">
                     <img src="../Images\General\Yolo.jpg" alt="System Analyst">
-                    <p>System Analyst</p>
+                    <p><strong>System Analyst</strong></p>
                     <p>Banoyolo Sicwebu</p>
                 </div>
             </div>
