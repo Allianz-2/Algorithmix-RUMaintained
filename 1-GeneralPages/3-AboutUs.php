@@ -33,7 +33,8 @@
                                 <a href="">Services ▾</a>
                                 <div class="dropdown-content">
                                     <a href="../7-TicketCreation/1-TicketCreation.php">Create Ticket</a>
-                                    <a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a></div></div>';
+                                    <a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a>
+                                    <a href="../1-GeneralPages/6-RedirectDashboard.php">Dashboard</a></div></div>';
 
                     }
                 ?>
@@ -59,7 +60,7 @@
 
     <section class="side-content">
         <h1>About Us</h1>
-        <a href="#" class="cta-button">Meet our team</a>
+
     </section>
 
     <section class="main-content">

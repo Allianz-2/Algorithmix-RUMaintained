@@ -100,7 +100,7 @@
             <li><a href="..\4-HSDashboard\5-HSHelp.php"><i class="fas fa-info-circle"></i> Help and Support</a></li>
         </ul>
         <div class="sidebar-footer">
-            <p><a href="#"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="..\6-UserProfileManagementPage\3-ProfileHS.php"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="..\5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
     </nav>

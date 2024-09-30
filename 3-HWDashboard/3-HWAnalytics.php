@@ -265,7 +265,7 @@ new Chart(faultStatsPerSemesterCtx, {
 
         // Average Resolution Time by Category chart data
         var resolutionTimeData = google.visualization.arrayToDataTable([
-            ['Category', 'Average Resolution Time'],
+            ['Category', 'Average Resolution Days'],
             <?php
                 foreach ($resolutionTimeData as $data) {
                     echo "['".$data[0]."', ".$data[1]."],";
@@ -273,7 +273,7 @@ new Chart(faultStatsPerSemesterCtx, {
             ?>
         ]);
         var resolutionTimeOptions = {
-            title: 'Average Resolution Time by Category',
+            title: 'Average Resolution Days by Category',
             legend: { position: 'bottom' },
             colors: [
     '#36B9CC', ]
@@ -314,6 +314,12 @@ new Chart(faultStatsPerSemesterCtx, {
     window.onresize = function() {
         drawCharts();
     };
+    document.getElementById('hamburger-icon').addEventListener('click', function() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('collapsed');
+    document.querySelector('main').classList.toggle('sidebar-collapsed');
+});
+
     </script>
 </body>
 </html>
