@@ -76,8 +76,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House Warden Dashboard</title>
-    <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
+    <title>RU Maintained Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -157,10 +156,10 @@
                     <h3>Open Tickets Over Time</h3>
                     <div id="open_tickets_chart" style="width: 100%; height: 300px;"></div>
                 </div>
-                <!-- <div class="chart-box">
+                <div class="chart-box">
                     <h3>Ticket Status Distribution</h3>
                     <div id="status_chart" style="width: 100%; height: 300px;"></div>
-                </div> -->
+                </div>
                 <div class="chart-box">
                     <h3>Average Resolution Time by Category</h3>
                     <div id="resolution_time_chart" style="width: 100%; height: 300px;"></div>
@@ -181,6 +180,7 @@
 
 
         
+
 
 
 

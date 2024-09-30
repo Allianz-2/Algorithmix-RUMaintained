@@ -279,6 +279,24 @@ input[type="text"], select, textarea, option {
     gap: 10px;
 }
 
+.button-group input[type="submit"] {
+    background-color: #81589a; /* Purple background to match theme */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.button-group input[type="submit"]:hover {
+    background-color: #666; /* Darker shade of purple on hover */
+}
+
 .btn {
     padding: 10px 20px;
     border: none;
