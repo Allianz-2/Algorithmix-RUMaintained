@@ -1,7 +1,7 @@
 <?php
 require_once("../5-UserSignInandRegistration/14-secure.php"); 
 require_once('../8-PHPTests/config.php');
-include '..\11-DashboardFunctionality\2-PermissionApproval.php';
+// include '..\11-DashboardFunctionality\2-PermissionApproval.php';
 
 // Initialize MySQLi
 $conn = mysqli_init();

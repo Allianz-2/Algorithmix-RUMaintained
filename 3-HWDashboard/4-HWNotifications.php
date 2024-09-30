@@ -1,7 +1,7 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
     include '../11-DashboardFunctionality/8-NotificationUpdate.php';
-    include '../11-DashboardFunctionality\4-PermissionNotifications.php';
+    // include '../11-DashboardFunctionality\4-PermissionNotifications.php';
 
     
 ?><!DOCTYPE html>
