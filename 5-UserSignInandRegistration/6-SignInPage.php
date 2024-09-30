@@ -18,8 +18,8 @@
             </div>
         </div>
         <div class="right-panel">
-            <h1>Welcome back to RUMaintained</h1>
-            <h2>Sign In</h2>
+            <h1><strong>Welcome back to RUMaintained!</strong></h1><br><br><br>
+
 
             <form action="6-SignInPage.php" method="POST" id="signin-form">
                 <div class="form-group">

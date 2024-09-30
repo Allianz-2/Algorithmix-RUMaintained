@@ -19,16 +19,16 @@
             </div>
         </div>
         <div class="right-panel">
-            <h1>Maintenance Staff Registration</h1>
+            <h1><strong>Maintenance Staff Registration</strong></h1>
             <form action="4-MaintenanceStaffRegistration.php" method="POST" id="registration-form">
                 <input type="hidden" id="role" name="role" value="MS">
 
                 <div class="form-group">
-                    <label for="firstname">Firstname</label>
+                    <label for="firstname">First Name</label>
                     <input type="text" id="firstname" name="firstname" required>
                 </div>
                 <div class="form-group">
-                    <label for="lastname">Lastname</label>
+                    <label for="lastname">Last Name</label>
                     <input type="text" id="lastname" name="lastname" required>
                 </div>
                 <div class="form-group">
@@ -74,7 +74,7 @@
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
                     <label for="termsAndConditions">
-                        I accept the <a href="../3-UserRegistration/1-TermsPolicy.html" id="termsLink">Terms and Conditions</a>
+                        I accept the <a href="../5-UserSignInandRegistration\8-TermsAndPolicy.html" id="termsLink">Terms and Conditions</a>
                     </label>
                 </div>
 

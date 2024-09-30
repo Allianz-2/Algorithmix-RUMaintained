@@ -19,16 +19,16 @@
             </div>
         </div>
         <div class="right-panel">
-            <h1>Hall Secretary Registration</h1>
+            <h1><strong>Hall Secretary Registration</strong></h1>
             <form action="2-HallSecretaryRegistration.php" method="post" id="registration-form">
             <input type="hidden" id="role" name="role" value="HS">
 
             <div class="form-group">
-                    <label for="firstname">Firstname</label>
+                    <label for="firstname">First Name</label>
                     <input type="text" id="firstname" name="firstname" required>
                 </div>
                 <div class="form-group">
-                    <label for="lastname">Lastname</label>
+                    <label for="lastname">Last Name</label>
                     <input type="text" id="lastname" name="lastname" required>
                 </div>
                 <div class="form-group">
