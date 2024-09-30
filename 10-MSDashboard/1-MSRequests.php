@@ -460,6 +460,8 @@
                 
                 <tbody>
                     <?php while ($row = mysqli_fetch_assoc($results)): ?>
+                        <?php if ($row['Status'] === 'Requisitioned'): ?>
+
                     <tr>
                         <td><?php echo $row['TicketID']; ?></td>
                         <td><?php echo $row['Description']; ?></td>
@@ -468,6 +470,8 @@
                         <td><?php echo $row['DateCreated']; ?></td>
                         <td><?php echo $row['StudentID']; ?></td>
                     </tr>
+                    <?php endif; ?>
+
                     <?php endwhile; ?>
                 </tbody>
             </table>
