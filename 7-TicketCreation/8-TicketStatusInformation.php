@@ -1,24 +1,6 @@
 <?php
 if (isset($_GET['ticketID'])) {
-    require_once('../8-PHPTests/config.php');
-
-    // Initializes MySQLi
-    $conn = mysqli_init();
-
-    // Test if the CA certificate file can be read
-    if (!file_exists($ca_cert_path)) {
-    die("CA file not found: " . $ca_cert_path);
-    }
-
-    mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-
-    // Establish the connection
-    mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-    // If connection failed, show the error
-    if (mysqli_connect_errno()) {
-    die('Failed to connect to MySQL: ' . mysqli_connect_error());
-    }
+    include '../8-PHPTests/connectionAzure.php';
 
     $ticketID = $_GET['ticketID'];
 
@@ -96,6 +78,8 @@ if (isset($_GET['ticketID'])) {
         while ($row = $result->fetch_assoc()) {
             $comments[] = $row['CommentText'];
         }
+        $comments[] = $_SESSION['Firstname'] . " " . $_SESSION['Lastname'] . " - " . $_SESSION['userID'];
+        $commentsString = implode(", ", $comments); 
         $stmt->close();
 
         // Use the fields and comments as needed

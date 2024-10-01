@@ -1,6 +1,7 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
     include '../11-DashboardFunctionality\1-PermissionRequests.php';
+    include '../2-StudentDashboard/7-ResidenceInformation.php';
 
 ?>
 <!DOCTYPE html>
@@ -8,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House Warden Dashboard</title>
+    <title><?php echo $_SESSION['Firstname']?>'s Dashboard</title>
     <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="Dashboard.css">
@@ -133,7 +134,7 @@
         <header>
             <div class="header-left">
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
-                <strong>House Warden Dashboard</strong>
+                <strong><?php echo $_SESSION['Firstname']?>'s Dashboard</strong>
             </div>
             <div class="logo">
             <a href="../1-GeneralPages/1-Home.php">
@@ -207,7 +208,7 @@ if ($result && mysqli_num_rows($result) > 0): ?>
 
 
             <div class="content">
-            <h2>My Residence Ticket Requests</h2>
+            <h2>My Residence Ticket Requests - <?php echo $residenceName ?></h2>
             </div>
 
 

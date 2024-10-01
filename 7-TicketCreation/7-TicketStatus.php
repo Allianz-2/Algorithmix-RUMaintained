@@ -97,7 +97,7 @@
                     <div class="form-group">
                         <label for="description">Description of Fault:</label>
                         <div class="input-container">
-                            <input type="text" id="description" name="description" value="<?php echo htmlspecialchars($Description); ?>" readonly>
+                            <input type="text" id="description" name="description" value="<?php echo htmlspecialchars($Description); ?>" readonly style="color: purple;">
                         </div>
                     </div>
                     <div class="form-group">
@@ -137,7 +137,7 @@
                     <div class = "form-group">
                         <label for="residence">Residence:</label>
                         <div class="input-container">
-                            <input type="text" id="residence" name="residence" value=<?php echo $ResidenceName?> readonly>
+                            <input type="text" id="residence" name="residence" value="<?php echo htmlspecialchars($ResidenceName);?>" readonly style="color: grey;">
                         </div>
                     </div>
                     
@@ -157,7 +157,7 @@
                         <div class="form-group">
                             <label for="existing-comments">Existing Comments:</label>
                             <div class="input-container">
-                                <textarea id="existing-comments" name="existing-comments" readonly><?php
+                                <textarea id="existing-comments" name="existing-comments" readonly style="color: purple;"><?php
                                     foreach ($comments as $comment) {
                                         echo htmlspecialchars($comment) . "\n";
                                     }
