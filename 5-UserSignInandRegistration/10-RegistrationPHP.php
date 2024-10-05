@@ -1,5 +1,6 @@
 <?php
 if (isset($_POST['submit'])) {
+    unset($_POST['submit']);
     require '../8-PHPTests/config.php';
 
     // Initializes MySQLi
@@ -27,9 +28,9 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
     $email = strtoupper($_POST['email_address']);
     $resID = $_POST['residenceID'];
-    $hallID = $_POST['hall'];
+    $hallID = isset($_POST['hall']) ? $_POST['hall'] : '';
     $role = $_POST['role'];
-    $specialisation = $_POST['specialisation'];
+    $specialisation = isset($_POST['specialisation']) ? $_POST['specialisation'] : '';
 
     if ($role == "HW") {
         $stmt = $conn->prepare("SELECT HouseWardenID FROM residence WHERE ResidenceID = ?");
@@ -65,10 +66,15 @@ if (isset($_POST['submit'])) {
             exit();
         }
     }
+
     // Check if the user already exists and is inactive
     $stmt = $conn->prepare("SELECT status FROM user WHERE UserID = ?");
     if ($stmt === false) {
-        die('Prepare failed at line ' . __LINE__ . ': ' . htmlspecialchars($conn->error));
+        echo "<script>
+            alert('Prepare failed at line " . __LINE__ . ": " . htmlspecialchars($conn->error) . "');
+            window.history.back(); // Redirect back to the form or previous page
+        </script>";
+        exit();
     }
     $stmt->bind_param("s", $userID);
     $stmt->execute();
@@ -107,6 +113,15 @@ if (isset($_POST['submit'])) {
         window.location.href = '6-SignInPage.php'; // Redirect to login page
         </script>";
         
+    } 
+    else if ($status === "Active") {
+        echo "<script>
+        alert('User is already active. No changes were made.');
+        window.history.back(); // Redirect back to the form or previous page
+        </script>";
+        return; // Stop further execution
+    
+
     } else {
         // Prepare the SQL statement
         $stmt1 = $conn->prepare("INSERT INTO user (UserID, Firstname, Lastname, Password, Email_Address, Role) VALUES (?, ?, ?, ?, ?, ?)");
