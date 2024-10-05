@@ -19,11 +19,11 @@
          die('Failed to connect to MySQL: ' . mysqli_connect_error());
      }
 
-     $sql = "SELECT Firstname, Lastname, Email_Address, Role FROM user WHERE UserID = ?";
+     $sql = "SELECT Firstname, Lastname, Email_Address, Role, ProfilePhoto FROM user WHERE UserID = ?";
      $stmt = $conn->prepare($sql);
      $stmt->bind_param("s", $_SESSION['userID']);
      $stmt->execute();
-     $stmt->bind_result($firstname, $lastname, $email, $role);
+     $stmt->bind_result($firstname, $lastname, $email, $role, $photoPath);
      $stmt->fetch();
      $stmt->close();
 

@@ -203,51 +203,45 @@
                     <?php endif; ?>
                     <div class="separator"></div>
 
-                    <div class="section-title">Additional Information</div>
-                    
-                    <!-- <div class="form-group">
-                        <label for="affected-items">Affected Items:</label>
-                        <div class="input-container">
-                            <input type="text" id="affected-items" name="affected-items" placeholder="e.g. damaged floor and sink">
-                        </div>
-                    </div> -->
-                    
-                    <?php if (!empty($comments)): ?>
-                        <div class="form-group">
-                            <label for="existing-comments">Existing Comments:</label>
-                            <div class="input-container">
-                                <textarea id="existing-comments" name="existing-comments" readonly style="color: purple;" rows="5" cols="50"><?php
-                                    foreach ($comments as $comment) {
-                                        echo htmlspecialchars($comment) . "\n";
-                                    }
-                                ?></textarea>
+                    <?php if (!empty($comments) || !empty($photoPath)): ?>
+                        <div class="section-title">Additional Information</div>
+                        
+                        <?php if (!empty($comments)): ?>
+                            <div class="form-group">
+                                <label for="existing-comments">Existing Comments:</label>
+                                <div class="input-container">
+                                    <textarea id="existing-comments" name="existing-comments" readonly style="color: purple;" rows="5" cols="50"><?php
+                                        foreach ($comments as $comment) {
+                                            echo htmlspecialchars($comment) . "\n";
+                                        }
+                                    ?></textarea>
+                                </div>
                             </div>
-                        </div>
+                        <?php endif; ?>
+
+                        <?php if (  $_SESSION['role'] === 'HW' && $Status === "Open" || 
+                                    $_SESSION['role'] === 'MS' && $Status === "Requisitioned" || 
+                                    $_SESSION['role'] === 'HS' && $Status === "Confirmed"): ?>
+                            <div class="form-group">
+                                <label for="new-comment">Add New Comment:</label>
+                                <div class="input-container">
+                                    <textarea id="new-comment" name="new-comment" placeholder="Please enter additional comments on issue"></textarea>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if (!empty($photoPath)): ?>
+                            <div class="form-group">
+                                <label for="photo">Uploaded Photo:</label>
+                                <div class="upload-area">
+                                    <div class="uploaded-photo">
+                                        <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="Uploaded Photo" style="max-width: 100%; height: auto;">
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     <?php endif; ?>
 
-                    <?php if (  $_SESSION['role'] === 'HW' && $Status === "Open" || 
-                                $_SESSION['role'] === 'MS' && $Status === "Requisitioned" || 
-                                $_SESSION['role'] === 'HS' && $Status === "Confirmed"): ?>
-                        <div class="form-group">
-                            <label for="new-comment">Add New Comment:</label>
-                            <div class="input-container">
-                                <textarea id="new-comment" name="new-comment" placeholder="Please enter additional comments on issue"></textarea>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <div class="form-group">
-                        <label for="photo">Uploaded Photo:</label>
-                        <div class="upload-area">
-                            <?php if (!empty($photoPath)): ?>
-                                <div class="uploaded-photo">
-                                    <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="Uploaded Photo" style="max-width: 100%; height: auto;">
-                                </div>
-                            <?php else: ?>
-                                <p>No photo uploaded.</p>
-                            <?php endif; ?>
-                        </div>
-                    </div>
 
 
                     <div class="form-group">

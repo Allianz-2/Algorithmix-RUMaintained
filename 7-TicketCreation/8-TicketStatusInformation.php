@@ -38,6 +38,10 @@ if (isset($_GET['ticketID'])) {
         if ($stmt === false) {
             die('Prepare failed: ' . htmlspecialchars($conn->error));
         }
+
+        
+
+
         $stmt->bind_param('s', $userID);
         $stmt->execute();
         $stmt->bind_result($firstName, $lastName);
@@ -61,7 +65,7 @@ if (isset($_GET['ticketID'])) {
         $stmt->close();
 
         if (empty($photoPath)) {
-            $photoPath = "No photo available";
+            $photoPath = "";
         }
 
 
