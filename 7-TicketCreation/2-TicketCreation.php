@@ -48,61 +48,6 @@
             die('Execute failed: ' . htmlspecialchars($SQL_res->error));
         }
 
-        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-            $photo = $_FILES['photo'];
-            
-            // Correct the name reference
-            $photoName = "P" . strval(time()) . "." . pathinfo($photo['name'], PATHINFO_EXTENSION);
-            $photoPath = "../Images/TicketPictures/" . $photoName;
-            $dateUploaded = strval(date("Y-m-d H:i:s"));
-        
-            // Ensure the target directory exists
-            if (!is_dir("../Images/TicketPictures/")) {
-                if (!mkdir("../Images/TicketPictures/", 0777, true)) {
-                    die('Failed to create directories...');
-                }
-            }
-            // Move the uploaded file to the desired directory
-            if (move_uploaded_file($photo['tmp_name'], $photoPath)) {
-                $photoID = 'P' . uniqid();
-        
-                // Prepare the SQL statement to insert the photo information into the photo table
-                $SQL_photo = $conn->prepare("
-                    INSERT INTO photo (PhotoID, PhotoPath, DateUploaded, TicketID)
-                    VALUES (?, ?, ?, ?)
-                ");
-        
-                if ($SQL_photo === false) {
-                    die('Prepare failed: ' . htmlspecialchars($conn->error));
-                }
-        
-                // Bind the parameters
-                $SQL_photo->bind_param("ssss", $photoID, $photoPath, $dateUploaded, $ticketID);
-        
-                // Execute the statement and check for success
-                if (!$SQL_photo->execute()) {
-                    echo "<script>
-                    alert('Photo insertion failed!');
-                    </script>";
-                } 
-                $SQL_photo->close();
-            } else {
-                echo "<script>
-                    alert('Failed to move uploaded file!');
-                    </script>";
-            }
-        }
-         else {
-            echo "<script>
-                alert('No file uploaded or upload error!');
-                </script>";
-        }
-
-
-
-
-
-
         $SQL = $conn->prepare("INSERT INTO ticket (TicketID, Status, Description, Severity, DateCreated, ResidenceID, StudentID, HouseWardenID, CategoryID)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
@@ -133,6 +78,55 @@
                             </script>";
                         } 
                     $SQL_comment->close();
+                }
+                if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                    $photo = $_FILES['photo'];
+                    
+                    // Correct the name reference
+                    $photoName = "P" . strval(time()) . "." . pathinfo($photo['name'], PATHINFO_EXTENSION);
+                    $photoPath = "../Images/TicketPictures/" . $photoName;
+                    $dateUploaded = date("Y-m-d H:i:s");
+                
+                    // Ensure the target directory exists
+                    if (!is_dir("../Images/TicketPictures/")) {
+                        if (!mkdir("../Images/TicketPictures/", 0777, true)) {
+                            die('Failed to create directories...');
+                        }
+                    }
+                    // Move the uploaded file to the desired directory
+                    if (move_uploaded_file($photo['tmp_name'], $photoPath)) {
+                        $photoID = 'P' . uniqid();
+                
+                        // Prepare the SQL statement to insert the photo information into the photo table
+                        $SQL_photo = $conn->prepare("
+                            INSERT INTO photo (PhotoID, PhotoPath, DateUploaded, TicketID)
+                            VALUES (?, ?, ?, ?)
+                        ");
+                
+                        if ($SQL_photo === false) {
+                            die('Prepare failed: ' . htmlspecialchars($conn->error));
+                        }
+                
+                        // Bind the parameters
+                        $SQL_photo->bind_param("ssss", $photoName, $photoPath, $dateUploaded, $ticketID);
+                
+                        // Execute the statement and check for success
+                        if (!$SQL_photo->execute()) {
+                            echo "<script>
+                            alert('Photo insertion failed: " . htmlspecialchars($SQL_photo->error) . "');
+                            </script>";
+                        } 
+                        $SQL_photo->close();
+                    } else {
+                        echo "<script>
+                            alert('Failed to move uploaded file!');
+                            </script>";
+                    }
+                }
+                 else {
+                    echo "<script>
+                        alert('No file uploaded or upload error!');
+                        </script>";
                 }
 
 

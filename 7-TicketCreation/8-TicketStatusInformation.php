@@ -49,6 +49,21 @@ if (isset($_GET['ticketID'])) {
             $lastName = "User";
         }
 
+        // Retrieve the PhotoPath from photo using TicketID
+        $stmt = $conn->prepare('SELECT PhotoPath FROM photo WHERE TicketID = ?');
+        if ($stmt === false) {
+            die('Prepare failed: ' . htmlspecialchars($conn->error));
+        }
+        $stmt->bind_param('s', $ticketID);
+        $stmt->execute();
+        $stmt->bind_result($photoPath);
+        $stmt->fetch();
+        $stmt->close();
+
+        if (empty($photoPath)) {
+            $photoPath = "No photo available";
+        }
+
 
 
         // Retrieve the Residence name using the ResidenceID

@@ -61,27 +61,29 @@
             <div class="ticket-form-container">
                 <h2>Maintenance Ticket</h2>
 
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress" id="progress"></div>
-                        <div class="step-wrapper">
-                            <div class="step ">1</div>
-                            <div class="step-label">Create Ticket</div>
-                        </div>
-                        <div class="step-wrapper">
-                            <div class="step <?php echo ($Status == 'Open') ? 'active' : ' '; ?>">2</div>
-                            <div class="step-label">House Warden Approval</div>
-                        </div>
-                        <div class="step-wrapper">
-                            <div class="step <?php echo ($Status == 'Confirmed') ? 'active' : ' '; ?>">3</div>
-                            <div class="step-label">Hall Secretary Approval</div>
-                        </div>
-                        <div class="step-wrapper">
-                            <div class="step <?php echo ($Status == 'Requisitioned') ? 'active' : ' '; ?>">4</div>
-                            <div class="step-label">Maintenance Staff</div>
+                <?php if ($Status !== 'Closed'): ?>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" id="progress"></div>
+                            <div class="step-wrapper">
+                                <div class="step">1</div>
+                                <div class="step-label">Create Ticket</div>
+                            </div>
+                            <div class="step-wrapper">
+                                <div class="step <?php echo ($Status == 'Open') ? 'active' : ''; ?>">2</div>
+                                <div class="step-label">House Warden Approval</div>
+                            </div>
+                            <div class="step-wrapper">
+                                <div class="step <?php echo ($Status == 'Confirmed') ? 'active' : ''; ?>">3</div>
+                                <div class="step-label">Hall Secretary Approval</div>
+                            </div>
+                            <div class="step-wrapper">
+                                <div class="step <?php echo ($Status == 'Requisitioned') ? 'active' : ''; ?>">4</div>
+                                <div class="step-label">Maintenance Staff</div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
                     
                 <form action="7-TicketStatus.php" method="post" enctype="multipart/form-data">
                     <!-- <input type="hidden" id="status" name="status" value="Open"> -->
@@ -211,7 +213,7 @@
                         <div class="form-group">
                             <label for="existing-comments">Existing Comments:</label>
                             <div class="input-container">
-                                <textarea id="existing-comments" name="existing-comments" readonly style="color: purple;" rows="10" cols="50"><?php
+                                <textarea id="existing-comments" name="existing-comments" readonly style="color: purple;" rows="5" cols="50"><?php
                                     foreach ($comments as $comment) {
                                         echo htmlspecialchars($comment) . "\n";
                                     }
@@ -231,19 +233,20 @@
                         </div>
                     <?php endif; ?>
                     
-                    <!-- <div class="form-group">
-                        <label for="photo">Upload Photo:</label>
-                    
-                        <div class="input-container">
-                            Custom upload area with the file input hidden
-                            <div class="upload-area" id="upload-area">
-                                <i class="fas fa-image"></i>
-                                <p>Click or drag Photo to this area to upload</p>
-                    
-                                <input type="file" name="photo" id="photo" style="display: none;">
-                            </div>
+                    <div class="form-group">
+                        <label for="photo">Uploaded Photo:</label>
+                        <div class="upload-area">
+                            <?php if (!empty($photoPath)): ?>
+                                <div class="uploaded-photo">
+                                    <img src="<?php echo htmlspecialchars($photoPath); ?>" alt="Uploaded Photo" style="max-width: 100%; height: auto;">
+                                </div>
+                            <?php else: ?>
+                                <p>No photo uploaded.</p>
+                            <?php endif; ?>
                         </div>
-                    </div> -->
+                    </div>
+
+
                     <div class="form-group">
                     <?php
                         $showButtons = !($_SESSION['role'] === 'S');                    

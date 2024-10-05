@@ -156,16 +156,25 @@
                                 <p>Click or drag Photo to this area to upload</p>
 
                                 <!-- Actual file input, hidden from view -->
-                                <input type="file" name="photo" id="photo" style="display: none;" onchange="handleFileSelect(event)" accept="image/*">                            </div>
+                                <input type="file" name="photo" id="photo" style="display: none;" accept="image/*" onchange="handleFileSelect(event)">                            
+                                <div id="preview-area"></div>
+
+                            </div>
+
                         </div>
                         <script>
                             function handleFileSelect(event) {
                                 var fileInput = event.target;
+                                var previewArea = document.getElementById('preview-area');
                                 var uploadArea = document.getElementById('upload-area');
+
+                                uploadArea.querySelector('i').style.display = 'none';
+                                uploadArea.querySelector('p').style.display = 'none';
+
                                 if (fileInput.files && fileInput.files[0]) {
                                     var reader = new FileReader();
                                     reader.onload = function(e) {
-                                        uploadArea.innerHTML = '<img src="' + e.target.result + '" alt="Uploaded Photo" style="max-width: 100%;">';
+                                        previewArea.innerHTML = '<img src="' + e.target.result + '" alt="Uploaded Photo" style="max-width: 100%;">';
                                     };
                                     reader.readAsDataURL(fileInput.files[0]);
                                 }
