@@ -1,5 +1,11 @@
 <?php
     session_start();
+    include '8-EmailContactUs.php';
+
+    if (isset($_SESSION['alert'])) {
+        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
+        unset($_SESSION['alert']); // Clear the alert message from the session
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +101,7 @@
             <h1>Contact Us</h1>
             <p class="subtitle">Get in touch with the RUMaintained team for any queries, support, or feedback.</p>
         </div>
-        <form class="contact-form" action="contact.php" method="POST">
+        <form class="contact-form" action="2-ContactUs.php" method="POST">
             <div class="form-group">
                 <input type="text" name="name" placeholder="Your name" required>
             </div>
