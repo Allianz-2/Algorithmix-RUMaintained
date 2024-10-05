@@ -93,6 +93,7 @@
                             echo 'No ticket ID provided.';
                         }
                     ?>
+                    
                     <div class="section-title">Ticket Details</div>
                     <div class="form-group">
                         <label for="description">Description of Fault:</label>
@@ -143,7 +144,60 @@
                     
                     
                     <div class="separator"></div>
-                    
+
+
+
+
+                    <div class = "section-title">Ticket Created By</div>
+                    <div class="form-group">
+                        <label for="created-by">Created By:</label>
+                        <div class="input-container">
+                            <input type="text" id="created-by" name="created-by" value="<?php echo htmlspecialchars($firstName . ' ' . $lastName); ?>" readonly style="color: grey;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="created-date">Creation Date:</label>
+                        <div class="input-container">
+                            <input type="text" id="created-date" name="created-date" value="<?php echo htmlspecialchars($DateCreated); ?>" readonly style="color: grey;">
+                        </div>
+                    </div>
+                    <?php if (!is_null($DateConfirmed)) : ?>
+                        <div class="form-group">
+                            <label for="created-date">Confirmed Date:</label>
+                            <div class="input-container">
+                                <input type="text" id="created-date" name="created-date" value="<?php echo htmlspecialchars($DateConfirmed); ?>" readonly style="color: grey;">
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!is_null($DateRequisitioned)) : ?>
+                        <div class="form-group">
+                            <label for="created-date">Requisitioned Date:</label>
+                            <div class="input-container">
+                                <input type="text" id="created-date" name="created-date" value="<?php echo htmlspecialchars($DateRequisitioned); ?>" readonly style="color: grey;">
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!is_null($DateResolved)) : ?>
+                        <div class="form-group">
+                            <label for="created-date">Resolved Date:</label>
+                            <div class="input-container">
+                                <input type="text" id="created-date" name="created-date" value="<?php echo htmlspecialchars($DateResolved); ?>" readonly style="color: grey;">
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (!is_null($DateClosed)) : ?>
+                        <div class="form-group">
+                            <label for="created-date">Closed Date:</label>
+                            <div class="input-container">
+                                <input type="text" id="created-date" name="created-date" value="<?php echo htmlspecialchars($DateClosed); ?>" readonly style="color: grey;">
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <div class="separator"></div>
+
                     <div class="section-title">Additional Information</div>
                     
                     <!-- <div class="form-group">
@@ -157,7 +211,7 @@
                         <div class="form-group">
                             <label for="existing-comments">Existing Comments:</label>
                             <div class="input-container">
-                                <textarea id="existing-comments" name="existing-comments" readonly style="color: purple;"><?php
+                                <textarea id="existing-comments" name="existing-comments" readonly style="color: purple;" rows="10" cols="50"><?php
                                     foreach ($comments as $comment) {
                                         echo htmlspecialchars($comment) . "\n";
                                     }
@@ -166,12 +220,16 @@
                         </div>
                     <?php endif; ?>
 
-                    <div class="form-group">
-                        <label for="new-comment">Add New Comment:</label>
-                        <div class="input-container">
-                            <textarea id="new-comment" name="new-comment" placeholder="Please enter additional comments on issue"></textarea>
+                    <?php if (  $_SESSION['role'] === 'HW' && $Status === "Open" || 
+                                $_SESSION['role'] === 'MS' && $Status === "Requisitioned" || 
+                                $_SESSION['role'] === 'HS' && $Status === "Confirmed"): ?>
+                        <div class="form-group">
+                            <label for="new-comment">Add New Comment:</label>
+                            <div class="input-container">
+                                <textarea id="new-comment" name="new-comment" placeholder="Please enter additional comments on issue"></textarea>
+                            </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                     
                     <!-- <div class="form-group">
                         <label for="photo">Upload Photo:</label>

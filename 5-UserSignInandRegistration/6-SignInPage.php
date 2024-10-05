@@ -24,7 +24,7 @@
             <form action="6-SignInPage.php" method="POST" id="signin-form">
                 <div class="form-group">
                     <label for="userID">Username</label>
-                    <input type="text" id="userID" name="userID" required>
+                    <input type="text" id="userID" name="userID" autofocus required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>

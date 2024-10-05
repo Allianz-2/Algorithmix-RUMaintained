@@ -36,7 +36,7 @@
             $stmt->close();
 
             // Prepare the SQL statement to update the ticket
-            $updateStmt = $conn->prepare('UPDATE ticket SET Status = ? WHERE TicketID = ?');
+            $updateStmt = $conn->prepare('UPDATE ticket SET Status = ?, SAccesses = 0, HWAccesses = 0, HSAccesses = 0 WHERE TicketID = ?');
             if ($updateStmt === false) {
                 die('Prepare failed: ' . htmlspecialchars($conn->error));
             }
@@ -49,7 +49,7 @@
             }
 
             if (isset($_POST['new-comment']) && !empty($_POST['new-comment'])) {
-                $newComment = $_POST['new-comment'];
+                $newComment = $_POST['new-comment'] . "\n" . $_SESSION['Firstname'] . ' ' . $_SESSION['Lastname'] . ' - ' . $_SESSION['userID'] . "\n\n";
                 $commentStmt = $conn->prepare('INSERT INTO ticketcomment (TicketCommentID, CommentText, DatePosted, TicketID, UserID) VALUES (?, ?, ?, ?, ?)');
                 if ($commentStmt === false) {
                     die('Prepare failed: ' . htmlspecialchars($conn->error));
@@ -66,19 +66,7 @@
             }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-            echo 'Ticket updated successfully';
+            echo '<script>alert("Ticket updated successfully");</script>';
             header('Location: 7-TicketStatus.php?ticketID=' . urlencode($ticketID));
             exit();
             $updateStmt->close();
@@ -89,7 +77,7 @@
         $conn->close();
     }
 
-    if (isset($_POST['submit-reject'])) {
+    else if (isset($_POST['submit-reject'])) {
         include '../8-PHPTests/connectionAzure.php';
 
         $ticketID = $_POST['ticketID'];
@@ -121,7 +109,7 @@
             die('Update failed: ' . htmlspecialchars($conn->error));
             }
 
-            echo 'Ticket updated successfully';
+            echo '<script>alert("Ticket updated successfully");</script>';
             header('Location: 7-TicketStatus.php?ticketID=' . urlencode($ticketID));
             exit();
             $updateStmt->close();
@@ -132,6 +120,8 @@
         $conn->close();
 
     }
+
+
 
 
 

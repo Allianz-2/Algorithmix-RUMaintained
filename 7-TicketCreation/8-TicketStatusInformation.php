@@ -32,6 +32,22 @@ if (isset($_GET['ticketID'])) {
         $HSAccesses = $ticketInfo['HSAccesses'];
         $HWAccesses = $ticketInfo['HWAccesses'];
 
+        // Retrieve the first and last name of the user who created the ticket
+        $userID = $StudentID ? $StudentID : $HouseWardenID;
+        $stmt = $conn->prepare('SELECT Firstname, Lastname FROM user WHERE UserID = ?');
+        if ($stmt === false) {
+            die('Prepare failed: ' . htmlspecialchars($conn->error));
+        }
+        $stmt->bind_param('s', $userID);
+        $stmt->execute();
+        $stmt->bind_result($firstName, $lastName);
+        $stmt->fetch();
+        $stmt->close();
+
+        if (empty($firstName) || empty($lastName)) {
+            $firstName = "Unknown";
+            $lastName = "User";
+        }
 
 
 
@@ -71,6 +87,8 @@ if (isset($_GET['ticketID'])) {
         if ($stmt === false) {
             die('Prepare failed: ' . htmlspecialchars($conn->error));
         }
+
+
         $stmt->bind_param('s', $ticketID);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -78,8 +96,6 @@ if (isset($_GET['ticketID'])) {
         while ($row = $result->fetch_assoc()) {
             $comments[] = $row['CommentText'];
         }
-        $comments[] = $_SESSION['Firstname'] . " " . $_SESSION['Lastname'] . " - " . $_SESSION['userID'];
-        $commentsString = implode(", ", $comments); 
         $stmt->close();
 
         // Use the fields and comments as needed

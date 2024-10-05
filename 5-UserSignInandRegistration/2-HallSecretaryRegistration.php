@@ -25,23 +25,23 @@
 
             <div class="form-group">
                     <label for="firstname">First Name</label>
-                    <input type="text" id="firstname" name="firstname" required>
+                    <input type="text" id="firstname" name="firstname" pattern="[A-Za-z]{1,25}" title="First name should only contain letters and be up to 25 characters long" autofocus required>
                 </div>
                 <div class="form-group">
                     <label for="lastname">Last Name</label>
-                    <input type="text" id="lastname" name="lastname" required>
+                    <input type="text" id="lastname" name="lastname" pattern="[A-Za-z]{1,25}" title="Last name should only contain letters and be up to 25 characters long" required>
                 </div>
                 <div class="form-group">
                     <label for="userID">Staff Number</label>
-                    <input type="text" id="userID" name="userID" pattern="^SHS[A-Z]{1}[0-9]{4}$" placeholder="SHSX0000"required>
+                    <input type="text" id="userID" name="userID" pattern="^SHS[A-Z]{1}[0-9]{4}$" placeholder="SHSX0000" title="Hall Secretary staff Number should start with 'SHS', followed by one uppercase letter and four digits" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email_address" name="email_address" placeholder="Please use your university email" required>
+                    <input type="email" id="email_address" name="email_address" placeholder="Please use your university email" maxlength="50" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" pattern=".{8,}" title="Password must be at least 8 characters long" required>                
+                    <input type="password" id="password" name="password" pattern=".{8,20}" title="Password must be at least 8 characters long" required>                
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>

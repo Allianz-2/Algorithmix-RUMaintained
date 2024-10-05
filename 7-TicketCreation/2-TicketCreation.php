@@ -30,7 +30,7 @@
         // $categoryID = "CE049";
         $studentID = $_SESSION["userID"];
         $categoryID = $_POST['category'];
-        $comment = $_POST['comments'];
+        $comment = $_POST['comments'] . "\n" . $_SESSION['Firstname'] . ' ' . $_SESSION['Lastname'] . ' - ' . $_SESSION['userID'] . "\n\n";
 
         $SQL_res = $conn->prepare("
             SELECT r.ResidenceID, r.HouseWardenID 

@@ -30,7 +30,7 @@
         
         $userID = $_POST['userID'];
         $password = $_POST['password'];
-        $current_url = isset($_POST['current_url']) ? urldecode($_POST['current_url']) : '../1-GeneralPages/1-Home.php';
+        $current_url = isset($_POST['current_url']) ? urldecode($_POST['current_url']) : '../1-GeneralPages/6-RedirectDashboard.php';
 
         $stmt1 = $conn->prepare("SELECT * FROM user WHERE userID = ? AND password = ? AND Status = 'Active'");
 
