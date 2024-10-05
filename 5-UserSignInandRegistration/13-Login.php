@@ -21,13 +21,6 @@
         die('Failed to connect to MySQL: ' . mysqli_connect_error());
         }
 
-
-
-
-
-
-
-        
         $userID = $_POST['userID'];
         $password = $_POST['password'];
         $current_url = isset($_POST['current_url']) ? urldecode($_POST['current_url']) : '../1-GeneralPages/6-RedirectDashboard.php';
@@ -47,7 +40,7 @@
                 // A single result was returned
                 $_SESSION['userID'] = $userID; // Set session variable
                 // Retrieve role from the user table using the userID
-                $stmt2 = $conn->prepare("SELECT role, Firstname, Lastname FROM user WHERE userID = ? ");
+                $stmt2 = $conn->prepare("SELECT role, Firstname, Lastname, ProfilePhoto FROM user WHERE userID = ? ");
 
                 // Check if the prepare statement failed
                 if ($stmt2 === false) {
@@ -58,13 +51,14 @@
                 $stmt2->bind_param("s", $userID);
                 if ($stmt2->execute()) {
                     // Bind the result variables
-                    $stmt2->bind_result($role, $firstname, $lastname);
+                    $stmt2->bind_result($role, $firstname, $lastname, $photoPath);
                     $stmt2->fetch();
                     
                     // Set session variables
                     $_SESSION['role'] = trim($role);
                     $_SESSION['Firstname'] = $firstname;
                     $_SESSION['Lastname'] = $lastname;
+                    $_SESSION['ProfilePath'] = $photoPath;
                 } else {
                     // Execution failed
                     die('Execute failed: ' . htmlspecialchars($stmt2->error));

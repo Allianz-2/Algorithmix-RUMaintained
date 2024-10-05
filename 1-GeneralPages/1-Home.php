@@ -12,8 +12,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .home-section .profile-info {
-        margin-right: 20px;
-        font-size: 1.1rem
+            margin-right: 20px;
+            font-size: 1.1rem
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-photo {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        .default-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .profile-name {
+            font-size: 16px;
         }
     </style>
 </head>
@@ -58,21 +80,29 @@
                 
                 <a href="2-ContactUs.php">Contact Us</a>
             </nav>
-            <?php if (isset($_SESSION['userID'])) {
-                echo '<div class="profile-info">
-                        <a href= "7-RedirectProfile.php">
-                            <i class="fas fa-user default-icon" id="default-icon"></i></a>
-                        <span class="profile-name">
-                            ' . htmlspecialchars('Welcome '. $_SESSION['Firstname'] . '!') . '
-                        </span>
-                    </div>';
-            } else {
-                echo '<div class="auth-buttons">
-                        <a href="../5-UserSignInandRegistration\6-SignInPage.php" class="cta-button">Sign in</a>
-                        <a href="../5-UserSignInandRegistration\5-RegistrationStep1.html" class="cta-button login-button">Register</a>
-                    </div>';
-            }
-            ?>
+            <?php if (isset($_SESSION['userID'])): ?>
+                <div class="profile-info">
+                    <a href="7-RedirectProfile.php">
+                        <?php if (isset($_SESSION['ProfilePath']) && !empty($_SESSION['ProfilePath'])): ?>
+                            <img src="<?php echo htmlspecialchars($_SESSION['ProfilePath']); ?>" alt="Profile Photo" class="profile-photo" style="width: 20px; height: 20px; border-radius: 50%;">
+                        <?php else: ?>
+                            <i class="fas fa-user default-icon" id="default-icon"></i>
+                        <?php endif; ?>
+                    </a>
+                    <span class="profile-name">
+                        <a style="text-decoration:none; color:black;" href="7-RedirectProfile.php">
+                            
+                        <?php echo 'Welcome ' . htmlspecialchars($_SESSION['Firstname']) . '!'; ?>
+                        </a>
+                    </span>
+                </div>
+            <?php else: ?>
+                <div class="auth-buttons">
+                    <a href="../5-UserSignInandRegistration/6-SignInPage.php" class="cta-button">Sign in</a>
+                    <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button login-button">Register</a>
+                </div>
+            <?php endif; ?>
+
 
 
         </header>
