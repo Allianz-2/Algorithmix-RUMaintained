@@ -21,14 +21,26 @@
         if ($user !== null) {
             if ($user == 'HW') {
                 $newStatus = 'Confirmed';
+                $dateType = 'DateConfirmed';
+                $dateUpdate = strval(date("Y-m-d H:i:s"));
+
             } elseif ($user == 'HS') {
                 if ($status == 'Resolved') {
                     $newStatus = 'Closed';
+                    $dateType = 'DateClosed';
+                    $dateUpdate = strval(date("Y-m-d H:i:s"));
+
                 } else {
                     $newStatus = 'Requisitioned';
+                    $dateType = 'DateRequisitioned';
+                    $dateUpdate = strval(date("Y-m-d H:i:s"));
+
                 }
             } elseif ($user == 'MS') {
                 $newStatus = 'Resolved';
+                $dateType = 'DateResolved';
+                $dateUpdate = strval(date("Y-m-d H:i:s"));
+
             } else {
                 die('Unknown user type');
             }
@@ -36,12 +48,13 @@
             $stmt->close();
 
             // Prepare the SQL statement to update the ticket
-            $updateStmt = $conn->prepare('UPDATE ticket SET Status = ?, SAccesses = 0, HWAccesses = 0, HSAccesses = 0 WHERE TicketID = ?');
+            $sql = "UPDATE ticket SET Status = ?, SAccesses = 0, HWAccesses = 0, HSAccesses = 0, $dateType = ? WHERE TicketID = ?";
+            $updateStmt = $conn->prepare($sql);
             if ($updateStmt === false) {
                 die('Prepare failed: ' . htmlspecialchars($conn->error));
             }
 
-            $updateStmt->bind_param('ss', $newStatus, $ticketID);
+            $updateStmt->bind_param('sss', $newStatus, $datePosted, $ticketID);
             $updateStmt->execute();
 
             if ($updateStmt->affected_rows === 0) {
@@ -63,6 +76,23 @@
                 }
 
                 $commentStmt->close();
+            }
+
+            if (isset($_POST['severity']) && !empty($_POST['severity'])) {
+                $newSeverity = $_POST['severity'];
+                $updateSeverityStmt = $conn->prepare('UPDATE ticket SET Severity = ? WHERE TicketID = ?');
+                if ($updateSeverityStmt === false) {
+                    die('Prepare failed: ' . htmlspecialchars($conn->error));
+                }
+
+                $updateSeverityStmt->bind_param('ss', $newSeverity, $ticketID);
+                $updateSeverityStmt->execute();
+
+                if ($updateSeverityStmt->affected_rows === 0) {
+                    die('Update failed: ' . htmlspecialchars($conn->error));
+                }
+
+                $updateSeverityStmt->close();
             }
 
 

@@ -156,8 +156,7 @@
                                 <p>Click or drag Photo to this area to upload</p>
 
                                 <!-- Actual file input, hidden from view -->
-                                <input type="file" name="photo" id="photo" style="display: none;" onchange="handleFileSelect(event)">
-                            </div>
+                                <input type="file" name="photo" id="photo" style="display: none;" onchange="handleFileSelect(event)" accept="image/*">                            </div>
                         </div>
                         <script>
                             function handleFileSelect(event) {

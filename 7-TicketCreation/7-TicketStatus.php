@@ -127,7 +127,7 @@
                     <div class="form-group">
                         <label for="severity">Severity of Fault:</label>
                         <div class="input-container">
-                            <select id="severity" name="severity" disabled>
+                            <select id="severity" name="severity" <?php echo (($_SESSION['role'] === 'HW' && $Status === 'Open') || ($_SESSION['role'] === 'HS' && $Status === 'Confirmed')) ? '' : 'disabled'; ?>>
                                 <option value=""><?php echo $Severity ?></option>
                                 <option value="Low">Low</option>
                                 <option value="Medium">Medium</option>
@@ -152,7 +152,7 @@
                     <div class="form-group">
                         <label for="created-by">Created By:</label>
                         <div class="input-container">
-                            <input type="text" id="created-by" name="created-by" value="<?php echo htmlspecialchars($firstName . ' ' . $lastName); ?>" readonly style="color: grey;">
+                            <input type="text" id="created-by" name="created-by" value="<?php echo htmlspecialchars($firstName . ' ' . $lastName . " - " . $userID); ?>" readonly style="color: grey;">
                         </div>
                     </div>
                     <div class="form-group">
