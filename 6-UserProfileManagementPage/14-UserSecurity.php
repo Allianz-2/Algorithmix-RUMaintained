@@ -80,7 +80,7 @@
                         <label for="email">Email Address</label>
                         <input type="email" id="email" name="email" required>
                     </div>
-                    <button type="submit" class="save-button">Send Reset Link</button>
+                    <button type="submit" name = "submit-recover" class="save-button">Send Reset Link</button>
                 </form>
                 <!-- <div class="info-section">
                     <h4>Two-Factor Authentication</h4>

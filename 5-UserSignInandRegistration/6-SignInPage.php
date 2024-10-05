@@ -9,6 +9,9 @@
     <title>Sign In</title>
     <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../5-UserSignInandRegistration/5-CSS/6-SignInPage.css">
+
+
+    
 </head>
 <body>
     <div class="container">
@@ -28,7 +31,8 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required><br>
+                    <button type="button" id="showPassword">Show Password</button><br>
                     <a href="1-ForgotPaswordPage.html" class="forgot-password">Forgot password?</a>
                 </div>
                 <div class="form-group-inline">
@@ -49,5 +53,32 @@
             <div id="error-message" class="error-message"></div>
         </div>
     </div>
+
+    <script>
+        // Get the password input and the show button
+        const passwordInput = document.getElementById('password');
+        const showPasswordBtn = document.getElementById('showPassword');
+
+        // When the button is pressed, show the password
+        showPasswordBtn.addEventListener('mousedown', function() {
+            passwordInput.type = 'text';
+        });
+
+        // When the button is released, hide the password
+        showPasswordBtn.addEventListener('mouseup', function() {
+            passwordInput.type = 'password';
+        });
+
+        // Ensure the password remains hidden when the mouse leaves the button area
+        showPasswordBtn.addEventListener('mouseleave', function() {
+            passwordInput.type = 'password';
+        });
+    </script>
+
+
+
+
+
+
 </body>
 </html>
