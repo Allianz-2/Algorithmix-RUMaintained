@@ -10,6 +10,7 @@
     include '8-ChangeEmail.php';
     // include '9-ChangeResidence.php';
     include '15-ChangeSpecialisation.php';
+    include '20-ChangePhoto.php';
     include '5-ProfileManagement.php';
 ?>
 
@@ -80,23 +81,39 @@
         </div>
         </div>
         <div class="main-content">
-            <h2><strong>Profile Details</strong></h2>
-            <div class="profile-header">
+        <h2><strong>Profile Details</strong></h2>
                 <div class="profile-header">
-                    <div class="profile-picture-container">
-                        <i class="fas fa-user default-icon" id="default-icon"></i>
-                        <img src="" alt="Profile picture" class="profile-picture" id="profile-image" style="display: none;">
-                        <div class="edit-picture" onclick="document.getElementById('file-input').click()">
-                            Edit 
-                        </div>
-                        <input type="file" id="file-input" accept="image/*" onchange="updateProfilePicture(event)">
+                <div class="profile-header">
+                <div class="profile-picture-container">
+                    <!-- Default user icon, hidden when a profile picture is available -->
+                    <i class="fas fa-user default-icon" id="default-icon" style="display: <?php echo isset($photoPath) && !empty($photoPath) ? 'none' : 'block'; ?>;"></i>
+                    
+                    <!-- Profile picture display -->
+                    <img src="<?php echo isset($photoPath) ? htmlspecialchars($photoPath) : ''; ?>" 
+                        alt="Profile picture" 
+                        class="profile-picture" 
+                        id="profile-image" 
+                        style="display: <?php echo isset($photoPath) && !empty($photoPath) ? 'block' : 'none'; ?>; width: 100%; height: 100%; object-fit: cover;">
+                    
+                    <!-- Edit option that opens the file input dialog -->
+                    <div class="edit-picture" onclick="document.getElementById('profilePhoto').click()" style="display: <?php echo isset($photoPath) && !empty($photoPath) ? 'none' : 'block'; ?>;">
+                        Edit 
                     </div>
-                    <div class="profile-info">
-                        <h1><?php echo $firstname . ' ' . $lastname ?></h1>
-                    </div>
+                    
+                    <!-- Form with file input for profile photo upload -->
+                    <form id="upload-form" action="4-ProfileMS.php" method="post" enctype="multipart/form-data" style="display: none;">
+                        <input type="file" name="profilePhoto" id="profilePhoto" accept="image/*" onchange="document.getElementById('upload-form').submit()">
+                    </form>
                 </div>
-                <!-- <button class="edit-button">Edit profile</button> -->
+                
+                <!-- Display user profile information -->
+                <div class="profile-info">
+                    <h1><?php echo htmlspecialchars($firstname . ' ' . $lastname); ?></h1>
+                </div>
             </div>
+
+                    <!-- <button class="edit-button">Edit profile</button> -->
+                </div>
 
             <div class="info-section">
                 <h2><strong>User Information</strong></h2>
