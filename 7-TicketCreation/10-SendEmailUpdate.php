@@ -12,6 +12,10 @@
 
     $ticketID = $_GET['ticketID'];
 
+    if (!isset($ticketID)) {
+        $ticketID = 'T000001';
+        }
+
     // Prepare the SQL statement to retrieve ticket information
     $stmt = $conn->prepare('SELECT * FROM ticket WHERE TicketID = ?');
     if ($stmt === false) {
@@ -29,7 +33,7 @@
         $Severity = $ticketInfo['Severity'];
         $DateCreated = $ticketInfo['DateCreated'];
         $DateConfirmed = $ticketInfo['DateConfirmed'];
-        $DateRequisitioned = $ticketInfo['DateRequisitioned'];
+        $DateRequisitioned = $ticketInfo['DateRequisitioned'];  
         $DateResolved = $ticketInfo['DateResolved'];
         $DateClosed = $ticketInfo['DateClosed'];
         $ResidenceID = $ticketInfo['ResidenceID'];
@@ -164,28 +168,90 @@
     // Set HTML "Body"
     // Set HTML "Body"
     $htmlContent = '
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Ticket Update</title>
-        <link rel="stylesheet" href="../7-TicketCreation/7-CSS/1-TicketCreation.css">
-    </head>
-    <body>
-        <form>
-            <div>' . (isset($ticketID) ? '<input type="hidden" name="ticketID" value="' . htmlspecialchars($ticketID) . '">' : '<p>No ticket ID provided.</p>') . '</div>
-            <div>Description of Fault: ' . htmlspecialchars($Description) . '</div>
-            <div>Severity of Fault: ' . htmlspecialchars($Severity) . '</div>
-            <div>' . (!empty($DateCreated) ? 'Date Created: ' . htmlspecialchars($DateCreated) : '') . '</div>
-            <div>' . (!empty($DateConfirmed) ? 'Date Confirmed: ' . htmlspecialchars($DateConfirmed) : '') . '</div>
-            <div>' . (!empty($DateRequisitioned) ? 'Date Requisitioned: ' . htmlspecialchars($DateRequisitioned) : '') . '</div>
-            <div>' . (!empty($DateResolved) ? 'Date Resolved: ' . htmlspecialchars($DateResolved) : '') . '</div>
-            <div>' . (!empty($DateClosed) ? 'Date Closed: ' . htmlspecialchars($DateClosed) : '') . '</div>
-        </form>
-    </body>
-    </html>
-';
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Ticket Update</title>
+            <style>
+                /* General styles for email compatibility */
+                body {
+                    font-family: Arial, sans-serif;
+                    color: #333333;
+                    background-color: #f9f9f9;
+                    margin: 0;
+                    padding: 0;
+                }
+                .email-container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    background-color: #ffffff;
+                    padding: 20px;
+                    border: 1px solid #dddddd;
+                    border-radius: 8px;
+                }
+                .header {
+                    background-color: #81589a;
+                    color: white;
+                    padding: 15px;
+                    text-align: center;
+                    font-size: 24px;
+                    border-radius: 8px 8px 0 0;
+                }
+                .content div {
+                    margin: 10px 0;
+                }
+                .label {
+                    font-weight: bold;
+                    color: #81589a;
+                }
+                .footer {
+                    text-align: center;
+                    color: #777777;
+                    font-size: 12px;
+                    margin-top: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <!-- Header -->
+                <div class="header">Maintenance Ticket Update</div>
+
+                <!-- Email Content -->
+                <div class="content">
+                    <!-- Ticket ID -->
+                    <div>
+                        <span class="label">Ticket ID:</span> ' . htmlspecialchars($ticketID) . '
+                    </div>
+
+                    <!-- Description of Fault -->
+                    <div>
+                        <span class="label">Description of Fault:</span> ' . htmlspecialchars($Description) . '
+                    </div>
+
+                    <!-- Severity of Fault -->
+                    <div>
+                        <span class="label">Severity of Fault:</span> ' . htmlspecialchars($Severity) . '
+                    </div>
+
+                    <!-- Dates -->
+                    ' . (!empty($DateCreated) ? '<div><span class="label">Date Created:</span> ' . htmlspecialchars($DateCreated) . '</div>' : '') . '
+                    ' . (!empty($DateConfirmed) ? '<div><span class="label">Date Confirmed:</span> ' . htmlspecialchars($DateConfirmed) . '</div>' : '') . '
+                    ' . (!empty($DateRequisitioned) ? '<div><span class="label">Date Requisitioned:</span> ' . htmlspecialchars($DateRequisitioned) . '</div>' : '') . '
+                    ' . (!empty($DateResolved) ? '<div><span class="label">Date Resolved:</span> ' . htmlspecialchars($DateResolved) . '</div>' : '') . '
+                    ' . (!empty($DateClosed) ? '<div><span class="label">Date Closed:</span> ' . htmlspecialchars($DateClosed) . '</div>' : '') . '
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                    For more information please visit the <a href="http://localhost/Algorithmix-RUMaintained/7-TicketCreation/7-TicketStatus.php?ticketID=' . urlencode($ticketID) . '">Ticket Status Page</a>.
+                </div>
+            </div>
+        </body>
+        </html>
+        ';
     
 
     // Set the HTML body
@@ -206,7 +272,9 @@
 
         // Display custom successful message
         $_SESSION['alert'] = "Email sent successfully!";
-        header('Location: ../7-TicketCreation/7-TicketStatus.php?ticketID=' . urlencode($ticketID));
+        echo '<script type="text/javascript">
+            window.location.href = "7-TicketStatus.php?ticketID=' . urlencode($ticketID) . '";
+            </script>';
         exit();
     } catch (TransportExceptionInterface $e) {
         // Display custom error message

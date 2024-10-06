@@ -143,7 +143,7 @@
             </div>
         </header>
         <div class="content">
-            <h2>My Ticket Requests</h2>
+            <h2>My Requests</h2>
             </div>
 
             <?php 
@@ -208,7 +208,7 @@ if ($result && mysqli_num_rows($result) > 0): ?>
 
 
             <div class="content">
-            <h2>My Residence Ticket Requests - <?php echo $residenceName ?></h2>
+            <h2>My Residence Requests - <?php echo $residenceName ?></h2>
             </div>
 
 
