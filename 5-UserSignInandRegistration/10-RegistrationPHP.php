@@ -108,6 +108,9 @@ if (isset($_POST['submit'])) {
             $stmt->close();
         }
 
+        $registration_success = true;
+        include '16-RegisterSuccess.php';
+
         echo "<script>
         alert('Registration successful! You will now be redirected to the login page.');
         window.location.href = '6-SignInPage.php'; // Redirect to login page
@@ -193,6 +196,9 @@ if (isset($_POST['submit'])) {
             }
 
             // If all statements are successful
+            $registration_success = true;
+            include '16-RegisterSuccess.php';
+
             echo "<script>
                 alert('Registration successful! You will now be redirected to the login page.');
                 window.location.href = '6-SignInPage.php'; // Redirect to login page

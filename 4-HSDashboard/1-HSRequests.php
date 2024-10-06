@@ -222,7 +222,7 @@
                                             FROM ticket t
                                             INNER JOIN residence r ON t.ResidenceID = r.ResidenceID
                                             WHERE t.Status = 'Confirmed' AND r.HallSecretaryID = '".$_SESSION['userID']."'
-                                        ");
+                                            ORDER BY t.DateCreated DESC");
         
         $totalTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTickets FROM ticket"))['TotalTickets'];
         $ConfirmedTickets = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as ConfirmedTickets FROM ticket WHERE Status = 'Confirmed'"))['ConfirmedTickets'];

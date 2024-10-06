@@ -80,9 +80,9 @@
                 <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
                 <strong>Hall Secretary Dashboard</strong>
             </div>
-            <p><a href="..\6-UserProfileManagementPage\3-ProfileHS.php"><i class="fas fa-cog"></i> Settings</a></p>
+            <!-- <p><a href="..\6-UserProfileManagementPage\3-ProfileHS.php"><i class="fas fa-cog"></i> Settings</a></p>
             <p><a href="..\5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
-            </a>
+            </a> -->
         </header>
 
         <div class="content">

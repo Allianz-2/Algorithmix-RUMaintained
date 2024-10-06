@@ -12,7 +12,7 @@
     <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="../7-TicketCreation\7-CSS\1-TicketCreation.css">
-    <script src="4-TicketCreation.js"></script>
+    <!-- <script src="4-TicketCreation.js"></script> -->
 </head>
 <body>
     <header>
@@ -190,8 +190,7 @@
             </div>
         </div>
     </main>
-
-
+    <script src="4-TicketCreation.js"></script>
    
 </body>
 </html>

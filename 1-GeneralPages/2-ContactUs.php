@@ -108,16 +108,16 @@
             <div class="form-group">
                 <input type="email" name="email" placeholder="Email address" required>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <input type="tel" name="phone" placeholder="Phone number">
-            </div>
+            </div> -->
             <div class="form-group">
                 <select name="role" required>
                     <option value="">Select Role</option>
                     <option value="student">Student</option>
                     <option value="staff">Staff</option>
-                    <option value="warden">House Warden</option>
-                    <option value="maintenance">Maintenance Staff</option>
+                    <!-- <option value="warden">House Warden</option>
+                    <option value="maintenance">Maintenance Staff</option> -->
                 </select>
             </div>
             <div class="form-group full-width">

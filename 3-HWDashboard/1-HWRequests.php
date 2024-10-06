@@ -164,7 +164,7 @@ if (mysqli_connect_errno()) {
 
 // HOUSE WARDEN TICKETS START
 
-$sql = "SELECT * FROM ticket WHERE HouseWardenID = ? AND StudentID = NULL";
+$sql = "SELECT * FROM ticket WHERE HouseWardenID = ? AND StudentID = NULL ORDER BY DateCreated DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $_SESSION['userID']);
 $stmt->execute();
