@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch tickets
-$sql = "SELECT * FROM ticket WHERE HouseWardenID = ?";
+$sql = "SELECT * FROM ticket WHERE HouseWardenID = ? ORDER BY DateCreated DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $_SESSION['userID']);
 $stmt->execute();

@@ -94,18 +94,28 @@
 
                 $updateSeverityStmt->close();
             }
-
-
-            echo '<script>alert("Ticket updated successfully");</script>';
-            header('Location: 7-TicketStatus.php?ticketID=' . urlencode($ticketID));
-            exit();
             $updateStmt->close();
+            $conn->close();
+
+            header("Location: 10-SendEmailUpdate.php?ticketID=" . urlencode($ticketID));
+            exit();
+            // echo '<script>alert("Ticket updated successfully");</script>';
+            // header('Location: 7-TicketStatus.php?ticketID=' . urlencode($ticketID));
+            // exit();
         } else {
             echo 'No ticket found with the given ID';
         }
 
-        $conn->close();
     }
+
+
+
+
+
+
+
+
+
 
     else if (isset($_POST['submit-reject'])) {
         include '../8-PHPTests/connectionAzure.php';
@@ -127,7 +137,7 @@
             $newStatus = 'Rejected';
 
             // Prepare the SQL statement to update the ticket
-            $updateStmt = $conn->prepare('UPDATE ticket SET Status = ? WHERE TicketID = ?');
+            $updateStmt = $conn->prepare('UPDATE ticket SET Status = ?, SAccesses = 0, HWAccesses = 0, HSAccesses = 0, $dateType = ? WHERE TicketID = ?');
             if ($updateStmt === false) {
             die('Prepare failed: ' . htmlspecialchars($conn->error));
             }
@@ -139,6 +149,7 @@
             die('Update failed: ' . htmlspecialchars($conn->error));
             }
 
+            include "10-SendEmailUpdate.php";
             echo '<script>alert("Ticket updated successfully");</script>';
             header('Location: 7-TicketStatus.php?ticketID=' . urlencode($ticketID));
             exit();

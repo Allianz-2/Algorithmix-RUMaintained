@@ -123,17 +123,11 @@
                             </script>";
                     }
                 }
-                 else {
-                    echo "<script>
-                        alert('No file uploaded or upload error!');
-                        </script>";
-                }
-
 
 
             echo "<script>
                   alert('Ticket insertion successful!');
-                    window.location.href = '7-TicketStatus.php?ticketID=" . urlencode($ticketID) . "';
+                    window.location.href = '10-SendEmailUpdate.php?ticketID=" . urlencode($ticketID) . "'; 
                 </script>";
 
         } else {
