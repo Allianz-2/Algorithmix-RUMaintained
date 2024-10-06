@@ -97,7 +97,16 @@
             $updateStmt->close();
             $conn->close();
 
-            header("Location: 10-SendEmailUpdate.php?ticketID=" . urlencode($ticketID));
+            if ($_SERVER['SERVER_NAME'] == 'localhost') {
+                $_SESSION['alert'] = "Ticket updated successfully";
+                header("Location: 10-SendEmailUpdate.php?ticketID=" . urlencode($ticketID));
+
+            } else {
+                $_SESSION['alert'] = "Ticket updated successfully";
+                header('Location: 7-TicketStatus.php?ticketID=' . urlencode($ticketID));
+            }
+
+
             exit();
             // echo '<script>alert("Ticket updated successfully");</script>';
             // header('Location: 7-TicketStatus.php?ticketID=' . urlencode($ticketID));
