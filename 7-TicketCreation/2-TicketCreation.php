@@ -125,10 +125,20 @@
                 }
 
 
-            echo "<script>
-                  alert('Ticket insertion successful!');
-                    window.location.href = '10-SendEmailUpdate.php?ticketID=" . urlencode($ticketID) . "'; 
-                </script>";
+            // echo "<script>
+            //       alert('Ticket insertion successful!');
+            //         window.location.href = '10-SendEmailUpdate.php?ticketID=" . urlencode($ticketID) . "'; 
+            //     </script>";
+
+
+                if ($_SERVER['SERVER_NAME'] == 'localhost') {
+                    $_SESSION['alert'] = "Ticket created successfully";
+                    header("Location: 10-SendEmailUpdate.php?ticketID=" . urlencode($ticketID));
+    
+                } else {
+                    $_SESSION['alert'] = "Ticket created successfully";
+                    header('Location: 7-TicketStatus.php?ticketID=' . urlencode($ticketID));
+                }
 
         } else {
             echo "<script>
