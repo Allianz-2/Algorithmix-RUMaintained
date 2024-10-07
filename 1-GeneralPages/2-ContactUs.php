@@ -1,6 +1,9 @@
 <?php
     session_start();
-    include '8-EmailContactUs.php';
+
+    if ($_SERVER['SERVER_NAME'] == 'localhost') {
+        include '8-EmailContactUs.php';
+    } 
 
     if (isset($_SESSION['alert'])) {
         echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
