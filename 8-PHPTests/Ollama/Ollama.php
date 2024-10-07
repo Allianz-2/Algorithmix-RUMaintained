@@ -1,52 +1,33 @@
 <?php
+    require_once '../../../vendor/autoload.php';
 
-use ArdaGnsrn\Ollama\Ollama;
-use ArdaGnsrn\Ollama\Resources\Blobs;
-use ArdaGnsrn\Ollama\Resources\Chat;
-use ArdaGnsrn\Ollama\Resources\Completions;
-use ArdaGnsrn\Ollama\Resources\Embed;
-use ArdaGnsrn\Ollama\Resources\Models;
+    use ArdaGnsrn\Ollama\Ollama;
+    use ArdaGnsrn\Ollama\Resources\Blobs;
+    use ArdaGnsrn\Ollama\Resources\Chat;
+    use ArdaGnsrn\Ollama\Resources\Completions;
+    use ArdaGnsrn\Ollama\Resources\Embed;
+    use ArdaGnsrn\Ollama\Resources\Models;
 
-it('may create a client', function () {
-    $client = Ollama::client();
+if (isset($_POST['submit-message'])) {
+    $client = \ArdaGnsrn\Ollama\Ollama::client('http://localhost:11434');
 
-    expect($client)->toBeInstanceOf(Ollama::class);
-});
+    $message = $_POST['user-input'];
 
-it('may create a client with custom host', function () {
-    $client = Ollama::client('http://localhost:11435');
 
-    expect($client)->toBeInstanceOf(Ollama::class);
-});
+    $context = "Context:Welcome to RUMaintained (a Residence Maintenance System) at Rhodes University, your trusted platform for 
+                maintaining the comfort and safety of your home away from home. 
+                Our system is designed to streamline the reporting and tracking of maintenance issues within university residences, 
+                ensuring that every student enjoys a well-maintained living environment."; // Define the context
 
-it('has blobs', function () {
-    $client = Ollama::client();
+    $completions = $client->completions()->create([
+        'model' => 'llama3.2',
+        'prompt' => $context . $message,
+    ]);
 
-    expect($client->blobs())->toBeInstanceOf(Blobs::class);
-});
-
-it('has chat', function () {
-    $client = Ollama::client();
-
-    expect($client->chat())->toBeInstanceOf(Chat::class);
-});
-
-it('has completions', function () {
-    $client = Ollama::client();
-
-    expect($client->completions())->toBeInstanceOf(Completions::class);
-});
-
-it('has embed', function () {
-    $client = Ollama::client();
-
-    expect($client->embed())->toBeInstanceOf(Embed::class);
-});
-
-it('has models', function () {
-    $client = Ollama::client();
-
-    expect($client->models())->toBeInstanceOf(Models::class);
-});
+    $responseArray = $completions->toArray(); // Convert the response to an array
+}
 
 ?>
+
+
+
