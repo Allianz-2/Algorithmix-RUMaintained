@@ -53,6 +53,11 @@ if (isset($_POST['submit'])) {
     $email->text($message);
 
     // Set HTML "Body"
+
+
+    // WORK WITHIN "html()" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
     // $email->html('
     //     <h1 style="color: #fff300; background-color: #0073ff; width: 500px; padding: 16px 0; text-align: center; border-radius: 50px;">
     //     The HTML version of the message.
