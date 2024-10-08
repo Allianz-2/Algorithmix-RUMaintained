@@ -218,7 +218,6 @@ $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " .
                 <th>Status</th>
                 <th>Severity</th>
                 <th>Date Created</th>
-                <th>Assigned to</th>
                 <th>Details</th>
             </tr>
         </thead>
@@ -237,12 +236,7 @@ $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " .
                 <td><?php echo date('d-m-Y', strtotime($row['DateCreated'])); ?></td>
                 
                 <!-- Check if assigned to exists, otherwise show 'Unassigned' -->
-                <td>
-                    <?php 
-                    $assignedTo = isset($assignments[$row['TicketID']]) ? $assignments[$row['TicketID']] : 'Unassigned';
-                    echo $assignedTo; 
-                    ?>
-                </td>
+                
                 <td><a href='../7-TicketCreation/7-TicketStatus.php?ticketID=<?php echo urlencode($row['TicketID']); ?>'>View</a></td>
             </tr>
             <?php endif; ?>
