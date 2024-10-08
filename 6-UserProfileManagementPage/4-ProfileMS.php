@@ -1,9 +1,4 @@
 <?php
-    if (isset($_SESSION['alert'])) {
-        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
-        unset($_SESSION['alert']); // Clear the alert message from the session
-    }
-
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
     include '11-CheckPermission.php';
     include '7-ChangePassword.php';
@@ -12,6 +7,11 @@
     include '15-ChangeSpecialisation.php';
     include '20-ChangePhoto.php';
     include '5-ProfileManagement.php';
+
+    if (isset($_SESSION['alert'])) {
+        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
+        unset($_SESSION['alert']); // Clear the alert message from the session
+    }
 ?>
 
 <!DOCTYPE html>

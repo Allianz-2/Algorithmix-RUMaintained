@@ -52,12 +52,15 @@
             <?php
                     if (isset($_SESSION['userID'])) {
                         echo '<div class="dropdown">
-                                <a href="">Services ▾</a>
-                                <div class="dropdown-content">
-                                    <a href="../7-TicketCreation/1-TicketCreation.php">Create Ticket</a>
-                                    <a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a>
-                                    <a href="../1-GeneralPages/6-RedirectDashboard.php">Dashboard</a></div></div>';
-
+                                <a href="#">Services ▾</a>
+                                <div class="dropdown-content">';
+                        if (isset($_SESSION['role']) && ($_SESSION['role'] == 'S' || $_SESSION['role'] == 'HW')) {
+                            echo '<a href="../7-TicketCreation/1-TicketCreation.php">Create Ticket</a>';
+                        }
+                        echo '<a href="../1-GeneralPages/7-RedirectProfile.php">Profile</a>
+                            <a href="../1-GeneralPages/6-RedirectDashboard.php">Dashboard</a>
+                            </div>
+                            </div>';
                     }
                 ?>
             <a href="2-ContactUs.php">Contact Us</a>

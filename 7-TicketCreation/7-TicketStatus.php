@@ -1,12 +1,13 @@
 <?php
-    if (isset($_SESSION['alert'])) {
-        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
-        unset($_SESSION['alert']); // Clear the alert message from the session
-    }
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
     // include '3-FloatingMenu.html';
     include '8-TicketStatusInformation.php';
     include '9-UpdateTicket.php';
+
+    if (isset($_SESSION['alert'])) {
+        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
+        unset($_SESSION['alert']); // Clear the alert message from the session
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
