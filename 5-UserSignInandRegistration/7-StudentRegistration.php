@@ -20,8 +20,8 @@
             </div>
         </div>
         <div class="right-panel">
-            <a href="..\5-UserSignInandRegistration\5-RegistrationStep1.html" style="color: #81598a; text-decoration: none;"><i class="fas fa-chevron-left"></i> Go Back</a>
-            <h1><strong>Student Registration</strong></h1>
+        <a href="..\5-UserSignInandRegistration\5-RegistrationStep1.html" style="color: #81598a; text-decoration: none; margin-top: 0; padding-top: 0;"><i class="fas fa-chevron-left"></i> Go Back</a>
+        <h1 style="margin-top: 5px; padding-top: 5px;"><strong>Student Registration</strong></h1>
             <form action="7-StudentRegistration.php" method="POST" id="registration-form" data-role="student">
             <div class="form-group">
                     <label for="firstname">First Name</label>

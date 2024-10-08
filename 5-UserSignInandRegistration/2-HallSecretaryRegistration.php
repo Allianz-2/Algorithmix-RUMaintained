@@ -21,7 +21,7 @@
         </div>
         <div class="right-panel">
             <a href="..\5-UserSignInandRegistration\5-RegistrationStep1.html" style="color: #81598a; text-decoration: none;"><i class="fas fa-chevron-left"></i> Go Back</a>
-            <h1><strong>Hall Secretary Registration</strong></h1>
+            <h1 style="margin-top: 5px; padding-top: 5px;"><strong>Hall Secretary Registration</strong></h1>
             <form action="2-HallSecretaryRegistration.php" method="post" id="registration-form">
             <input type="hidden" id="role" name="role" value="HS">
 

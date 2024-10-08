@@ -188,6 +188,7 @@
                     </div>
                     <div class="button-group">
                         <input type="submit" name="submit" value="Create Ticket">
+                        <input type="submit" value="Cancel" onclick="if(confirm('Are you sure you want to cancel?')) window.location='../1-GeneralPages/6-RedirectDashboard.php';" style="background-color: white; color: #81598a; border: 1px solid #81598a;">
                         <!-- <input type="submit" name="SAVE" value="Save Ticket"> -->
                      
                     </div>
