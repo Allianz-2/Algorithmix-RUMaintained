@@ -114,12 +114,13 @@
             <div class="form-group">
                 <input type="email" name="email" placeholder="Email address" required>
             </div>
-            <!-- <div class="form-group">
-                <input type="tel" name="phone" placeholder="Phone number">
-            </div> -->
+             <div class="form-group">
+                <input type="text" name="subject" placeholder="Subject">
+            </div> 
             <div class="form-group">
                 <select name="role" required>
                     <option value="">Select Role</option>
+                    <option value="guest">Guest</option>
                     <option value="student">Student</option>
                     <option value="staff">Staff</option>
                     <!-- <option value="warden">House Warden</option>
@@ -127,7 +128,7 @@
                 </select>
             </div>
             <div class="form-group full-width">
-                <textarea name="message" placeholder="How can we help?" required></textarea>
+                <textarea style="font-family: Arial, Helvetica, sans-serif;" name="message" placeholder="How can we help?" required></textarea>
             </div>
             <button type="submit" class="submit-button" name="submit">Send Message</button>
         </form>
@@ -142,7 +143,7 @@
                     <h3>Address</h3>
                     <p>Rhodes University, Drosty Rd, Grahamstown, 6139</p>
                     <h3>Email</h3>
-                    <p>support@rumaintained.co.za</p>
+                    <p>ru.maintained@gmail.com</p>
                     <h3>Phone</h3>
                     <p>+27 (0)46 603 8111</p>
                 </div>
