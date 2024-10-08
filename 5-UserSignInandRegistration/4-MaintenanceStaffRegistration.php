@@ -19,7 +19,8 @@
             </div>
         </div>
         <div class="right-panel">
-            <h1><strong>Maintenance Staff Registration</strong></h1>
+        <a href="..\5-UserSignInandRegistration\5-RegistrationStep1.html" style="color: #81598a; text-decoration: none;"><i class="fas fa-chevron-left"></i> Go Back</a>
+        <h1 style="margin-top: 5px; padding-top: 5px;"><strong>Maintenance Staff Registration</strong></h1>
             <form action="4-MaintenanceStaffRegistration.php" method="POST" id="registration-form">
                 <input type="hidden" id="role" name="role" value="MS">
 
