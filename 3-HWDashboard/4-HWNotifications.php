@@ -3,8 +3,13 @@
     include '../11-DashboardFunctionality/8-NotificationUpdate.php';
     // include '../11-DashboardFunctionality\4-PermissionNotifications.php';
 
-    
-?><!DOCTYPE html>
+    if (isset($_SESSION['alert'])) {
+        echo "<script>alert('" . $_SESSION['alert'] . "');</script>";
+        unset($_SESSION['alert']); // Clear the alert message from the session
+    }
+
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
