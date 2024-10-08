@@ -11,7 +11,7 @@
             </a>
             <div class="dropdown-content">
                 <a href="7-RedirectProfile.php">Profile</a>
-                <a href="logout.php">Logout</a>
+                <a href="..\5-UserSignInandRegistration\15-Logout.php">Logout</a>
             </div>
         </div>
         <span class="profile-name">
