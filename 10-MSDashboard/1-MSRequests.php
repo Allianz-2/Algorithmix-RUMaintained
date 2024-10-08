@@ -385,7 +385,7 @@
                 die('Failed to connect to MySQL: ' . mysqli_connect_error());
             }
         
-        $results = mysqli_query($conn, "SELECT * FROM ticket"); // Add this line to define $results
+        $results = mysqli_query($conn, "SELECT * FROM ticket ORDER BY DateCreated DESC"); // Add this line to define $results
   
 
         $totalTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTasks FROM ticket"))['TotalTasks'];

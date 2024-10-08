@@ -66,7 +66,7 @@
                 echo "No residences found";
             }
 
-            $sql = "SELECT * FROM ticket WHERE ResidenceID LIKE ?";
+            $sql = "SELECT * FROM ticket WHERE ResidenceID LIKE ? ORDER BY DateCreated DESC";
             $stmt = $conn->prepare($sql);
             if (!$stmt) {
                 die('Failed to prepare statement: ' . $conn->error);
