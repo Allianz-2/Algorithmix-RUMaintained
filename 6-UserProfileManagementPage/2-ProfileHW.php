@@ -75,6 +75,18 @@
             </a>
             </div>
 
+            <div class="menu-item">
+                <a href="..\3-HWDashboard\1-HWRequests.php">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3H10V10H3V3Z" fill="currentColor"/>
+                    <path d="M14 3H21V10H14V3Z" fill="currentColor"/>
+                    <path d="M14 14H21V21H14V14Z" fill="currentColor"/>
+                    <path d="M3 14H10V21H3V14Z" fill="currentColor"/>
+                </svg>
+                Dashboard
+            </a>
+            </div>
+
             <div class="menu-item logout">
             <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
         </div>
