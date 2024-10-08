@@ -256,7 +256,7 @@
     </div> -->
     <div>
         <?php     
-        include '..\8-PHPTests\Ollama\chatbotOllama.php';
+        include 'Chatbot\chatbotOllama.php';
         ?>
     </div>
 <footer>
