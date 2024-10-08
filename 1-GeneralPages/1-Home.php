@@ -255,7 +255,8 @@
     </button>
     </div> -->
     <div>
-        <?php     include '../8-PHPTests/OtherTests/chatbot.php';
+        <?php     
+        include '..\8-PHPTests\Ollama\chatbotOllama.php';
         ?>
     </div>
 <footer>

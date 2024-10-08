@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
-    <link rel="stylesheet" href="../OtherTests/chatbot.css">
+    <link rel="stylesheet" href="..\..\8-PHPTests\OtherTests\chatbot.css">
     <style>
         pre {
             font-family: Arial, sans-serif;
@@ -18,8 +18,8 @@
 </head>
 <body>
     <form action="chatbotOllama.php" method="post" id="chatbot-form" class="chatbot-form">
-        <button id="chatbot-toggle" class="chatbot-toggle" style="display: none;">Chat</button>
-        <div class="chatbot-container" id="chatbot-container" style="display: flex;">
+        <button id="chatbot-toggle" class="chatbot-toggle">Chat</button>
+        <div class="chatbot-container" id="chatbot-container" style="display: none;">
             <div class="chatbot-header" id="chatbot-header">
                 <h3>Chatbot</h3>
             </div>
@@ -42,9 +42,24 @@
             const chatbotContainer = document.getElementById('chatbot-container');
             const chatbotToggle = document.getElementById('chatbot-toggle');
 
-            // Ensure the chatbot container is displayed by default
-            chatbotContainer.style.display = 'flex';
-            chatbotToggle.style.display = 'none';
+            // Check localStorage for the state of the chatbot container
+            if (localStorage.getItem('chatbotOpen') === 'true') {
+                chatbotContainer.style.display = 'flex';
+                chatbotToggle.textContent = 'Close';
+            }
+
+            chatbotToggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                if (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') {
+                    chatbotContainer.style.display = 'flex';
+                    chatbotToggle.textContent = 'Close';
+                    localStorage.setItem('chatbotOpen', 'true');
+                } else {
+                    chatbotContainer.style.display = 'none';
+                    chatbotToggle.textContent = 'Chat';
+                    localStorage.setItem('chatbotOpen', 'false');
+                }
+            });
         });
     </script>
 </body>
