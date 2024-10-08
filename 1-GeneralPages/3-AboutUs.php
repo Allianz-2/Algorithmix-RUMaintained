@@ -156,7 +156,8 @@
             
         </section>
         <div>
-        <?php     include '../8-PHPTests/OtherTests/chatbot.php';
+        <?php
+            include 'Chatbot\chatbotOllama.php';
         ?>
     </div>
     </div>

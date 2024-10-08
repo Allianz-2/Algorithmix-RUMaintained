@@ -12,8 +12,8 @@
     <style>
         /* styles.css */
         .chatbot-container {
-            width: 400px;
-            height: 400px;
+            width: 450px;
+            height: 600px;
             font-family: Arial, sans-serif;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -66,6 +66,7 @@
 
         .chatbot-input button:hover {
             background-color: #0056b3;
+            
         }
 
         .chatbot-toggle {
@@ -86,72 +87,100 @@
 
         pre {
             font-family: Arial, sans-serif;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <form action="1-Home.php" method="post" id="chatbot-form" class="chatbot-form">
+    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" id="chatbot-form" class="chatbot-form">
         <button type="button" id="chatbot-toggle" class="chatbot-toggle">Chat</button>
         <div class="chatbot-container" id="chatbot-container" style="display: none;">
             <div class="chatbot-header" id="chatbot-header">
-                <h3>Chatbot</h3>
+                <h2>Chatbot</h2>
             </div>
             <div class="chatbot-messages" id="chatbot-messages">
                 <?php
                     if (isset($_SESSION['history']) && $newResponse) {
                         // Assuming $completions is obtained from some function in Ollama.php
                         $history = htmlspecialchars($_SESSION['history']);
-                        $words = explode(' ', $history);
                         $formattedHistory = '';
-                        foreach ($words as $index => $word) {
-                            if (substr($word, -1) === ':') {
-                                $formattedHistory .= '<strong>' . $word . '</strong> ';
-                            } else {
-                                $formattedHistory .= $word . ' ';
+
+                        // Split the history into lines
+                        $lines = explode("\n", $history);
+
+                        foreach ($lines as $line) {
+                            // Split each line into words
+                            $words = explode(' ', $line);
+                            $wordCount = 0;
+
+                            $characterCount = 0; // Initialize character count
+
+                            foreach ($words as $word) {
+                                // Check if the word is a key followed by a colon
+                                if (strpos($word, '::') !== false) {
+                                    $formattedHistory .= '<strong>' . $word . '</strong><br>';
+                                    $characterCount = 0; // Reset character count after key phrase
+                                } else {
+                                    $formattedHistory .= $word . ' ';
+                                    $characterCount += strlen($word) + 1; // Add word length plus one for the space
+                                }
+                            
+                                // Add a newline every 40 characters, ignoring words with ':'
+                                if ($characterCount >= 45) {
+                                    $formattedHistory .= '<br>';
+                                    $characterCount = 0; // Reset character count after newline
+                                }
                             }
-                            if (strpos($word, "\n") !== false) {
-                                $formattedHistory .= '<br>';
-                            } elseif (($index + 1) % 10 == 0) {
-                                $formattedHistory .= '<br>';
-                            }
+
+                            // Add a newline after each line
+                            $formattedHistory .= '<br>';
                         }
+
                         echo '<pre>' . $formattedHistory . '</pre>';
                     }
                 ?>
             </div>
             <div class="chatbot-input">
-                <input type="text" name="user-input" id="user-input" placeholder="How can we help you today?">
-                <button type="submit" name="submit-message" class="submit-message">Send</button>
+                <input type="text" name="user-input" id="user-input" placeholder="How can we help you today?"
+                style="font-size:15px">
+                <button type="submit" name="submit-message" class="submit-message" style="font-size:15px">Send</button>
             </div>
         </div>
     </form>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const chatbotContainer = document.getElementById('chatbot-container');
-    const chatbotToggle = document.getElementById('chatbot-toggle');
-    const chatbotHeader = document.getElementById('chatbot-header'); // ensure this element exists
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotContainer = document.getElementById('chatbot-container');
+            const chatbotToggle = document.getElementById('chatbot-toggle');
+            const chatbotHeader = document.getElementById('chatbot-header'); // ensure this element exists
 
-    // Ensure the chatbot container is hidden initially
-    chatbotContainer.style.display = 'none';
-    
-    // Toggle chatbot visibility
-    chatbotToggle.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the default form submission
-        if (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '') {
-            chatbotContainer.style.display = 'flex';
-            chatbotToggle.style.display = 'none';
-        }
-    });
-
-    // Add event listener to chatbot header for collapsing
-    if (chatbotHeader) {  // add a check to ensure chatbotHeader exists
-        chatbotHeader.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default form submission
+            // By default, the chatbot should be collapsed on startup
             chatbotContainer.style.display = 'none';
             chatbotToggle.style.display = 'block';
+
+            // Check local storage to see if the chatbot was open
+            if (localStorage.getItem('chatbotOpen') === 'true') {
+            chatbotContainer.style.display = 'flex';
+            chatbotToggle.style.display = 'none';
+            }
+
+            // Toggle chatbot visibility
+            chatbotToggle.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            chatbotContainer.style.display = 'flex';
+            chatbotToggle.style.display = 'none';
+            localStorage.setItem('chatbotOpen', 'true'); // Save state to local storage
+            });
+
+            // Add event listener to chatbot header for collapsing
+            if (chatbotHeader) {  // add a check to ensure chatbotHeader exists
+            chatbotHeader.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+                chatbotContainer.style.display = 'none';
+                chatbotToggle.style.display = 'block';
+                localStorage.setItem('chatbotOpen', 'false'); // Save state to local storage
+            });
+            }
         });
-    }
-});
 </script>
 
 </body>
