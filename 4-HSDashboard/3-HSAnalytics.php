@@ -210,7 +210,13 @@ $severityCategoryData[] = [$row['CategoryName'], (int)$row['High'], (int)$row['M
                 backgroundColor: '#F8F9FC',
                 chartArea: { width: '85%', height: '75%' },
                 fontName: 'Arial',
-                colors: ['#4E73DF']
+                colors: ['#4E73DF'],
+    
+    
+            vAxis: {
+                title: 'Number of Open Tickets',
+                titleTextStyle: {color: '#333'},
+            },  
             };
             var openTicketsChart = new google.visualization.LineChart(document.getElementById('open_tickets_chart'));
             openTicketsChart.draw(openTicketsData, openTicketsOptions);
@@ -250,30 +256,45 @@ $severityCategoryData[] = [$row['CategoryName'], (int)$row['High'], (int)$row['M
                 backgroundColor: '#F8F9FC',
                 chartArea: { width: '85%', height: '75%' },
                 fontName: 'Arial',
-                colors: ['#36B9CC']
+                colors: ['#36B9CC'],
+                vAxis: {
+                title: 'Resolution Time (days)',
+                titleTextStyle: {color: '#333'},
+                minValue: 0
+            },
+            legend: { position: 'none' }
             };
             var resolutionTimeChart = new google.visualization.ColumnChart(document.getElementById('resolution_time_chart'));
             resolutionTimeChart.draw(resolutionTimeData, resolutionTimeOptions);
 
-            // Severity and Category chart data from PHP
+            // Severity and Category chart
             var severityCategoryData = google.visualization.arrayToDataTable([
-                ['CategoryName', 'High', 'Medium', 'Low'],
-                <?php
-                    foreach ($severityCategoryData as $data) {
-                        echo "[' ".$data[0]."', ".$data[1].", ".$data[2].", ".$data[3]."],";
-                    }
-                ?>
-            ]);
-            var severityCategoryOptions = {
-                isStacked: true,
-                backgroundColor: '#F8F9FC',
-                chartArea: { width: '85%', height: '75%' },
-                fontName: 'Arial',
-                colors: ['#E74A3B', '#F6C23E', '#1CC88A']
-            };
-            var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
-            severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
-        }
+            ['CategoryName', 'High', 'Medium', 'Low'],
+            <?php
+                foreach ($severityCategoryData as $data) {
+                    echo "['".$data[0]."', ".$data[1].", ".$data[2].", ".$data[3]."],";
+                }
+            ?>
+        ]);
+        var severityCategoryOptions = {
+           // title: 'Ticket Distribution by Category and Severity',
+            isStacked: true,
+            backgroundColor: '#F8F9FC',
+            chartArea: { width: '70%', height: '70%' },
+            fontName: 'Arial',
+            colors: ['#E74A3B', '#F6C23E', '#1CC88A'],
+            hAxis: {
+                title: 'Number of Tickets',
+                titleTextStyle: {color: '#333'},
+                minValue: 0
+            },
+           
+            legend: { position: 'top', maxLines: 3 }
+        };
+        var severityCategoryChart = new google.visualization.BarChart(document.getElementById('severity_category_chart'));
+        severityCategoryChart.draw(severityCategoryData, severityCategoryOptions);
+    }
+            
     </script>
    
       <script>
