@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include 'Ollama.php';
 ?>
 
@@ -9,6 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
     <link rel="stylesheet" href="../OtherTests/chatbot.css">
+    <style>
+        pre {
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
     <form action="chatbotOllama.php" method="post" id="chatbot-form" class="chatbot-form">
@@ -19,15 +25,15 @@
             </div>
             <div class="chatbot-messages" id="chatbot-messages">
                 <?php
-                    if (isset($_POST['submit-message'])) {
+                    if (isset($_SESSION['history'])) {
                         // Assuming $completions is obtained from some function in Ollama.php
-                        echo '<pre>' . htmlspecialchars($responseArray['response']) . '</pre>';
+                        echo '<pre>' . htmlspecialchars($_SESSION['history']) . '</pre>';
                     }
                 ?>
             </div>
             <div class="chatbot-input">
                 <input type="text" name="user-input" id="user-input" placeholder="How can we help you today?">
-                <button type="submit" name="submit-message" class="submit-message">Send Message</button>
+                <button type="submit" name="submit-message" class="submit-message">Send</button>
             </div>
         </div>
     </form>

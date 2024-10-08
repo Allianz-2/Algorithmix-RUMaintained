@@ -27,6 +27,7 @@
     flex: 1;
     padding: 10px;
     overflow-y: auto;
+    overflow-x: auto;
 }
 
 .chatbot-input {
@@ -68,4 +69,8 @@
 
 .chatbot-toggle:hover {
     background-color: #0056b3;
+}
+
+pre {
+    font-family: Arial, sans-serif;
 }
