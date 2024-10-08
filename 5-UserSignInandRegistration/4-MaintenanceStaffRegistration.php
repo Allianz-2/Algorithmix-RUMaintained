@@ -15,7 +15,7 @@
     <div class="container">
         <div class="left-panel">
             <div class="wallpaper">
-            <img src="../Images/General/rhodes image.jpeg" alt="wallpaper">
+                <img src="../Images/General/rhodes image.jpeg" alt="wallpaper">
             </div>
         </div>
         <div class="right-panel">
@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-group">
                     <label for="staffNumber">Staff Number</label>
-                    <input type="text" id="userID" name="userID" pattern="^SMS[A-Z]{1}[0-9]{4}$" placeholder="SMSX1234"required>
+                    <input type="text" id="userID" name="userID" pattern="^SMS[A-Z]{1}[0-9]{4}$" placeholder="SMSX1234" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" pattern=".{8,20}" title="Password must be at least 8 characters long" required>                </div>
+                    <input type="password" id="password" name="password" pattern=".{8,20}" title="Password must be at least 8 characters long" required>
                 </div>
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
@@ -68,9 +68,8 @@
                         <option value="Masonry">Masonry</option>
                         <option value="Appliance Repair">Appliance Repair</option>
                     </select>
-                  </div>
+                </div>
 
-                
                 <div class="form-group">
                     <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
                     <label for="termsAndConditions">

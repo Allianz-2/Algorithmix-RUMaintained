@@ -162,7 +162,7 @@
     $emailSend->subject('Ticket ' . $ticketID . ' Updated: ' . $Status);
 
     // Set the plain-text "Body"
-    $message = "Ticket " . $ticketID . " has been updated to " . $status . ".\n\n";
+    $message = "Ticket " . $ticketID . " has been updated to " . $Status . ".\n\n";
     $emailSend->text($message);
 
     // Set HTML "Body"
