@@ -1,5 +1,5 @@
          
-          <?php if (isset($_SESSION['userID'])): ?>
+<?php if (isset($_SESSION['userID'])): ?>
     <div class="profile-info">
         <div class="dropdown">
             <a href="#" class="dropdown-toggle">
@@ -26,10 +26,10 @@
 <?php endif; ?>
 
 <script>
-function confirmLogout() {
-    // Prompt the user for confirmation
-    var confirmation = confirm("Are you sure you want to log out?");
-    // If the user confirms, allow the logout action
-    return confirmation; // true if confirmed, false if canceled
-}
+    function confirmLogout() {
+        // Prompt the user for confirmation
+        var confirmation = confirm("Are you sure you want to log out?");
+        // If the user confirms, allow the logout action
+        return confirmation; // true if confirmed, false if canceled
+    }
 </script>
