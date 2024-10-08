@@ -11,7 +11,7 @@
             </a>
             <div class="dropdown-content">
                 <a href="7-RedirectProfile.php">Profile</a>
-                <a href="..\5-UserSignInandRegistration\15-Logout.php">Logout</a>
+                <a href="..\5-UserSignInandRegistration\15-Logout.php" onclick="return confirmLogout()">Logout</a>
             </div>
         </div>
         <span class="profile-name">
@@ -24,3 +24,12 @@
         <a href="../5-UserSignInandRegistration/5-RegistrationStep1.html" class="cta-button login-button">Register</a>
     </div>
 <?php endif; ?>
+
+<script>
+function confirmLogout() {
+    // Prompt the user for confirmation
+    var confirmation = confirm("Are you sure you want to log out?");
+    // If the user confirms, allow the logout action
+    return confirmation; // true if confirmed, false if canceled
+}
+</script>
