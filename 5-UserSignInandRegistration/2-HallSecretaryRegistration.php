@@ -10,6 +10,7 @@
     <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../5-UserSignInandRegistration\5-CSS\11-Registration.css">
     <script src="12-RegistrationJavacript.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -19,6 +20,7 @@
             </div>
         </div>
         <div class="right-panel">
+            <a href="..\5-UserSignInandRegistration\5-RegistrationStep1.html" style="color: #81598a; text-decoration: none;"><i class="fas fa-chevron-left"></i> Go Back</a>
             <h1><strong>Hall Secretary Registration</strong></h1>
             <form action="2-HallSecretaryRegistration.php" method="post" id="registration-form">
             <input type="hidden" id="role" name="role" value="HS">

@@ -37,6 +37,7 @@
             </div>
         </div>
         <div class="right-panel">
+            <a href="..\1-GeneralPages\1-Home.php" style="color: #81598a; text-decoration: none;"><i class="fas fa-chevron-left"></i> Go Back</a>
             <h1><strong>Welcome back to RUMaintained!</strong></h1><br><br><br>
 
 
