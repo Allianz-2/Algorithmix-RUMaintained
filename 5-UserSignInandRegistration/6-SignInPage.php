@@ -9,8 +9,24 @@
     <title>Sign In</title>
     <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../5-UserSignInandRegistration/5-CSS/6-SignInPage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    .password-container {
+    position: relative;
+}
 
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
 
+.password-toggle i {
+    font-size: 1.2em;
+}
+</style>
     
 </head>
 <body>
@@ -31,8 +47,13 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required><br>
-                    <button type="button" id="showPassword">Show Password</button><br>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" required>
+                        <span class="password-toggle" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </span>
+                    </div>
+                    <br>
                     <a href="1-ForgotPaswordPage.html" class="forgot-password">Forgot password?</a>
                 </div>
                 <div class="form-group-inline">
@@ -56,8 +77,23 @@
 
     <script>
         // Get the password input and the show button
+        //const passwordInput = document.getElementById('password');
+        //const showPasswordBtn = document.getElementById('showPassword');
+
+        // Get the password input and the eye icon
         const passwordInput = document.getElementById('password');
-        const showPasswordBtn = document.getElementById('showPassword');
+        const togglePassword = document.getElementById('togglePassword');
+
+        // Toggle the password visibility when the icon is clicked
+            togglePassword.addEventListener('click', function() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            
+            // Toggle icon between 'eye' and 'eye-slash'
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
 
         // When the button is pressed, show the password
         showPasswordBtn.addEventListener('mousedown', function() {
@@ -70,9 +106,9 @@
         });
 
         // Ensure the password remains hidden when the mouse leaves the button area
-        showPasswordBtn.addEventListener('mouseleave', function() {
-            passwordInput.type = 'password';
-        });
+        //showPasswordBtn.addEventListener('mouseleave', function() {
+          //  passwordInput.type = 'password';
+       // });
     </script>
 
 
