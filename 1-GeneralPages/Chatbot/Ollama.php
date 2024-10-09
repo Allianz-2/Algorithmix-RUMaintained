@@ -19,7 +19,7 @@ if (isset($_POST['submit-message'])) {
         $userName = $_SESSION['Firstname']; // Get the user's name and make it bold
     }
 
-    $message = $userName . ": " . $_POST['user-input'] ."\n"; // Get the user's message 
+    $message = $userName . "~ " . $_POST['user-input'] ."\n"; // Get the user's message 
     $context = "Instructions:' 
 
                 1. You are an AI assisstant for RUMaintained. 
@@ -130,7 +130,7 @@ if (isset($_POST['submit-message'])) {
     ]);
 
     $responseArray = $completions->toArray(); // Convert the response to an array
-    $response = "Chatbot: ". $responseArray['response'] . "\n"; // Get the chatbot's response
+    $response = "Chatbot~ ". $responseArray['response'] . "\n"; // Get the chatbot's response
     $_SESSION['history'] .= $response; // Append the message and response to the chat history 
     $newResponse = true;
 }

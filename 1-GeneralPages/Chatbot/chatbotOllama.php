@@ -117,7 +117,7 @@
 
                             foreach ($words as $word) {
                                 // Check if the word is a key followed by a colon
-                                if (strpos($word, ':') !== false) {
+                                if (strpos($word, '~') !== false) {
                                     $formattedHistory .= '<strong>' . $word . '</strong><br>';
                                     $characterCount = 0; // Reset character count after key phrase
                                 } else {
