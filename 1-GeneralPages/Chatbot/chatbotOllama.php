@@ -117,7 +117,7 @@
 
                             foreach ($words as $word) {
                                 // Check if the word is a key followed by a colon
-                                if (strpos($word, '::') !== false) {
+                                if (strpos($word, ':') !== false) {
                                     $formattedHistory .= '<strong>' . $word . '</strong><br>';
                                     $characterCount = 0; // Reset character count after key phrase
                                 } else {
@@ -126,7 +126,7 @@
                                 }
                             
                                 // Add a newline every 40 characters, ignoring words with ':'
-                                if ($characterCount >= 45) {
+                                if ($characterCount >= 42) {
                                     $formattedHistory .= '<br>';
                                     $characterCount = 0; // Reset character count after newline
                                 }
