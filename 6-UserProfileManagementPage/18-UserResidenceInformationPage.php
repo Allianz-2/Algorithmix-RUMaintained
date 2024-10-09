@@ -24,21 +24,6 @@
             <h1>Account</h1>
             <p>Manage your account info.</p>
             <div class="menu-item">
-         <?php
-            $profilePage = '';
-            switch ($_SESSION['role']) {
-                case 'HW':
-                    $profilePage = '2-ProfileHW.php';
-                    break;
-                case 'S':
-                    $profilePage = '1-ProfileStudent.php';
-                    break;
-                // Add more cases as needed for other roles
-                default:
-                    $profilePage = '1-ProfileStudent.php'; // Default profile page
-                    break;
-            }
-            ?>
                 <a href="../1-GeneralPages\1-Home.php">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z" fill="currentColor"/>
@@ -48,8 +33,7 @@
             </a>
             </div>
             <div class="menu-item">
-            <a href="<?php echo $profilePage; ?>">
-
+            <a href="../1-GeneralPages/7-RedirectProfile.php">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -76,6 +60,18 @@
                 Security
             </a>
             </div>
+            <div class="menu-item">
+                <a href="../1-GeneralPages\6-RedirectDashboard.php">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3H10V10H3V3Z" fill="currentColor"/>
+                    <path d="M14 3H21V10H14V3Z" fill="currentColor"/>
+                    <path d="M14 14H21V21H14V14Z" fill="currentColor"/>
+                    <path d="M3 14H10V21H3V14Z" fill="currentColor"/>
+                </svg>
+                Dashboard
+                </a>
+            </div>
+
             <div class="menu-item logout">
             <p><a href="../5-UserSignInandRegistration/15-Logout.php" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i>Log Out</a></p>
         </div>

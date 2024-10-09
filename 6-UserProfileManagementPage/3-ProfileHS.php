@@ -70,7 +70,7 @@
             </div>
 
             <div class="menu-item">
-                <a href="..\4-HSDashboard\1-HSRequests.php">
+                <a href="../1-GeneralPages\6-RedirectDashboard.php">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 3H10V10H3V3Z" fill="currentColor"/>
                     <path d="M14 3H21V10H14V3Z" fill="currentColor"/>
@@ -78,7 +78,7 @@
                     <path d="M3 14H10V21H3V14Z" fill="currentColor"/>
                 </svg>
                 Dashboard
-            </a>
+                </a>
             </div>
 
             <div class="menu-item logout">
