@@ -1,11 +1,11 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
-    include '11-CheckPermission.php';
-    include '7-ChangePassword.php';
-    include '8-ChangeEmail.php';
-    include '9-ChangeResidence.php';
-    include '20-ChangePhoto.php';
-    include '5-ProfileManagement.php';
+    require_once '11-CheckPermission.php';
+    require_once '7-ChangePassword.php';
+    require_once '8-ChangeEmail.php';
+    require_once '9-ChangeResidence.php';
+    require_once '20-ChangePhoto.php';
+    require_once '5-ProfileManagement.php';
 
     if (isset($_SESSION['alert'])) {
         echo "<script>alert('" . $_SESSION['alert'] . "');</script>";

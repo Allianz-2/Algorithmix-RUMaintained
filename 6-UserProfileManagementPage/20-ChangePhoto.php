@@ -3,8 +3,6 @@
     if (isset($_FILES['profilePhoto'])) {
         include '../8-PHPTests/connectionAzure.php';
 
-
-
         $photo = $_FILES['profilePhoto'];
             
         // Correct the name reference
