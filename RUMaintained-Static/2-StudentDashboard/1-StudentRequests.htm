@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joshua's Dashboard</title>
+    <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="Dashboard.css">
+    <style> 
+        h1 {
+            text-align: center;
+            color: #81589a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            background-color: white;
+        }
+
+        th {
+            background-color: #81589a;
+            color: #fff;
+        }
+
+        .filters,
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .filter-group {
+            flex: 1;
+        }
+
+        .stat-box {
+            background-color: white;
+            color: #81589a;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            flex: 1;
+            margin: 10px;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-box h4 {
+            margin: 10px 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        .stat-box p {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .icon {
+            font-size: 40px;
+            color: #5c4b8a;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .charts {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .chart-box {
+            background-color: white;
+            color: #81589a;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 48%;
+        }
+        
+    
+    </style>
+</head>
+
+<body>
+    <nav id="sidebar" class="sidebar">
+        <div class="logo">
+        <span class="user-welcome">Welcome, Joshua</span>
+        <a href="../1-GeneralPages/7-RedirectProfile.htm">
+                            <img src="../Images/ProfilePhotos/U1732713462.jpg" alt="Profile Photo" class="profile-photo" style="width: 20px; height: 20px; border-radius: 50%;">
+                    </a>        
+        </div>
+        <ul>
+            <li><a href="../1-GeneralPages\1-homeSignedIn.htm"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="../7-TicketCreation\1-TicketCreation.htm"><i class="fas fa-envelope"></i>Create Ticket</a></li>
+            <li class='active'><a href="../2-StudentDashboard\1-StudentRequests.htm"><i class="fa fa-tools"></i>Ticket Requests</a></li>
+            <!-- <li><a href="../2-StudentDashboard\3-StudentAnalytics.htm"><i class="fas fa-chart-line"></i>Analytics</a></li> -->
+            <li><a href="../2-StudentDashboard\4-StudentNotifications.htm"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li><a href="../2-StudentDashboard\5-StudentHelp.htm"><i class="fas fa-info-circle"></i>Help and Support</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <p><a href="../6-UserProfileManagementPage\1-ProfileStudent.htm"><i class="fas fa-cog"></i> Settings</a></p>
+            <p><a href="../1-GeneralPages/1-Home.htm" onclick="return confirmLogout()"><i class="fas fa-sign-out-alt"></i> Log Out</a></p>
+        </div>
+    </nav>
+
+    <main>
+        <header>
+            <div class="header-left">
+                <div id="hamburger-icon" class="hamburger-icon"><i class="fas fa-bars"></i></div>
+                <strong>Student Dashboard</strong>
+            </div>
+            <div class="logo">
+            <a href="../1-GeneralPages/1-homeSignedIn.htm">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RU Maintained Logo">
+            </a>
+            </div>
+        </header>
+        <div class="content">
+            <h2>My Requests</h2>  
+        </div>
+            
+
+        
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Severity</th>
+                        <th>Date Created</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                                        <tr>
+                        <td>T1732713007</td>
+                        <td>Creaking door </td>
+                        <td>Confirmed</td>
+                        <td>Low</td>
+                        <td>2024-11-27 14:10:07</td>
+                        <td><a href="../7-TicketCreation/7-TicketStatusConfirmed.htm">View</a></td>                    </tr>
+                                        <tr>
+                        <td>T1732712812</td>
+                        <td>leaking faucet</td>
+                        <td>Open</td>
+                        <td>Low</td>
+                        <td>2024-11-27 14:06:52</td>
+                        <td><a href="../7-TicketCreation/7-TicketStatusOpen.htm">View</a></td>                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+
+        <div class="content">
+            <h2>My Residence Requests - Joe Slovo</h2>  
+        </div>
+
+
+        
+        <div class="content">
+           
+            <div class="charts">
+                <!-- Google Chart containers -->
+                <div id="requestChart" class="chart-box"></div>
+                <div id="residenceChart" class="chart-box"></div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <h4>Total Tickets</h4>
+                    <p id="total-tickets">8</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Pending Tickets</h4>
+                    <p id="pending-tickets">8</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Completed Tickets</h4>
+                    <p id="completed-tickets">0</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Viewed Tickets</h4>
+                    <p id="viewed-tickets">2</p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Severity</th>
+                        <th>Date Created</th>
+                        <th>Student Number</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                                        <tr>
+                        <td>T000009</td>
+                        <td>Water pressure issue in shower</td>
+                        <td>Resolved</td>
+                        <td>High</td>
+                        <td>2021-02-10 10:25:00</td>
+                        <td>G22O7965</td>
+                    </tr>
+                                        <tr>
+                        <td>T000010</td>
+                        <td>Water pressure issue in shower</td>
+                        <td>Resolved</td>
+                        <td>High</td>
+                        <td>2021-02-10 10:25:00</td>
+                        <td>G22O7965</td>
+                    </tr>
+                                        <tr>
+                        <td>T000039</td>
+                        <td>Garage light not working</td>
+                        <td>Confirmed</td>
+                        <td>Medium</td>
+                        <td>2022-02-26 09:00:00</td>
+                        <td>G24P4916</td>
+                    </tr>
+                                        <tr>
+                        <td>T1727713341</td>
+                        <td>broken door lock </td>
+                        <td>Confirmed</td>
+                        <td>High</td>
+                        <td>2024-09-30 18:22:21</td>
+                        <td>G21S1463</td>
+                    </tr>
+                                        <tr>
+                        <td>T1728309672</td>
+                        <td>wires exposed in plug </td>
+                        <td>Confirmed</td>
+                        <td>Low</td>
+                        <td>2024-10-07 16:01:12</td>
+                        <td>G21S1463</td>
+                    </tr>
+                                        <tr>
+                        <td>T1728391160</td>
+                        <td>Mattress is sinking in</td>
+                        <td>Confirmed</td>
+                        <td>Low</td>
+                        <td>2024-10-08 14:39:20</td>
+                        <td>G21S1463</td>
+                    </tr>
+                                        <tr>
+                        <td>T1732712812</td>
+                        <td>leaking faucet</td>
+                        <td>Open</td>
+                        <td>Low</td>
+                        <td>2024-11-27 14:06:52</td>
+                        <td>G00G0000</td>
+                    </tr>
+                                        <tr>
+                        <td>T1732713007</td>
+                        <td>Creaking door </td>
+                        <td>Confirmed</td>
+                        <td>Low</td>
+                        <td>2024-11-27 14:10:07</td>
+                        <td>G00G0000</td>
+                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+
+
+    </main>
+
+    <!-- Load Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            // Request Pie Chart
+            var requestData = google.visualization.arrayToDataTable([
+                ['Task', 'Count'],
+                ['incomplete Tickets', 8],
+                ['Pending Tickets', 8],
+                ['Completed Tickets', 0],
+                ['Viewed Tickets', 2]
+            ]);
+
+            var requestOptions = {
+                title: 'Requests Overview',
+                backgroundColor: 'transparent',
+                pieHole: 0.4,
+                colors: ['#a64b89', '#5c4b8a', '#f1eaf5', '#81589a'],
+                legend: 'bottom'
+            };
+
+            var requestChart = new google.visualization.PieChart(document.getElementById('requestChart'));
+            requestChart.draw(requestData, requestOptions);
+
+            // Residence Column Chart
+            var residenceData = google.visualization.arrayToDataTable([
+                ['Task', 'Count'],
+                ['Pending', 8],
+                ['Completed', 0]
+            ]);
+
+            var residenceOptions = {
+                title: 'Residence Tasks',
+                backgroundColor: 'transparent',
+                colors: ['#f4a5d2', '#c0a1f5'],
+                legend: 'none',
+                chartArea: { width: '70%' },
+                hAxis: {
+                    title: 'Task Status',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'Count'
+                }
+            };
+
+            var residenceChart = new google.visualization.ColumnChart(document.getElementById('residenceChart'));
+            residenceChart.draw(residenceData, residenceOptions);
+        }
+
+        function confirmLogout() {
+            return confirm('Are you sure you want to log out?');
+        }
+    </script>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerIcon = document.getElementById('hamburger-icon');
+            const sidebar = document.getElementById('sidebar');
+            const main = document.querySelector('main');
+
+            hamburgerIcon.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('sidebar-collapsed');
+            });
+        });
+        function confirmLogout() {
+            return confirm("Are you sure you want to log out?");
+        }
+    </script>
+</body>
+</html>
+
+</html>

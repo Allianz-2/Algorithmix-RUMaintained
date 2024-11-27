@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUMaintained</title>
+    <link rel="icon" href="../Images\General\favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="../1-GeneralPages/CSS/2-ContactUs.css">
+    <style>
+        .home-section .profile-info {
+        margin-right: 20px;
+        font-size: 1.1rem
+        }
+
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-photo {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        .default-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .profile-name {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">            
+            <a href="../1-GeneralPages/1-Home.htm">
+                <img src="../Images/General/93BA9616-515E-488E-836B-2863B8F66675_share.JPG" alt="RUMaintained Logo">
+            </a>
+        </div>
+        <nav>
+            <a href="1-Home.htm">Home</a>
+            <a href="3-AboutUs.htm">About Us</a>
+                        <a href="2-ContactUs.htm"><strong>Contact Us</strong></a>
+        </nav>
+                        <div class="auth-buttons">
+                    <a href="../5-UserSignInandRegistration/6-SignInPage.htm" class="cta-button">Sign in</a>
+                    <a href="../5-UserSignInandRegistration/5-RegistrationStep1.htm" class="cta-button login-button">Register</a>
+                </div>
+                </header>
+
+    <main>
+        <div class="top-image-container">
+            <img src="../Images/General/contact-banner.jpg" alt="Contact-banner">
+        </div> 
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p class="subtitle">Get in touch with the RUMaintained team for any queries, support, or feedback.</p>
+        </div>
+        <form class="contact-form" action="2-ContactUs.htm" method="POST">
+            <div class="form-group">
+                <input type="text" name="name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email address" required>
+            </div>
+             <div class="form-group">
+                <input type="text" name="subject" placeholder="Subject">
+            </div> 
+            <div class="form-group">
+                <select name="role" required>
+                    <option value="">Select Role</option>
+                    <option value="guest">Guest</option>
+                    <option value="student">Student</option>
+                    <option value="staff">Staff</option>
+                    <!-- <option value="warden">House Warden</option>
+                    <option value="maintenance">Maintenance Staff</option> -->
+                </select>
+            </div>
+            <div class="form-group full-width">
+                <textarea style="font-family: Arial, Helvetica, sans-serif;" name="message" placeholder="How can we help?" required></textarea>
+            </div>
+            <button type="submit" class="submit-button" name="submit">Send Message</button>
+        </form>
+
+        <div class="map-container">
+            <h2>Visit Us</h2>
+            <div class="map-and-info">
+                <div class="map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3367.5494344988587!2d26.519699015220997!3d-33.31134498081086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e7ad0bcb47f0a6b%3A0x48e9bd7f230cf551!2sRhodes%20University!5e0!3m2!1sen!2sza!4v1631234567890!5m2!1sen!2sza"  loading="lazy"></iframe>
+                </div>
+                <div class="contact-info">
+                    <h3>Address</h3>
+                    <p>Rhodes University, Drosty Rd, Grahamstown, 6139</p>
+                    <h3>Email</h3>
+                    <p>ru.maintained@gmail.com</p>
+                    <h3>Phone</h3>
+                    <p>+27 (0)46 603 8111</p>
+                </div>
+            </div>
+        </div>
+        
+        <section class="social-media">
+            <h2>Connect With Us</h2>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/RhodesUniversity/" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://twitter.com/Rhodes_Uni" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/rhodes-university/" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/school/rhodes-university/" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.youtube.com" title="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </section>
+        <div>
+        
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <!-- <link rel="stylesheet" href="chatbot.css"> -->
+    <style>
+        /* styles.css */
+        .chatbot-container {
+            width: 350px;
+            height: 400px;
+            font-family: Arial, sans-serif;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-header {
+            background-color: #81589a;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        .chatbot-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chatbot-input button {
+            padding: 10px;
+            background-color: #81589a;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input button:hover {
+            background-color: #0056b3;
+            
+        }
+
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #81589a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chatbot-toggle:hover {
+            background-color: #0056b3;
+        }
+
+        pre {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <form action="/1-GeneralPages/2-ContactUs.htm" method="post" id="chatbot-form" class="chatbot-form">
+        <button type="button" id="chatbot-toggle" class="chatbot-toggle">Chat</button>
+        <div class="chatbot-container" id="chatbot-container" style="display: none;">
+            <div class="chatbot-header" id="chatbot-header">
+                <h2>Chatbot</h2>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                            </div>
+            <div class="chatbot-input">
+                <input type="text" name="user-input" id="user-input" placeholder="How can we help you today?"
+                style="font-size:15px">
+                <button type="submit" name="submit-message" class="submit-message" style="font-size:15px">Send</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotContainer = document.getElementById('chatbot-container');
+            const chatbotToggle = document.getElementById('chatbot-toggle');
+            const chatbotHeader = document.getElementById('chatbot-header'); // ensure this element exists
+
+            // By default, the chatbot should be collapsed on startup
+            chatbotContainer.style.display = 'none';
+            chatbotToggle.style.display = 'block';
+
+            // Check local storage to see if the chatbot was open
+            if (localStorage.getItem('chatbotOpen') === 'true') {
+            chatbotContainer.style.display = 'flex';
+            chatbotToggle.style.display = 'none';
+            }
+
+            // Toggle chatbot visibility
+            chatbotToggle.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            chatbotContainer.style.display = 'flex';
+            chatbotToggle.style.display = 'none';
+            localStorage.setItem('chatbotOpen', 'true'); // Save state to local storage
+            });
+
+            // Add event listener to chatbot header for collapsing
+            if (chatbotHeader) {  // add a check to ensure chatbotHeader exists
+            chatbotHeader.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+                chatbotContainer.style.display = 'none';
+                chatbotToggle.style.display = 'block';
+                localStorage.setItem('chatbotOpen', 'false'); // Save state to local storage
+            });
+            }
+        });
+</script>
+
+</body>
+</html>    </div>
+    </main>
+
+    <footer>
+        <p>RUMaintained - A Residence Maintenance System</p>
+        <p>Developed by Algorithmix</p>
+        <p>&copy; 2024 Algorithmix. All rights reserved.</p>
+    </footer>
+</body>
+</html>
