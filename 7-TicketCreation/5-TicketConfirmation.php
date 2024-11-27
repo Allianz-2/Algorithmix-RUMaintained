@@ -1,7 +1,7 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
-    include '2-TicketCreation.php';
-    include '3-FloatingMenu.html';
+    require_once '2-TicketCreation.php';
+    require_once '3-FloatingMenu.html';
 ?>
 <!DOCTYPE html>
 <html lang="en">

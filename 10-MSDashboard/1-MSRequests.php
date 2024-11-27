@@ -1,6 +1,6 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
-    include '../11-DashboardFunctionality\1-PermissionRequests.php';
+    require_once '../11-DashboardFunctionality\1-PermissionRequests.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -112,25 +112,8 @@
 
        <?php
         //Database connection parameters
-        require '../8-PHPTests/config.php';
+        include '../8-PHPTests/connectionAzure.php';
 
-        // Initializes MySQLi
-        $conn = mysqli_init();
-
-        // Test if the CA certificate file can be read
-        if (!file_exists($ca_cert_path)) {
-            die("CA file not found: " . $ca_cert_path);
-        }
-
-        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-
-        // Establish the connection
-        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-        // If connection failed, show the error
-        if (mysqli_connect_errno()) {
-            die('Failed to connect to MySQL: ' . mysqli_connect_error());
-        }
 
         // Fetch maintenance fault stats per semester per residence
         // function getMaintenanceFaultStatsPerSemester($conn) {
@@ -365,51 +348,25 @@
             </div> -->
 
         <?php 
-            require '../8-PHPTests/config.php';
+            include '../8-PHPTests/connectionAzure.php';
 
-            // Initializes MySQLi
-            $conn = mysqli_init();
+            
+            $results = mysqli_query($conn, "SELECT * FROM ticket ORDER BY DateCreated DESC"); // Add this line to define $results
+    
 
-            // Test if the CA certificate file can be read
-            if (!file_exists($ca_cert_path)) {
-                die("CA file not found: " . $ca_cert_path);
-            }
-
-            mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
-
-            // Establish the connection
-            mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-            // If connection failed, show the error
-            if (mysqli_connect_errno()) {
-                die('Failed to connect to MySQL: ' . mysqli_connect_error());
-            }
-        
-        $results = mysqli_query($conn, "SELECT * FROM ticket ORDER BY DateCreated DESC"); // Add this line to define $results
-  
-
-        $totalTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTasks FROM ticket"))['TotalTasks'];
-        $pendingTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTasks FROM ticket WHERE Status = 'Open'"))['PendingTasks'];
-        $completedTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTasks FROM ticket WHERE Status = 'Resolved'"))['CompletedTasks'];
-        $emergencyTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as EmergencyTasks FROM ticket WHERE Severity = 'high'"))['EmergencyTasks'];
+            $totalTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTasks FROM ticket"))['TotalTasks'];
+            $pendingTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTasks FROM ticket WHERE Status = 'Open'"))['PendingTasks'];
+            $completedTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTasks FROM ticket WHERE Status = 'Resolved'"))['CompletedTasks'];
+            $emergencyTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as EmergencyTasks FROM ticket WHERE Severity = 'high'"))['EmergencyTasks'];
         ?>
 
 
 
 
-<div class="charts">
+            <div class="charts">
                 <canvas id="maintenanceRequestChart"></canvas>
                 <canvas id="residenceTaskChart"></canvas>
             </div>
-
-
-
-
-
-
-
-
-
 
 
 

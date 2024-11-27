@@ -1,8 +1,8 @@
 <?php
     require_once("../5-UserSignInandRegistration/14-secure.php"); 
-    // include '3-FloatingMenu.html';
-    include '8-TicketStatusInformation.php';
-    include '9-UpdateTicket.php';
+    // require_once '3-FloatingMenu.html';
+    require_once '8-TicketStatusInformation.php';
+    require_once '9-UpdateTicket.php';
 
     if (isset($_SESSION['alert'])) {
         echo "<script>alert('" . $_SESSION['alert'] . "');</script>";

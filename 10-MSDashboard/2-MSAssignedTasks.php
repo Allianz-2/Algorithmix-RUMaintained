@@ -152,58 +152,36 @@ th {
 
   
             <?php
-        //Database connection parameters
-        require '../8-PHPTests/config.php';
+                include '../8-PHPTests/connectionAzure.php';
 
-        // Initializes MySQLi
-        $conn = mysqli_init();
+                // Fetch all maintenance requests
+                $query = "
+                SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, 
+                    u.Firstname AS StudentFirstName, u.Lastname AS StudentLastName
+                FROM ticket t
+                JOIN user u ON t.StudentID = u.UserID";
+                // $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
+                $results = mysqli_query($conn, $query);
 
-        // Test if the CA certificate file can be read
-        if (!file_exists($ca_cert_path)) {
-            die("CA file not found: " . $ca_cert_path);
-        }
+                // Fetch task statistics
+                $totalTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTasks FROM ticket"))['TotalTasks'];
+                $pendingTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTasks FROM ticket WHERE Status = 'Open'"))['PendingTasks'];
+                $completedTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTasks FROM ticket WHERE Status = 'Resolved'"))['CompletedTasks'];
+                $emergencyTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as EmergencyTasks FROM ticket WHERE Severity = 'High'"))['EmergencyTasks'];
 
-        mysqli_ssl_set($conn, NULL, NULL, $ca_cert_path, NULL, NULL);
+                // Fetch assigned maintenance staff for each ticket
+                $sql_assignments = "SELECT a.TicketID, u.Firstname AS AssignedFirstName, u.Lastname AS AssignedLastName
+                FROM assignment a
+                JOIN maintenancestaff ms ON a.MaintenanceStaffID = ms.MaintenanceStaffID
+                JOIN user u ON ms.UserID = u.UserID";
+                $assignments_result = mysqli_query($conn, $sql_assignments);
 
-        // Establish the connection
-        mysqli_real_connect($conn, $servername, $username, $password, $dbname, 3306, NULL, MYSQLI_CLIENT_SSL);
-
-        // If connection failed, show the error
-        if (mysqli_connect_errno()) {
-            die('Failed to connect to MySQL: ' . mysqli_connect_error());
-        }
-
-        
-// Fetch all maintenance requests
-$query = "
-SELECT t.TicketID, t.Description, t.Status, t.Severity, t.DateCreated, 
-       u.Firstname AS StudentFirstName, u.Lastname AS StudentLastName
-FROM ticket t
-JOIN user u ON t.StudentID = u.UserID";
-// $conn = mysqli_connect(SERVERNAME, USERNAME, PASSWORD, DATABASE) or die('Unable to connect to the database');
-$results = mysqli_query($conn, $query);
-
-// Fetch task statistics
-$totalTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as TotalTasks FROM ticket"))['TotalTasks'];
-$pendingTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as PendingTasks FROM ticket WHERE Status = 'Open'"))['PendingTasks'];
-$completedTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as CompletedTasks FROM ticket WHERE Status = 'Resolved'"))['CompletedTasks'];
-$emergencyTasks = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as EmergencyTasks FROM ticket WHERE Severity = 'High'"))['EmergencyTasks'];
-
-// Fetch assigned maintenance staff for each ticket
-$sql_assignments = "SELECT a.TicketID, u.Firstname AS AssignedFirstName, u.Lastname AS AssignedLastName
-FROM assignment a
-JOIN maintenancestaff ms ON a.MaintenanceStaffID = ms.MaintenanceStaffID
-JOIN user u ON ms.UserID = u.UserID";
-$assignments_result = mysqli_query($conn, $sql_assignments);
-
-
-
-// Create an associative array to store assignments by TicketID
-$assignments = [];
-while ($assignment = mysqli_fetch_assoc($assignments_result)) {
-$assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " . $assignment['AssignedLastName'];
-}
-?>
+                // Create an associative array to store assignments by TicketID
+                $assignments = [];
+                while ($assignment = mysqli_fetch_assoc($assignments_result)) {
+                $assignments[$assignment['TicketID']] = $assignment['AssignedFirstName'] . " " . $assignment['AssignedLastName'];
+                }
+                ?>
 
 
 

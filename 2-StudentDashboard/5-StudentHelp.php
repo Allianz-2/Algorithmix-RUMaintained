@@ -244,7 +244,13 @@
     <nav id="sidebar" class="sidebar">
         <div class="logo">
         <span class="user-welcome">Welcome, <?php echo $_SESSION['Firstname']; ?></span>
-            <a href="../6-UserProfileManagementPage\1-ProfileStudent.php"><i class="fas fa-user"></i></a> 
+        <a href="../1-GeneralPages/7-RedirectProfile.php">
+            <?php if (isset($_SESSION['ProfilePath']) && !empty($_SESSION['ProfilePath'])): ?>
+                <img src="<?php echo htmlspecialchars($_SESSION['ProfilePath']); ?>" alt="Profile Photo" class="profile-photo" style="width: 20px; height: 20px; border-radius: 50%;">
+            <?php else: ?>
+                <i class="fas fa-user default-icon" id="default-icon"></i>
+            <?php endif; ?>
+        </a>        
         </div>
         <ul>
             <li><a href="../1-GeneralPages\1-Home.php"><i class="fas fa-home"></i>Home</a></li>
